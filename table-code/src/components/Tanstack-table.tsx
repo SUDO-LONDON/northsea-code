@@ -1,28 +1,96 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
     useReactTable,
     createColumnHelper,
     getCoreRowModel,
+    getSortedRowModel,
     flexRender,
     SortingState,
-    getSortedRowModel,
 } from "@tanstack/react-table";
-import { ArrowUp, ArrowDown } from "lucide-react"; // icons
-import { LineChart, Line, ResponsiveContainer } from "recharts";
+import {
+    LineChart,
+    Line,
+    ResponsiveContainer,
+} from "recharts";
+import { ArrowUp, ArrowDown } from "lucide-react";
 
-// --- Types ---
-type Trade = {
+// ---- Types shared with StockChart ----
+export type Trade = {
     spot: string;
     price: number;
     change: number;
+    // small spark for the table
     sparkline: number[];
+    // full chart for the big chart below
+    chartData: { date: string; value: number }[];
 };
 
-// --- Column Helper ---
-const columnHelper = createColumnHelper<Trade>();
+// ---- Fake Data Generator (exported so page can use it) ----
+export function generateFakeData(count = 20): Trade[] {
+    const spots = ["AAPL", "GOOG", "TSLA", "AMZN", "MSFT", "NFLX", "META", "NVDA", "ORCL", "AMD"];
+    const out: Trade[] = [];
 
+    for (let i = 0; i < count; i++) {
+        const spot = spots[i % spots.length];
+        const base = Math.random() * 500 + 50; // base price 50..550
+        const price = +(base + (Math.random() - 0.5) * 10).toFixed(2);
+        const change = +((Math.random() - 0.5) * 8).toFixed(2); // -4%..+4%
+
+        // sparkline (20 points)
+        const sparkline = Array.from({ length: 20 }, (_, idx) =>
+            +(base * (1 + (Math.random() - 0.5) * 0.05)).toFixed(2)
+        );
+
+        // full chart data (30 points)
+        const chartData = Array.from({ length: 30 }, (_, idx) => ({
+            date: `Day ${idx + 1}`,
+            value: +(base * (1 + (Math.random() - 0.5) * 0.08)).toFixed(2),
+        }));
+
+        out.push({ spot, price, change, sparkline, chartData });
+    }
+    return out;
+}
+
+// ---- Tiny Sparkline used inside the table ----
+function Sparkline({ data }: { data: number[] }) {
+    // animate with a tiny random walk so it feels "alive"
+    const [sparkData, setSparkData] = useState(data.map((v) => ({ price: v })));
+    const lastPriceRef = useRef(data[data.length - 1]);
+
+    useEffect(() => {
+        const t = setInterval(() => {
+            setSparkData((prev) => {
+                const next = lastPriceRef.current * (1 + (Math.random() - 0.5) * 0.01);
+                lastPriceRef.current = next;
+                const updated = [...prev, { price: +next.toFixed(2) }];
+                if (updated.length > 20) updated.shift();
+                return updated;
+            });
+        }, 1000);
+        return () => clearInterval(t);
+    }, []);
+
+    return (
+        <ResponsiveContainer width={110} height={40}>
+            <LineChart data={sparkData}>
+                <Line
+                    type="monotone"
+                    dataKey="price"
+                    stroke="#4ade80"
+                    strokeWidth={2}
+                    dot={false}
+                    isAnimationActive
+                    animationDuration={500}
+                />
+            </LineChart>
+        </ResponsiveContainer>
+    );
+}
+
+const columnHelper = createColumnHelper<Trade>();
 const columns = [
     columnHelper.accessor("spot", {
         header: "Spot",
@@ -36,8 +104,11 @@ const columns = [
         header: "Change",
         cell: (info) => {
             const val = info.getValue();
-            const color = val >= 0 ? "text-green-500" : "text-red-500";
-            return <span className={color}>{val.toFixed(2)}%</span>;
+            return (
+                <span className={val >= 0 ? "text-green-600" : "text-red-600"}>
+          {val.toFixed(2)}%
+        </span>
+            );
         },
     }),
     columnHelper.accessor("sparkline", {
@@ -46,65 +117,20 @@ const columns = [
     }),
 ];
 
-// --- Sparkline Component ---
-function Sparkline({ data }: { data: number[] }) {
-    const [sparkData, setSparkData] = useState(
-        data.map((price) => ({ price }))
-    );
-
-    const lastPriceRef = useRef(data[data.length - 1]);
-
-    useEffect(() => {
-        const interval = setInterval(() => {
-            setSparkData((prev) => {
-                const newPrice =
-                    lastPriceRef.current * (1 + (Math.random() - 0.5) * 0.01); // random walk
-                lastPriceRef.current = newPrice;
-                const newData = [...prev, { price: newPrice }];
-                if (newData.length > 20) newData.shift();
-                return newData;
-            });
-        }, 1000);
-        return () => clearInterval(interval);
-    }, []);
-
-    return (
-        <ResponsiveContainer width={100} height={40}>
-            <LineChart data={sparkData}>
-                <Line
-                    type="monotone"
-                    dataKey="price"
-                    stroke="#4ade80"
-                    strokeWidth={2}
-                    dot={false}
-                    isAnimationActive={true}
-                    animationDuration={800}
-                />
-            </LineChart>
-        </ResponsiveContainer>
-    );
-}
-
-// --- Fake Data ---
-function generateFakeData(): Trade[] {
-    const spots = ["AAPL", "GOOG", "TSLA", "AMZN", "MSFT", "NFLX", "FB"];
-    return spots.map((spot) => {
-        const price = Math.random() * 1000 + 100;
-        const change = (Math.random() - 0.5) * 10;
-        const sparkline = Array.from({ length: 20 }, () => price * (1 + (Math.random() - 0.5) * 0.05));
-        return { spot, price, change, sparkline };
-    });
-}
-
-// --- Main Table Component ---
-export default function TradeTable({ data }: { data: Trade[] }) {
+export default function TradeTable({
+                                       data,
+                                       onSelect,
+                                   }: {
+    data: Trade[];
+    onSelect?: (row: Trade) => void;
+}) {
     const [sorting, setSorting] = useState<SortingState>([]);
-    const [pagination, setPagination] = useState({ pageIndex: 0, pageSize: 5 });
+    const [pagination, setPagination] = useState({ pageIndex: 0, pageSize: 10 });
     const [currentPageData, setCurrentPageData] = useState<Trade[]>([]);
 
     const totalPages = Math.ceil(data.length / pagination.pageSize);
 
-    // Update current page slice
+    // slice the current page (client-side pagination scaffold)
     useEffect(() => {
         const start = pagination.pageIndex * pagination.pageSize;
         const end = start + pagination.pageSize;
@@ -133,7 +159,7 @@ export default function TradeTable({ data }: { data: Trade[] }) {
     };
 
     return (
-        <div className="p-8 bg-gray-100 rounded-lg overflow-x-auto">
+        <div className="bg-gray-100 p-4 rounded-lg overflow-x-auto">
             <table className="min-w-full border-collapse">
                 <thead>
                 {table.getHeaderGroups().map((hg) => (
@@ -155,11 +181,10 @@ export default function TradeTable({ data }: { data: Trade[] }) {
                 {table.getRowModel().rows.map((row) => (
                     <tr
                         key={row.id}
-                        className={`hover:bg-gray-200 transition-colors ${
-                            row.getValue("change") >= 0
-                                ? "bg-green-50"
-                                : "bg-red-50"
+                        className={`hover:bg-gray-200 transition-colors cursor-pointer ${
+                            row.getValue<number>("change") >= 0 ? "bg-green-50" : "bg-red-50"
                         }`}
+                        onClick={() => onSelect?.(row.original)}
                     >
                         {row.getVisibleCells().map((cell) => (
                             <td key={cell.id} className="border-b border-gray-300 p-2">
@@ -171,11 +196,14 @@ export default function TradeTable({ data }: { data: Trade[] }) {
                 </tbody>
             </table>
 
-            {/* Pagination Controls */}
+            {/* Pagination */}
             <div className="mt-4 flex items-center gap-4 justify-end">
                 <button
                     onClick={() =>
-                        setPagination({ ...pagination, pageIndex: Math.max(pagination.pageIndex - 1, 0) })
+                        setPagination({
+                            ...pagination,
+                            pageIndex: Math.max(pagination.pageIndex - 1, 0),
+                        })
                     }
                     disabled={pagination.pageIndex === 0}
                     className="px-3 py-1 bg-gray-300 rounded disabled:opacity-50"
@@ -200,13 +228,16 @@ export default function TradeTable({ data }: { data: Trade[] }) {
                     Next
                 </button>
 
-                {/* Page size selector */}
                 <select
                     value={pagination.pageSize}
                     onChange={(e) =>
-                        setPagination({ ...pagination, pageSize: Number(e.target.value), pageIndex: 0 })
+                        setPagination({
+                            ...pagination,
+                            pageSize: Number(e.target.value),
+                            pageIndex: 0,
+                        })
                     }
-                    className="ml-4 p-1 border rounded"
+                    className="ml-2 p-1 border rounded"
                 >
                     {[5, 10, 20, 50].map((size) => (
                         <option key={size} value={size}>
@@ -218,7 +249,3 @@ export default function TradeTable({ data }: { data: Trade[] }) {
         </div>
     );
 }
-
-// --- Test Render ---
-// Usage in your page/component
-// <TradeTable data={generateFakeData()} />
