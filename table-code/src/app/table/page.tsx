@@ -11,8 +11,6 @@ export default function TablePage() {
 
     return (
         <div className="p-6 space-y-6">
-            <h1 className="text-2xl font-bold">Table Page</h1>
-
             <TradeTable
                 data={data}
                 onSelect={(row) => setSelectedStock(row)}

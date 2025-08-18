@@ -1,5 +1,6 @@
 "use client";
 
+import '@/index.css'
 import { useEffect, useRef, useState } from "react";
 import {
     useReactTable,
@@ -159,7 +160,7 @@ export default function TradeTable({
     };
 
     return (
-        <div className="bg-gray-100 p-4 rounded-lg overflow-x-auto">
+        <div className="bg-secondary-foreground shadow-md rounded-xl p-6 overflow-x-auto">
             <table className="min-w-full border-collapse">
                 <thead>
                 {table.getHeaderGroups().map((hg) => (
@@ -167,7 +168,7 @@ export default function TradeTable({
                         {hg.headers.map((header) => (
                             <th
                                 key={header.id}
-                                className="bg-gray-800 text-white p-2 text-left cursor-pointer select-none"
+                                className="bg-foreground text-primary p-3 text-left font-semibold text-sm uppercase tracking-wider cursor-pointer select-none"
                                 onClick={header.column.getToggleSortingHandler()}
                             >
                                 {flexRender(header.column.columnDef.header, header.getContext())}
@@ -181,13 +182,13 @@ export default function TradeTable({
                 {table.getRowModel().rows.map((row) => (
                     <tr
                         key={row.id}
-                        className={`hover:bg-gray-200 transition-colors cursor-pointer ${
+                        className={`transition-colors duration-200 cursor-pointer hover:bg-indigo-50 ${
                             row.getValue<number>("change") >= 0 ? "bg-green-50" : "bg-red-50"
                         }`}
                         onClick={() => onSelect?.(row.original)}
                     >
                         {row.getVisibleCells().map((cell) => (
-                            <td key={cell.id} className="border-b border-gray-300 p-2">
+                            <td key={cell.id} className="border-b border-gray-200 p-3 text-sm text-gray-700">
                                 {flexRender(cell.column.columnDef.cell, cell.getContext())}
                             </td>
                         ))}
@@ -197,7 +198,7 @@ export default function TradeTable({
             </table>
 
             {/* Pagination */}
-            <div className="mt-4 flex items-center gap-4 justify-end">
+            <div className="mt-5 flex items-center gap-4 justify-end text-sm text-gray-700">
                 <button
                     onClick={() =>
                         setPagination({
@@ -206,13 +207,13 @@ export default function TradeTable({
                         })
                     }
                     disabled={pagination.pageIndex === 0}
-                    className="px-3 py-1 bg-gray-300 rounded disabled:opacity-50"
+                    className="px-3 py-1 bg-indigo-100 text-indigo-700 rounded-md disabled:opacity-50 hover:bg-indigo-200"
                 >
                     Prev
                 </button>
 
                 <span>
-          Page {pagination.pageIndex + 1} of {totalPages}
+            Page {pagination.pageIndex + 1} of {totalPages}
         </span>
 
                 <button
@@ -223,7 +224,7 @@ export default function TradeTable({
                         })
                     }
                     disabled={pagination.pageIndex + 1 >= totalPages}
-                    className="px-3 py-1 bg-gray-300 rounded disabled:opacity-50"
+                    className="px-3 py-1 bg-indigo-100 text-indigo-700 rounded-md disabled:opacity-50 hover:bg-indigo-200"
                 >
                     Next
                 </button>
@@ -237,7 +238,7 @@ export default function TradeTable({
                             pageIndex: 0,
                         })
                     }
-                    className="ml-2 p-1 border rounded"
+                    className="ml-2 p-1 border border-gray-300 rounded-md"
                 >
                     {[5, 10, 20, 50].map((size) => (
                         <option key={size} value={size}>
@@ -247,5 +248,6 @@ export default function TradeTable({
                 </select>
             </div>
         </div>
+
     );
 }
