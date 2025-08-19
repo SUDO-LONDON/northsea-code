@@ -156,7 +156,7 @@ export default function TradeTable({ data }: { data: Trade[] }) {
                     <tr
                         key={row.id}
                         className={`hover:bg-gray-200 transition-colors ${
-                            row.getValue("change") >= 0
+                            (row.getValue("change") as number) >= 0
                                 ? "bg-green-50"
                                 : "bg-red-50"
                         }`}
