@@ -1,4 +1,5 @@
 import { GalleryVerticalEnd } from "lucide-react"
+import '@/index.css'
 
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
@@ -12,8 +13,8 @@ export function LoginForm({
   return (
     <div className={cn("flex flex-col gap-6", className)} {...props}>
       <form>
-        <div className="flex flex-col gap-6">
-          <div className="flex flex-col items-center gap-2">
+        <div className="flex flex-col gap-6 ">
+          <div className="flex flex-col items-center gap-2 bg-background">
             <a
               href="#"
               className="flex flex-col items-center gap-2 font-medium"
@@ -21,7 +22,7 @@ export function LoginForm({
               <div className="flex size-8 items-center justify-center rounded-md">
                 <GalleryVerticalEnd className="size-6" />
               </div>
-              <span className="sr-only">Acme Inc.</span>
+              <span className="sr-only">North Sea.</span>
             </a>
             <h1 className="text-xl font-bold">Welcome to Acme Inc.</h1>
             <div className="text-center text-sm">
