@@ -4,6 +4,10 @@ import {useMemo, useState} from "react";
 import TradeTable, {Trade, generateFakeData} from "@/components/Tanstack-table";
 import StockChart from "@/app/table/stockchart";
 
+import { createClient } from '@/utils/supabase/server'
+import { cookies } from 'next/headers'
+
+
 export default function TablePage() {
     // generate once so data doesn't change every render
     const data = useMemo(() => generateFakeData(12), []);
