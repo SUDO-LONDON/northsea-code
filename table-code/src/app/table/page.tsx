@@ -9,9 +9,9 @@ import {
 
 // Utility to format numbers as currency
 const formatCurrency = (num) =>
-    new Intl.NumberFormat("en-US", {
+    new Intl.NumberFormat("en-UK", {
         style: "currency",
-        currency: "USD",
+        currency: "GBP",
         maximumFractionDigits: 2
     }).format(num);
 
@@ -32,7 +32,7 @@ export default function CryptoTable() {
 
     return (
         <div className="bg-[#0d0b1f] min-h-screen p-6 text-white">
-            <h1 className="text-4xl font-bold text-center mb-8">Coin Market Cap</h1>
+            <h1 className="text-4xl font-bold text-center mb-8">Bunker Prices</h1>
 
             {/* Responsive: table on desktop, stacked cards on mobile */}
             <div className="hidden md:block overflow-x-auto">
