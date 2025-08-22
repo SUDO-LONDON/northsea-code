@@ -5,6 +5,7 @@ import { supabase } from "@/lib/supabaseClient"
 import { GalleryVerticalEnd } from "lucide-react"
 import '@/index.css'
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
@@ -19,23 +20,30 @@ export function LoginForm({
   const [password, setPassword] = useState("")
   const [error, setError] = useState<string | null>(null)
   const [loading, setLoading] = useState(false)
+  const router = useRouter();
 
   const handleLogin = async (e: React.FormEvent) => {
-    e.preventDefault()
-    setLoading(true)
-    setError(null)
+    e.preventDefault();
+    setLoading(true);
+    setError(null);
     const { error } = await supabase.auth.signInWithPassword({
       email,
       password,
-    })
-    if (error) setError(error.message)
-    setLoading(false)
-  }
+    });
+    if (error) setError(error.message);
+    else router.push("/table");
+    setLoading(false);
+  };
 
   const handleGoogleLogin = async () => {
     setLoading(true)
     setError(null)
-    const { error } = await supabase.auth.signInWithOAuth({ provider: "google" })
+    const { error } = await supabase.auth.signInWithOAuth({
+      provider: "google",
+      options: {
+        redirectTo: `${window.location.origin}/table`,
+      },
+    })
     if (error) setError(error.message)
     setLoading(false)
   }
