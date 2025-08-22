@@ -6,6 +6,8 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import Link from "next/link";
+import '@/index.css'
+
 
 export default function SignUpPage() {
   const [email, setEmail] = useState("");
@@ -33,7 +35,7 @@ export default function SignUpPage() {
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen p-4">
-      <form onSubmit={handleSignUp} className="w-full max-w-sm space-y-6 bg-white p-6 rounded shadow">
+      <form onSubmit={handleSignUp} className="w-full max-w-sm space-y-6 p-6 rounded shadow">
         <h1 className="text-2xl font-bold text-center">Sign Up</h1>
         <div className="grid gap-3">
           <Label htmlFor="email">Email</Label>
