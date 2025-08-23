@@ -6,6 +6,7 @@ import { Label } from "@/components/ui/label"
 import { Card } from "@/components/ui/card"
 import { useState } from "react"
 import { useRouter } from "next/navigation"
+import Cookies from 'js-cookie'
 
 export default function AdminLogin() {
   const [username, setUsername] = useState("")
@@ -19,8 +20,8 @@ export default function AdminLogin() {
     // For demo purposes, using hardcoded credentials
     // In production, use proper authentication
     if (username === "admin" && password === "admin123") {
-      // Set admin session
-      sessionStorage.setItem("isAdminAuthenticated", "true")
+      // Set admin authentication cookie with 24h expiry
+      Cookies.set('adminAuth', 'true', { expires: 1 })
       router.push("/dashboard")
     } else {
       setError("Invalid credentials")

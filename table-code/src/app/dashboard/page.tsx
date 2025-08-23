@@ -6,43 +6,65 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Card } from "@/components/ui/card"
-import { Trade } from "@/components/Tanstack-table"
+import Cookies from 'js-cookie'
+import { Product, PRODUCTS } from "@/lib/products"
 
 export default function Dashboard() {
   const router = useRouter()
-  const [prices, setPrices] = useState<Record<string, number>>({})
-  const [trades, setTrades] = useState<Trade[]>([])
+  const [products, setProducts] = useState<Product[]>([])
+  const [newPrices, setNewPrices] = useState<Record<string, string>>({})
 
   useEffect(() => {
     // Check if user is authenticated
-    const isAuthenticated = sessionStorage.getItem("isAdminAuthenticated")
+    const isAuthenticated = Cookies.get('adminAuth')
     if (!isAuthenticated) {
       router.push("/admin-login")
+      return
     }
 
-    // Load existing trades
-    // In a real application, this would come from your database
-    const loadedTrades = JSON.parse(localStorage.getItem("trades") || "[]")
-    setTrades(loadedTrades)
+    // Load existing products or initialize with defaults
+    const savedProducts = localStorage.getItem("products")
+    if (savedProducts) {
+      setProducts(JSON.parse(savedProducts))
+    } else {
+      const initialProducts = PRODUCTS.map(product => ({
+        ...product,
+        lastUpdated: new Date().toISOString()
+      }))
+      setProducts(initialProducts)
+      localStorage.setItem("products", JSON.stringify(initialProducts))
+    }
   }, [router])
 
   const handlePriceChange = (id: string, value: string) => {
-    setPrices(prev => ({
+    setNewPrices(prev => ({
       ...prev,
-      [id]: parseFloat(value) || 0
+      [id]: value
     }))
   }
 
   const handleUpdatePrices = () => {
-    const updatedTrades = trades.map(trade => ({
-      ...trade,
-      price: prices[trade.id] || trade.price
-    }))
+    try {
+      const currentTime = new Date().toISOString()
+      const updatedProducts = products.map(product => ({
+        ...product,
+        price: newPrices[product.id] ? parseFloat(newPrices[product.id]) : product.price,
+        lastUpdated: newPrices[product.id] ? currentTime : product.lastUpdated
+      }))
 
-    // In a real application, this would be an API call
-    localStorage.setItem("trades", JSON.stringify(updatedTrades))
-    setTrades(updatedTrades)
-    alert("Prices updated successfully!")
+      localStorage.setItem("products", JSON.stringify(updatedProducts))
+      setProducts(updatedProducts)
+      setNewPrices({}) // Clear input fields
+      alert("Prices updated successfully!")
+    } catch (error) {
+      console.error("Error updating prices:", error)
+      alert("Failed to update prices. Please try again.")
+    }
+  }
+
+  const handleLogout = () => {
+    Cookies.remove('adminAuth')
+    router.push("/admin-login")
   }
 
   return (
@@ -52,37 +74,41 @@ export default function Dashboard() {
           <h1 className="text-2xl font-bold">Price Management Dashboard</h1>
           <Button
             variant="outline"
-            onClick={() => {
-              sessionStorage.removeItem("isAdminAuthenticated")
-              router.push("/admin-login")
-            }}
+            onClick={handleLogout}
           >
             Logout
           </Button>
         </div>
 
         <div className="space-y-4">
-          {trades.map(trade => (
-            <div key={trade.id} className="flex items-center gap-4">
+          {products.map(product => (
+            <div key={product.id} className="flex items-center gap-4 p-4 bg-gray-50 rounded-lg">
               <div className="w-1/3">
-                <Label>{trade.name}</Label>
+                <Label className="text-sm font-medium">{product.name}</Label>
               </div>
               <div className="w-1/3">
-                <Label>Current Price: ${trade.price}</Label>
+                <Label className="text-sm">
+                  Current Price: ${product.price.toFixed(2)}
+                  <br />
+                  <span className="text-xs text-gray-500">
+                    Last updated: {new Date(product.lastUpdated).toLocaleString()}
+                  </span>
+                </Label>
               </div>
               <div className="w-1/3">
                 <Input
                   type="number"
+                  step="0.01"
                   placeholder="New Price"
-                  value={prices[trade.id] || ""}
-                  onChange={(e) => handlePriceChange(trade.id, e.target.value)}
+                  value={newPrices[product.id] || ""}
+                  onChange={(e) => handlePriceChange(product.id, e.target.value)}
                 />
               </div>
             </div>
           ))}
 
           <Button
-            className="w-full mt-4"
+            className="w-full mt-6"
             onClick={handleUpdatePrices}
           >
             Update Prices
