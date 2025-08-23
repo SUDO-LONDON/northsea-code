@@ -112,9 +112,9 @@ export function ProductsTable({ data }: { data: Product[] }) {
   return (
     <div className="rounded-xl overflow-hidden">
       <Table>
-        <TableHeader className="bg-[#1c1b2d]">
+        <TableHeader className="bg-dark-surface">
           {table.getHeaderGroups().map((headerGroup) => (
-            <TableRow key={headerGroup.id} className="hover:bg-[#1c1b2d]">
+            <TableRow key={headerGroup.id} className="hover:bg-dark-surface">
               {headerGroup.headers.map((header) => (
                 <TableHead key={header.id} className="text-gray-400 font-medium">
                   {header.isPlaceholder
@@ -133,7 +133,7 @@ export function ProductsTable({ data }: { data: Product[] }) {
             table.getRowModel().rows.map((row) => (
               <TableRow
                 key={row.id}
-                className="border-b border-gray-800 hover:bg-[#1a182b]"
+                className="border-b border-gray-800 hover:bg-dark-surface/50"
               >
                 {row.getVisibleCells().map((cell) => (
                   <TableCell key={cell.id}>

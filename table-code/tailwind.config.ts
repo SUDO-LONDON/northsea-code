@@ -49,6 +49,10 @@ const config: Config = {
           "4": "oklch(var(--chart-4))",
           "5": "oklch(var(--chart-5))",
         },
+        // Add dark theme colors
+        "dark-bg": "oklch(var(--dark-bg))",
+        "dark-card": "oklch(var(--dark-card))",
+        "dark-surface": "oklch(var(--dark-surface))",
       },
       borderRadius: {
         lg: "var(--radius)",

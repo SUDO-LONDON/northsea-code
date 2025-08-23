@@ -42,6 +42,9 @@
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
   --radius-xl: calc(var(--radius) + 4px);
+  --color-dark-bg: var(--dark-bg);
+  --color-dark-card: var(--dark-card);
+  --color-dark-surface: var(--dark-surface);
 }
 
 :root {
@@ -77,6 +80,11 @@
   --sidebar-accent-foreground: oklch(0.205 0 0);
   --sidebar-border: oklch(0.922 0 0);
   --sidebar-ring: oklch(0.708 0 0);
+
+  /* Dark theme colors for table page */
+  --dark-bg: oklch(0.095 0.02 250);
+  --dark-card: oklch(0.125 0.02 250);
+  --dark-surface: oklch(0.155 0.02 250);
 }
 
 .dark {
