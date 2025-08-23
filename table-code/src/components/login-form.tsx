@@ -55,28 +55,27 @@ export function LoginForm({
               value={email}
               onChange={(e) => setEmail(e.target.value)}
             />
+          </div>
+          <div className="grid gap-1">
             <Label className="sr-only" htmlFor="password">
               Password
             </Label>
             <Input
               id="password"
-              placeholder="password"
+              placeholder="Password"
               type="password"
               autoCapitalize="none"
               autoComplete="current-password"
-              autoCorrect="off"
               disabled={loading}
               value={password}
               onChange={(e) => setPassword(e.target.value)}
             />
           </div>
-          {error && (
-            <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative">
-              {error}
-            </div>
-          )}
           <Button disabled={loading}>
-            {loading ? "Signing in..." : "Sign In"}
+            {loading && (
+              <div className="mr-2 h-4 w-4 animate-spin rounded-full border-2 border-transparent border-t-current" />
+            )}
+            Sign In
           </Button>
         </div>
       </form>
@@ -86,13 +85,18 @@ export function LoginForm({
         </div>
         <div className="relative flex justify-center text-xs uppercase">
           <span className="bg-background px-2 text-muted-foreground">
-            Or continue with
+            Or
           </span>
         </div>
       </div>
-      <Button variant="outline" type="button" onClick={handleAdminLogin}>
+      <Button variant="outline" onClick={handleAdminLogin}>
         Continue as Admin
       </Button>
+      {error && (
+        <div className="text-red-500 text-sm mt-2">
+          {error}
+        </div>
+      )}
     </div>
   )
 }

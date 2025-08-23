@@ -1,4 +1,4 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { NextResponse } from 'next/server';
 
 let cachedToken: string | null = null;
 let tokenExpiry: number | null = null;
@@ -29,19 +29,19 @@ async function fetchFolioToken() {
 setInterval(async () => {
   try {
     await fetchFolioToken();
-  } catch (e) {
-    // Optionally log error
+  } catch (error) {
+    console.error('Failed to refresh token:', error);
   }
 }, 360000);
 
-export async function GET(req: NextRequest) {
+export async function GET() {
   if (!cachedToken || !tokenExpiry || Date.now() > tokenExpiry - 60000) {
     try {
       await fetchFolioToken();
-    } catch (e) {
+    } catch (error) {
+      console.error('Failed to fetch token:', error);
       return NextResponse.json({ error: 'Failed to fetch token' }, { status: 500 });
     }
   }
   return NextResponse.json({ token: cachedToken });
 }
-

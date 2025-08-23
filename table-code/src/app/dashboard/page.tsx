@@ -7,7 +7,7 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Card } from "@/components/ui/card"
 import Cookies from 'js-cookie'
-import { Product, PRODUCTS } from "@/lib/products"
+import { Product } from "@/lib/products"
 
 type PriceInputs = {
   hfo: string;
@@ -39,9 +39,9 @@ export default function Dashboard() {
     try {
       const savedProducts = localStorage.getItem("products")
       if (savedProducts) {
-        const parsed = JSON.parse(savedProducts)
+        const parsed = JSON.parse(savedProducts) as Product[]
         // Ensure all products have the required fields
-        const validatedProducts = parsed.map((product: any) => ({
+        const validatedProducts = parsed.map((product: Product) => ({
           ...DEFAULT_PRODUCT,
           ...product,
           lastUpdated: product.lastUpdated || new Date().toISOString()
@@ -84,129 +84,125 @@ export default function Dashboard() {
     }))
   }
 
-  const handleUpdatePrices = () => {
-    try {
-      const currentTime = new Date().toISOString()
-      const updatedProducts = products.map(product => {
-        const newValues = newPrices[product.id]
-        if (!newValues) return product
+  const handleUpdateProduct = (id: string) => {
+    const prices = newPrices[id]
+    if (!prices) return
 
-        return {
-          ...product,
-          hfo: newValues.hfo ? parseFloat(newValues.hfo) : product.hfo || 0,
-          vlsfo: newValues.vlsfo ? parseFloat(newValues.vlsfo) : product.vlsfo || 0,
-          mgo: newValues.mgo ? parseFloat(newValues.mgo) : product.mgo || 0,
-          change: newValues.change ? parseFloat(newValues.change) : product.change || 0,
-          lastUpdated: (newValues.hfo || newValues.vlsfo || newValues.mgo || newValues.change)
-            ? currentTime
-            : product.lastUpdated
+    setProducts(prev => {
+      const updated = prev.map(product => {
+        if (product.id === id) {
+          return {
+            ...product,
+            hfo: parseFloat(prices.hfo) || product.hfo,
+            vlsfo: parseFloat(prices.vlsfo) || product.vlsfo,
+            mgo: parseFloat(prices.mgo) || product.mgo,
+            change: parseFloat(prices.change) || product.change,
+            lastUpdated: new Date().toISOString()
+          }
         }
+        return product
       })
+      localStorage.setItem("products", JSON.stringify(updated))
+      return updated
+    })
 
-      localStorage.setItem("products", JSON.stringify(updatedProducts))
-      setProducts(updatedProducts)
-      setNewPrices({})
-      alert("Prices updated successfully!")
-    } catch (error) {
-      console.error("Error updating prices:", error)
-      alert("Failed to update prices. Please try again.")
-    }
+    // Clear the form
+    setNewPrices(prev => {
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      const { [id]: _, ...rest } = prev
+      return rest
+    })
   }
 
   const handleLogout = () => {
     Cookies.remove('adminAuth')
-    router.push("/admin-login")
+    router.push("/")
   }
 
   if (isLoading) {
-    return (
-      <div className="p-8">
-        <Card className="p-6">
-          <div className="text-center">Loading...</div>
-        </Card>
-      </div>
-    )
+    return <div className="flex items-center justify-center min-h-screen">Loading...</div>
   }
 
   return (
-    <div className="p-8">
-      <Card className="p-6">
-        <div className="flex justify-between items-center mb-6">
-          <h1 className="text-2xl font-bold">Price Management Dashboard</h1>
-          <Button
-            variant="outline"
-            onClick={handleLogout}
-          >
+    <div className="min-h-screen bg-gray-50 p-6">
+      <div className="max-w-6xl mx-auto">
+        <div className="flex justify-between items-center mb-8">
+          <h1 className="text-3xl font-bold text-gray-900">Price Management Dashboard</h1>
+          <Button onClick={handleLogout} variant="outline">
             Logout
           </Button>
         </div>
 
-        <div className="space-y-4">
-          {products.map(product => (
-            <div key={product.id} className="flex flex-col gap-4 p-4 bg-gray-50 rounded-lg">
-              <div className="flex items-center justify-between">
-                <Label className="text-sm font-medium w-24">Product {product.id}</Label>
-                <span className="text-xs text-gray-500">
-                  Last updated: {new Date(product.lastUpdated).toLocaleString()}
-                </span>
-              </div>
+        <div className="grid gap-6">
+          {products.map((product) => (
+            <Card key={product.id} className="p-6">
+              <h3 className="text-lg font-semibold mb-4">Product {product.id}: {product.name}</h3>
 
-              <div className="grid grid-cols-4 gap-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-4">
                 <div>
-                  <Label className="text-sm">HFO (Current: £{(product.hfo || 0).toFixed(2)})</Label>
+                  <Label htmlFor={`hfo-${product.id}`}>HFO (£)</Label>
                   <Input
+                    id={`hfo-${product.id}`}
                     type="number"
                     step="0.01"
-                    placeholder="New HFO"
-                    value={newPrices[product.id]?.hfo || ""}
+                    placeholder={`Current: £${product.hfo.toFixed(2)}`}
+                    value={newPrices[product.id]?.hfo || ''}
                     onChange={(e) => handleValueChange(product.id, 'hfo', e.target.value)}
                   />
                 </div>
 
                 <div>
-                  <Label className="text-sm">VLSFO (Current: £{(product.vlsfo || 0).toFixed(2)})</Label>
+                  <Label htmlFor={`vlsfo-${product.id}`}>VLSFO (£)</Label>
                   <Input
+                    id={`vlsfo-${product.id}`}
                     type="number"
                     step="0.01"
-                    placeholder="New VLSFO"
-                    value={newPrices[product.id]?.vlsfo || ""}
+                    placeholder={`Current: £${product.vlsfo.toFixed(2)}`}
+                    value={newPrices[product.id]?.vlsfo || ''}
                     onChange={(e) => handleValueChange(product.id, 'vlsfo', e.target.value)}
                   />
                 </div>
 
                 <div>
-                  <Label className="text-sm">MGO (Current: £{(product.mgo || 0).toFixed(2)})</Label>
+                  <Label htmlFor={`mgo-${product.id}`}>MGO (£)</Label>
                   <Input
+                    id={`mgo-${product.id}`}
                     type="number"
                     step="0.01"
-                    placeholder="New MGO"
-                    value={newPrices[product.id]?.mgo || ""}
+                    placeholder={`Current: £${product.mgo.toFixed(2)}`}
+                    value={newPrices[product.id]?.mgo || ''}
                     onChange={(e) => handleValueChange(product.id, 'mgo', e.target.value)}
                   />
                 </div>
 
                 <div>
-                  <Label className="text-sm">Change % (Current: {(product.change || 0).toFixed(2)}%)</Label>
+                  <Label htmlFor={`change-${product.id}`}>Change (%)</Label>
                   <Input
+                    id={`change-${product.id}`}
                     type="number"
                     step="0.01"
-                    placeholder="New Change %"
-                    value={newPrices[product.id]?.change || ""}
+                    placeholder={`Current: ${product.change.toFixed(2)}%`}
+                    value={newPrices[product.id]?.change || ''}
                     onChange={(e) => handleValueChange(product.id, 'change', e.target.value)}
                   />
                 </div>
               </div>
-            </div>
-          ))}
 
-          <Button
-            className="w-full mt-6"
-            onClick={handleUpdatePrices}
-          >
-            Update All Prices
-          </Button>
+              <div className="flex justify-between items-center">
+                <span className="text-sm text-gray-500">
+                  Last updated: {new Date(product.lastUpdated).toLocaleString()}
+                </span>
+                <Button
+                  onClick={() => handleUpdateProduct(product.id)}
+                  disabled={!newPrices[product.id]}
+                >
+                  Update Prices
+                </Button>
+              </div>
+            </Card>
+          ))}
         </div>
-      </Card>
+      </div>
     </div>
   )
 }
