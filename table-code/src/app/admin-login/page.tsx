@@ -28,10 +28,6 @@ export default function AdminLogin() {
     }
   }
 
-  const handleCreateAccount = () => {
-    router.push("/signup")
-  }
-
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-100">
       <Card className="w-[350px] p-6">
@@ -67,29 +63,9 @@ export default function AdminLogin() {
           </div>
 
           <Button type="submit" className="w-full">
-            Continue as Admin
+            Login
           </Button>
         </form>
-
-        <div className="relative mt-6">
-          <div className="absolute inset-0 flex items-center">
-            <span className="w-full border-t" />
-          </div>
-          <div className="relative flex justify-center text-xs uppercase">
-            <span className="bg-white px-2 text-gray-500">
-              Or
-            </span>
-          </div>
-        </div>
-
-        <Button
-          variant="outline"
-          type="button"
-          onClick={handleCreateAccount}
-          className="w-full mt-4"
-        >
-          Create Account
-        </Button>
       </Card>
     </div>
   )

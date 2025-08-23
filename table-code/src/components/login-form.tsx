@@ -36,6 +36,10 @@ export function LoginForm({
     router.push("/admin-login")
   }
 
+  const handleCreateAccount = () => {
+    router.push("/signup")
+  }
+
   return (
     <div className={cn("grid gap-6", className)} {...props}>
       <form onSubmit={handleLogin}>
@@ -91,6 +95,9 @@ export function LoginForm({
       </div>
       <Button variant="outline" onClick={handleAdminLogin}>
         Continue as Admin
+      </Button>
+      <Button variant="outline" onClick={handleCreateAccount} className="mt-2">
+        Create Account
       </Button>
       {error && (
         <div className="text-red-500 text-sm mt-2">
