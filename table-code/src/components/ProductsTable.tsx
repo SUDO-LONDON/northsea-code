@@ -25,23 +25,10 @@ const generateSparklineData = () => {
   }))
 }
 
-const formatTimeAgo = (date: Date) => {
-  const now = new Date()
-  const diffInMinutes = Math.round((now.getTime() - date.getTime()) / (1000 * 60))
-
-  if (diffInMinutes < 1) return 'Just now'
-  if (diffInMinutes < 60) return `${diffInMinutes}m ago`
-  if (diffInMinutes < 1440) {
-    const hours = Math.floor(diffInMinutes / 60)
-    return `${hours}h ago`
-  }
-  return date.toLocaleString()
-}
-
 const columns: ColumnDef<Product>[] = [
   {
     accessorKey: "name",
-    header: () => <div className="text-left">Product Name</div>,
+    header: () => <div className="text-left">Product</div>,
     cell: ({ row }) => (
       <div className="text-left">
         <span className="font-medium text-white">{row.getValue("name")}</span>
@@ -49,24 +36,37 @@ const columns: ColumnDef<Product>[] = [
     )
   },
   {
-    accessorKey: "price",
-    header: () => <div className="text-center">Price</div>,
+    accessorKey: "hfo",
+    header: () => <div className="text-center">HFO</div>,
     cell: ({ row }) => {
-      const price = parseFloat(row.getValue("price"))
-      return <div className="text-center font-medium text-white">${price.toFixed(2)}</div>
+      const value = parseFloat(row.getValue("hfo"))
+      return <div className="text-center font-medium text-white">£{value.toFixed(2)}</div>
     }
   },
   {
-    accessorKey: "lastUpdated",
-    header: () => <div className="text-center">Last Updated</div>,
+    accessorKey: "vlsfo",
+    header: () => <div className="text-center">VLSFO</div>,
     cell: ({ row }) => {
-      const lastUpdated = row.getValue("lastUpdated")
-      if (!lastUpdated) return <div className="text-center text-sm text-gray-400">Never</div>
-
-      const date = new Date(lastUpdated)
+      const value = parseFloat(row.getValue("vlsfo"))
+      return <div className="text-center font-medium text-white">£{value.toFixed(2)}</div>
+    }
+  },
+  {
+    accessorKey: "mgo",
+    header: () => <div className="text-center">MGO</div>,
+    cell: ({ row }) => {
+      const value = parseFloat(row.getValue("mgo"))
+      return <div className="text-center font-medium text-white">£{value.toFixed(2)}</div>
+    }
+  },
+  {
+    accessorKey: "change",
+    header: () => <div className="text-center">Change</div>,
+    cell: ({ row }) => {
+      const value = parseFloat(row.getValue("change"))
       return (
-        <div className="text-center text-sm text-gray-400">
-          {formatTimeAgo(date)}
+        <div className={`text-center font-medium ${value >= 0 ? 'text-green-500' : 'text-red-500'}`}>
+          {value >= 0 ? '+' : ''}{value.toFixed(2)}%
         </div>
       )
     }

@@ -2,46 +2,39 @@
 
 import React, { createContext, useContext, useEffect, useState } from "react";
 import { supabase } from "@/lib/supabaseClient";
-import type { Session, User } from "@supabase/supabase-js";
+import { useRouter } from "next/navigation";
+import type { Session } from "@supabase/supabase-js";
 
 interface AuthContextType {
-  user: User | null;
   session: Session | null;
-  loading: boolean;
 }
 
 const AuthContext = createContext<AuthContextType>({
-  user: null,
   session: null,
-  loading: true,
 });
 
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [session, setSession] = useState<Session | null>(null);
-  const [user, setUser] = useState<User | null>(null);
-  const [loading, setLoading] = useState(true);
+  const router = useRouter();
 
   useEffect(() => {
-    const currentSession = supabase.auth.getSession().then(({ data }) => {
-      setSession(data.session);
-      setUser(data.session?.user ?? null);
-      setLoading(false);
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      setSession(session);
     });
-    const { data: listener } = supabase.auth.onAuthStateChange((_event, newSession) => {
-      setSession(newSession);
-      setUser(newSession?.user ?? null);
-      setLoading(false);
-    });
-    return () => {
-      listener.subscription.unsubscribe();
-    };
-  }, []);
 
-  return (
-    <AuthContext.Provider value={{ user, session, loading }}>
-      {children}
-    </AuthContext.Provider>
-  );
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange((_event, session) => {
+      setSession(session);
+      if (!session) {
+        router.push("/");
+      }
+    });
+
+    return () => subscription.unsubscribe();
+  }, [router]);
+
+  return <AuthContext.Provider value={{ session }}>{children}</AuthContext.Provider>;
 };
 
 export const useAuth = () => useContext(AuthContext);

@@ -7,114 +7,202 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Card } from "@/components/ui/card"
 import Cookies from 'js-cookie'
-import { Product, PRODUCTS } from "@/lib/products"
+import { Product } from "@/lib/products"
+
+type PriceInputs = {
+  hfo: string;
+  vlsfo: string;
+  mgo: string;
+  change: string;
+};
+
+const DEFAULT_PRODUCT = {
+  hfo: 0,
+  vlsfo: 0,
+  mgo: 0,
+  change: 0
+};
 
 export default function Dashboard() {
   const router = useRouter()
   const [products, setProducts] = useState<Product[]>([])
-  const [newPrices, setNewPrices] = useState<Record<string, string>>({})
+  const [newPrices, setNewPrices] = useState<Record<string, PriceInputs>>({})
+  const [isLoading, setIsLoading] = useState(true)
 
   useEffect(() => {
-    // Check if user is authenticated
     const isAuthenticated = Cookies.get('adminAuth')
     if (!isAuthenticated) {
       router.push("/admin-login")
       return
     }
 
-    // Load existing products or initialize with defaults
-    const savedProducts = localStorage.getItem("products")
-    if (savedProducts) {
-      setProducts(JSON.parse(savedProducts))
-    } else {
-      const initialProducts = PRODUCTS.map(product => ({
-        ...product,
+    try {
+      const savedProducts = localStorage.getItem("products")
+      if (savedProducts) {
+        const parsed = JSON.parse(savedProducts) as Product[]
+        // Ensure all products have the required fields
+        const validatedProducts = parsed.map((product: Product) => ({
+          ...DEFAULT_PRODUCT,
+          ...product,
+          lastUpdated: product.lastUpdated || new Date().toISOString()
+        }))
+        setProducts(validatedProducts)
+      } else {
+        // Initialize with default products
+        const initialProducts = Array.from({ length: 20 }, (_, i) => ({
+          id: (i + 1).toString(),
+          name: "blank",
+          ...DEFAULT_PRODUCT,
+          lastUpdated: new Date().toISOString()
+        }))
+        setProducts(initialProducts)
+        localStorage.setItem("products", JSON.stringify(initialProducts))
+      }
+    } catch (error) {
+      console.error("Error loading products:", error)
+      // Initialize with defaults if there's an error
+      const initialProducts = Array.from({ length: 20 }, (_, i) => ({
+        id: (i + 1).toString(),
+        name: "blank",
+        ...DEFAULT_PRODUCT,
         lastUpdated: new Date().toISOString()
       }))
       setProducts(initialProducts)
       localStorage.setItem("products", JSON.stringify(initialProducts))
+    } finally {
+      setIsLoading(false)
     }
   }, [router])
 
-  const handlePriceChange = (id: string, value: string) => {
+  const handleValueChange = (id: string, field: keyof PriceInputs, value: string) => {
     setNewPrices(prev => ({
       ...prev,
-      [id]: value
+      [id]: {
+        ...(prev[id] || { hfo: '', vlsfo: '', mgo: '', change: '' }),
+        [field]: value
+      }
     }))
   }
 
-  const handleUpdatePrices = () => {
-    try {
-      const currentTime = new Date().toISOString()
-      const updatedProducts = products.map(product => ({
-        ...product,
-        price: newPrices[product.id] ? parseFloat(newPrices[product.id]) : product.price,
-        lastUpdated: newPrices[product.id] ? currentTime : product.lastUpdated
-      }))
+  const handleUpdateProduct = (id: string) => {
+    const prices = newPrices[id]
+    if (!prices) return
 
-      localStorage.setItem("products", JSON.stringify(updatedProducts))
-      setProducts(updatedProducts)
-      setNewPrices({}) // Clear input fields
-      alert("Prices updated successfully!")
-    } catch (error) {
-      console.error("Error updating prices:", error)
-      alert("Failed to update prices. Please try again.")
-    }
+    setProducts(prev => {
+      const updated = prev.map(product => {
+        if (product.id === id) {
+          return {
+            ...product,
+            hfo: parseFloat(prices.hfo) || product.hfo,
+            vlsfo: parseFloat(prices.vlsfo) || product.vlsfo,
+            mgo: parseFloat(prices.mgo) || product.mgo,
+            change: parseFloat(prices.change) || product.change,
+            lastUpdated: new Date().toISOString()
+          }
+        }
+        return product
+      })
+      localStorage.setItem("products", JSON.stringify(updated))
+      return updated
+    })
+
+    // Clear the form
+    setNewPrices(prev => {
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      const { [id]: _, ...rest } = prev
+      return rest
+    })
   }
 
   const handleLogout = () => {
     Cookies.remove('adminAuth')
-    router.push("/admin-login")
+    router.push("/")
+  }
+
+  if (isLoading) {
+    return <div className="flex items-center justify-center min-h-screen">Loading...</div>
   }
 
   return (
-    <div className="p-8">
-      <Card className="p-6">
-        <div className="flex justify-between items-center mb-6">
-          <h1 className="text-2xl font-bold">Price Management Dashboard</h1>
-          <Button
-            variant="outline"
-            onClick={handleLogout}
-          >
+    <div className="min-h-screen bg-gray-50 p-6">
+      <div className="max-w-6xl mx-auto">
+        <div className="flex justify-between items-center mb-8">
+          <h1 className="text-3xl font-bold text-gray-900">Price Management Dashboard</h1>
+          <Button onClick={handleLogout} variant="outline">
             Logout
           </Button>
         </div>
 
-        <div className="space-y-4">
-          {products.map(product => (
-            <div key={product.id} className="flex items-center gap-4 p-4 bg-gray-50 rounded-lg">
-              <div className="w-1/3">
-                <Label className="text-sm font-medium">{product.name}</Label>
-              </div>
-              <div className="w-1/3">
-                <Label className="text-sm">
-                  Current Price: ${product.price.toFixed(2)}
-                  <br />
-                  <span className="text-xs text-gray-500">
-                    Last updated: {new Date(product.lastUpdated).toLocaleString()}
-                  </span>
-                </Label>
-              </div>
-              <div className="w-1/3">
-                <Input
-                  type="number"
-                  step="0.01"
-                  placeholder="New Price"
-                  value={newPrices[product.id] || ""}
-                  onChange={(e) => handlePriceChange(product.id, e.target.value)}
-                />
-              </div>
-            </div>
-          ))}
+        <div className="grid gap-6">
+          {products.map((product) => (
+            <Card key={product.id} className="p-6">
+              <h3 className="text-lg font-semibold mb-4">Product {product.id}: {product.name}</h3>
 
-          <Button
-            className="w-full mt-6"
-            onClick={handleUpdatePrices}
-          >
-            Update Prices
-          </Button>
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-4">
+                <div>
+                  <Label htmlFor={`hfo-${product.id}`}>HFO (£)</Label>
+                  <Input
+                    id={`hfo-${product.id}`}
+                    type="number"
+                    step="0.01"
+                    placeholder={`Current: £${product.hfo.toFixed(2)}`}
+                    value={newPrices[product.id]?.hfo || ''}
+                    onChange={(e) => handleValueChange(product.id, 'hfo', e.target.value)}
+                  />
+                </div>
+
+                <div>
+                  <Label htmlFor={`vlsfo-${product.id}`}>VLSFO (£)</Label>
+                  <Input
+                    id={`vlsfo-${product.id}`}
+                    type="number"
+                    step="0.01"
+                    placeholder={`Current: £${product.vlsfo.toFixed(2)}`}
+                    value={newPrices[product.id]?.vlsfo || ''}
+                    onChange={(e) => handleValueChange(product.id, 'vlsfo', e.target.value)}
+                  />
+                </div>
+
+                <div>
+                  <Label htmlFor={`mgo-${product.id}`}>MGO (£)</Label>
+                  <Input
+                    id={`mgo-${product.id}`}
+                    type="number"
+                    step="0.01"
+                    placeholder={`Current: £${product.mgo.toFixed(2)}`}
+                    value={newPrices[product.id]?.mgo || ''}
+                    onChange={(e) => handleValueChange(product.id, 'mgo', e.target.value)}
+                  />
+                </div>
+
+                <div>
+                  <Label htmlFor={`change-${product.id}`}>Change (%)</Label>
+                  <Input
+                    id={`change-${product.id}`}
+                    type="number"
+                    step="0.01"
+                    placeholder={`Current: ${product.change.toFixed(2)}%`}
+                    value={newPrices[product.id]?.change || ''}
+                    onChange={(e) => handleValueChange(product.id, 'change', e.target.value)}
+                  />
+                </div>
+              </div>
+
+              <div className="flex justify-between items-center">
+                <span className="text-sm text-gray-500">
+                  Last updated: {new Date(product.lastUpdated).toLocaleString()}
+                </span>
+                <Button
+                  onClick={() => handleUpdateProduct(product.id)}
+                  disabled={!newPrices[product.id]}
+                >
+                  Update Prices
+                </Button>
+              </div>
+            </Card>
+          ))}
         </div>
-      </Card>
+      </div>
     </div>
   )
 }
