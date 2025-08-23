@@ -3,19 +3,26 @@
 import '@/index.css'
 import { useEffect, useRef, useState } from "react";
 import {
-    useReactTable,
-    createColumnHelper,
-    getCoreRowModel,
-    getSortedRowModel,
+    ColumnDef,
     flexRender,
-    SortingState,
-} from "@tanstack/react-table";
+    getCoreRowModel,
+    useReactTable,
+} from "@tanstack/react-table"
 import {
     LineChart,
     Line,
     ResponsiveContainer,
 } from "recharts";
 import { ArrowUp, ArrowDown } from "lucide-react";
+import {
+    Table,
+    TableBody,
+    TableCell,
+    TableHead,
+    TableHeader,
+    TableRow,
+} from "@/components/ui/table"
+import { Product } from "@/lib/products"
 
 // ---- Types shared with StockChart ----
 export type Trade = {
@@ -161,41 +168,48 @@ export default function TradeTable({
 
     return (
         <div className="bg-secondary-foreground shadow-md rounded-xl p-6 overflow-x-auto">
-            <table className="min-w-full border-collapse">
-                <thead>
-                {table.getHeaderGroups().map((hg) => (
-                    <tr key={hg.id}>
-                        {hg.headers.map((header) => (
-                            <th
-                                key={header.id}
-                                className="bg-foreground text-primary p-3 text-left font-semibold text-sm uppercase tracking-wider cursor-pointer select-none"
-                                onClick={header.column.getToggleSortingHandler()}
+            <Table>
+                <TableHeader>
+                    {table.getHeaderGroups().map((headerGroup) => (
+                        <TableRow key={headerGroup.id}>
+                            {headerGroup.headers.map((header) => {
+                                return (
+                                    <TableHead key={header.id}>
+                                        {header.isPlaceholder
+                                            ? null
+                                            : flexRender(
+                                                header.column.columnDef.header,
+                                                header.getContext()
+                                            )}
+                                    </TableHead>
+                                )
+                            })}
+                        </TableRow>
+                    ))}
+                </TableHeader>
+                <TableBody>
+                    {table.getRowModel().rows?.length ? (
+                        table.getRowModel().rows.map((row) => (
+                            <TableRow
+                                key={row.id}
+                                data-state={row.getIsSelected() && "selected"}
                             >
-                                {flexRender(header.column.columnDef.header, header.getContext())}
-                                {renderSortIcon(header.column.getIsSorted())}
-                            </th>
-                        ))}
-                    </tr>
-                ))}
-                </thead>
-                <tbody>
-                {table.getRowModel().rows.map((row) => (
-                    <tr
-                        key={row.id}
-                        className={`transition-colors duration-200 cursor-pointer hover:bg-indigo-50 ${
-                            row.getValue<number>("change") >= 0 ? "bg-green-50" : "bg-red-50"
-                        }`}
-                        onClick={() => onSelect?.(row.original)}
-                    >
-                        {row.getVisibleCells().map((cell) => (
-                            <td key={cell.id} className="border-b border-gray-200 p-3 text-sm text-gray-700">
-                                {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                            </td>
-                        ))}
-                    </tr>
-                ))}
-                </tbody>
-            </table>
+                                {row.getVisibleCells().map((cell) => (
+                                    <TableCell key={cell.id}>
+                                        {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                                    </TableCell>
+                                ))}
+                            </TableRow>
+                        ))
+                    ) : (
+                        <TableRow>
+                            <TableCell colSpan={columns.length} className="h-24 text-center">
+                                No results.
+                            </TableCell>
+                        </TableRow>
+                    )}
+                </TableBody>
+            </Table>
 
             {/* Pagination */}
             <div className="mt-5 flex items-center gap-4 justify-end text-sm text-gray-700">

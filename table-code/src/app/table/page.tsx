@@ -1,120 +1,97 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
-import { AreaChart, Area, ResponsiveContainer } from "recharts";
+import { useEffect, useState } from "react";
+import { ProductsTable } from "@/components/ProductsTable";
+import { Card } from "@/components/ui/card";
+import { Product } from "@/lib/products";
 
-const formatCurrency = (num) =>
-    new Intl.NumberFormat("en-UK", {
-        style: "currency",
-        currency: "GBP",
-        maximumFractionDigits: 2
-    }).format(num);
+export default function TradingPage() {
+  const [products, setProducts] = useState<Product[]>([]);
 
-export default function CryptoTable() {
-    const [coins, setCoins] = useState([]);
+  useEffect(() => {
+    // Load products from localStorage
+    const loadProducts = () => {
+      const savedProducts = localStorage.getItem("products");
+      if (savedProducts) {
+        setProducts(JSON.parse(savedProducts));
+      }
+    };
 
-    useEffect(() => {
-        const fetchData = async () => {
-            const res = await fetch(
-                "https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=10&page=1&sparkline=true"
-            );
-            const data = await res.json();
-            setCoins(data);
-        };
-        fetchData();
-    }, []);
+    // Initial load
+    loadProducts();
 
-    return (
-        <div className="bg-[#0d0b1f] min-h-screen p-6 text-white">
-            <h1 className="text-4xl font-bold text-center mb-8">Bunker Prices</h1>
+    // Set up periodic refresh
+    const interval = setInterval(loadProducts, 5000); // Refresh every 5 seconds
 
-            <div className="hidden md:block overflow-x-auto">
-                <table className="w-full border-collapse">
-                    <thead>
-                    <tr className="bg-[#1c1b2d] text-gray-400">
-                        <th className="py-3 px-4 text-left">#</th>
-                        <th className="py-3 px-4 text-left">Name</th>
-                        <th className="py-3 px-4 text-left">Price</th>
-                        <th className="py-3 px-4 text-left">24 Hour Average</th>
-                        <th className="py-3 px-4 text-left">Last 7 Days</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    {coins.map((coin, idx) => (
-                        <tr key={coin.id} className="border-b border-gray-800 hover:bg-[#1a182b]">
-                            <td className="py-3 px-4">{idx + 1}</td>
-                            <td className="py-3 px-4 flex items-center gap-2">
-                                <img src={coin.image} alt={coin.name} className="w-6 h-6" />
-                                <span>{coin.name}</span>
-                                <span className="text-gray-400 text-sm uppercase">{coin.symbol}</span>
-                            </td>
-                            <td className="py-3 px-4">{formatCurrency(coin.market_cap)}</td>
-                            <td className="py-3 px-4">
-                                {coin.price_change_percentage_24h?.toFixed(2)}%
-                            </td>
-                            <td className="py-3 px-4 w-32 h-12">
-                                <ResponsiveContainer width="100%" height={40}>
-                                    <AreaChart data={coin.sparkline_in_7d.price.map((p, i) => ({ x: i, y: p }))}>
-                                        <defs>
-                                            <linearGradient id="colorUv" x1="0" y1="0" x2="0" y2="1">
-                                                <stop offset="5%" stopColor="#10B981" stopOpacity={0.6}/>
-                                                <stop offset="95%" stopColor="#10B981" stopOpacity={0}/>
-                                            </linearGradient>
-                                        </defs>
-                                        <Area
-                                            type="monotone"
-                                            dataKey="y"
-                                            stroke="#10B981"
-                                            fillOpacity={1}
-                                            fill="url(#colorUv)"
-                                            strokeWidth={2}
-                                        />
-                                    </AreaChart>
-                                </ResponsiveContainer>
-                            </td>
-                        </tr>
-                    ))}
-                    </tbody>
-                </table>
-            </div>
+    return () => clearInterval(interval);
+  }, []);
 
-            <div className="grid gap-4 md:hidden">
-                {coins.map((coin, idx) => (
-                    <div key={coin.id} className="bg-[#1c1b2d] rounded-xl p-4">
-                        <div className="flex items-center gap-2 mb-2">
-                            <span className="text-gray-400">{idx + 1}</span>
-                            <img src={coin.image} alt={coin.name} className="w-6 h-6" />
-                            <span className="font-semibold">{coin.name}</span>
-                            <span className="text-gray-400 text-sm uppercase">{coin.symbol}</span>
-                        </div>
-                        <p><span className="text-gray-400">Price:</span> {formatCurrency(coin.market_cap)}</p>
-                        <p className={`mt-1 font-semibold ${
-                            coin.price_change_percentage_24h >= 0 ? "text-green-500" : "text-red-500"
-                        }`}>
-                            24h Change: {coin.price_change_percentage_24h?.toFixed(2) ?? "N/A"}%
-                        </p>
-
-                        <ResponsiveContainer width="100%" height={60}>
-                            <AreaChart data={coin.sparkline_in_7d.price.map((p, i) => ({ x: i, y: p }))}>
-                                <defs>
-                                    <linearGradient id="colorUvMobile" x1="0" y1="0" x2="0" y2="1">
-                                        <stop offset="5%" stopColor="#10B981" stopOpacity={0.6}/>
-                                        <stop offset="95%" stopColor="#10B981" stopOpacity={0}/>
-                                    </linearGradient>
-                                </defs>
-                                <Area
-                                    type="monotone"
-                                    dataKey="y"
-                                    stroke="#10B981"
-                                    fillOpacity={1}
-                                    fill="url(#colorUvMobile)"
-                                    strokeWidth={2}
-                                />
-                            </AreaChart>
-                        </ResponsiveContainer>
-                    </div>
-                ))}
-            </div>
+  return (
+    <div className="bg-[#0d0b1f] min-h-screen text-white">
+      <div className="container mx-auto p-6">
+        <div className="mb-8">
+          <h1 className="text-3xl font-bold text-white mb-2">Trading Panel</h1>
+          <p className="text-gray-400">
+            Live product prices updated every 5 seconds
+          </p>
         </div>
-    );
+
+        <div className="grid gap-6">
+          <Card className="bg-[#151429] border-gray-800">
+            <div className="p-6">
+              <div className="mb-6">
+                <h2 className="text-xl font-semibold text-white">
+                  Price Overview
+                </h2>
+                <p className="text-sm text-gray-400 mt-1">
+                  Current market prices for all products
+                </p>
+              </div>
+              <ProductsTable data={products} />
+            </div>
+          </Card>
+
+          <div className="grid md:grid-cols-2 gap-6">
+            <Card className="bg-[#151429] border-gray-800 p-6">
+              <h3 className="text-lg font-semibold text-white mb-2">Quick Stats</h3>
+              <div className="grid grid-cols-2 gap-4">
+                <div className="p-4 rounded-lg bg-[#1c1b2d]">
+                  <p className="text-sm text-gray-400">Total Products</p>
+                  <p className="text-2xl font-bold text-white">
+                    {products.length}
+                  </p>
+                </div>
+                <div className="p-4 rounded-lg bg-[#1c1b2d]">
+                  <p className="text-sm text-gray-400">Last Update</p>
+                  <p className="text-2xl font-bold text-white">
+                    {products[0]?.lastUpdated
+                      ? new Date(products[0].lastUpdated).toLocaleTimeString()
+                      : "--:--"}
+                  </p>
+                </div>
+              </div>
+            </Card>
+
+            <Card className="bg-[#151429] border-gray-800 p-6">
+              <h3 className="text-lg font-semibold text-white mb-2">Price Range</h3>
+              <div className="grid grid-cols-2 gap-4">
+                <div className="p-4 rounded-lg bg-[#1c1b2d]">
+                  <p className="text-sm text-gray-400">Lowest Price</p>
+                  <p className="text-2xl font-bold text-white">
+                    ${Math.min(...products.map((p) => p.price)).toFixed(2)}
+                  </p>
+                </div>
+                <div className="p-4 rounded-lg bg-[#1c1b2d]">
+                  <p className="text-sm text-gray-400">Highest Price</p>
+                  <p className="text-2xl font-bold text-white">
+                    ${Math.max(...products.map((p) => p.price)).toFixed(2)}
+                  </p>
+                </div>
+              </div>
+            </Card>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
 }
