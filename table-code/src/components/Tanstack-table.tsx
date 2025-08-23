@@ -44,9 +44,9 @@ export function generateFakeData(count = 20): Trade[] {
 
     for (let i = 0; i < count; i++) {
         const spot = spots[i % spots.length];
-        const base = Math.random() * 500 + 50; // base price 50..550
+        const base = Math.random() * 500 + 50;
         const price = +(base + (Math.random() - 0.5) * 10).toFixed(2);
-        const change = +((Math.random() - 0.5) * 8).toFixed(2); // -4%..+4%
+        const change = +((Math.random() - 0.5) * 8).toFixed(2);
 
         // sparkline (20 points)
         const sparkline = Array.from({ length: 20 }, () =>
@@ -54,8 +54,8 @@ export function generateFakeData(count = 20): Trade[] {
         );
 
         // full chart data (30 points)
-        const chartData = Array.from({ length: 30 }, (_, idx) => ({
-            date: `Day ${idx + 1}`,
+        const chartData = Array.from({ length: 30 }, (_, i) => ({
+            date: `Day ${i + 1}`,
             value: +(base * (1 + (Math.random() - 0.5) * 0.08)).toFixed(2),
         }));
 
