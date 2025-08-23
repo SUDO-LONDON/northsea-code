@@ -31,7 +31,7 @@ const columns: ColumnDef<Product>[] = [
     header: () => <div className="text-left">Product</div>,
     cell: ({ row }) => (
       <div className="text-left">
-        <span className="font-medium text-gray-900">{row.getValue("name")}</span>
+        <span className="font-medium text-foreground">{row.getValue("name")}</span>
       </div>
     )
   },
@@ -40,7 +40,7 @@ const columns: ColumnDef<Product>[] = [
     header: () => <div className="text-center">HFO</div>,
     cell: ({ row }) => {
       const value = parseFloat(row.getValue("hfo"))
-      return <div className="text-center font-medium text-gray-900">£{value.toFixed(2)}</div>
+      return <div className="text-center font-medium text-foreground">£{value.toFixed(2)}</div>
     }
   },
   {
@@ -48,7 +48,7 @@ const columns: ColumnDef<Product>[] = [
     header: () => <div className="text-center">VLSFO</div>,
     cell: ({ row }) => {
       const value = parseFloat(row.getValue("vlsfo"))
-      return <div className="text-center font-medium text-gray-900">£{value.toFixed(2)}</div>
+      return <div className="text-center font-medium text-foreground">£{value.toFixed(2)}</div>
     }
   },
   {
@@ -56,7 +56,7 @@ const columns: ColumnDef<Product>[] = [
     header: () => <div className="text-center">MGO</div>,
     cell: ({ row }) => {
       const value = parseFloat(row.getValue("mgo"))
-      return <div className="text-center font-medium text-gray-900">£{value.toFixed(2)}</div>
+      return <div className="text-center font-medium text-foreground">£{value.toFixed(2)}</div>
     }
   },
   {
@@ -110,13 +110,13 @@ export function ProductsTable({ data }: { data: Product[] }) {
   })
 
   return (
-    <div className="rounded-xl overflow-hidden border border-gray-200">
+    <div className="rounded-xl overflow-hidden border">
       <Table>
-        <TableHeader className="bg-gray-50">
+        <TableHeader className="bg-muted">
           {table.getHeaderGroups().map((headerGroup) => (
-            <TableRow key={headerGroup.id} className="hover:bg-gray-50">
+            <TableRow key={headerGroup.id} className="hover:bg-muted">
               {headerGroup.headers.map((header) => (
-                <TableHead key={header.id} className="text-gray-700 font-medium">
+                <TableHead key={header.id} className="text-muted-foreground font-medium">
                   {header.isPlaceholder
                     ? null
                     : flexRender(
@@ -128,12 +128,12 @@ export function ProductsTable({ data }: { data: Product[] }) {
             </TableRow>
           ))}
         </TableHeader>
-        <TableBody className="bg-white">
+        <TableBody className="bg-card">
           {table.getRowModel().rows?.length ? (
             table.getRowModel().rows.map((row) => (
               <TableRow
                 key={row.id}
-                className="border-b border-gray-200 hover:bg-gray-50"
+                className="border-b hover:bg-muted/50"
               >
                 {row.getVisibleCells().map((cell) => (
                   <TableCell key={cell.id}>
@@ -144,7 +144,7 @@ export function ProductsTable({ data }: { data: Product[] }) {
             ))
           ) : (
             <TableRow>
-              <TableCell colSpan={columns.length} className="h-24 text-center text-gray-500">
+              <TableCell colSpan={columns.length} className="h-24 text-center text-muted-foreground">
                 Loading products...
               </TableCell>
             </TableRow>
