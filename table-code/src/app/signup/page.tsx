@@ -6,6 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import '@/index.css'
 
 
@@ -15,6 +16,7 @@ export default function SignUpPage() {
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
+  const router = useRouter();
 
   const handleSignUp = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -31,6 +33,10 @@ export default function SignUpPage() {
       setSuccess("Check your email for a confirmation link.");
     }
     setLoading(false);
+  };
+
+  const handleAdminLogin = () => {
+    router.push("/admin-login");
   };
 
   return (
@@ -53,23 +59,46 @@ export default function SignUpPage() {
           <Input
             id="password"
             type="password"
-            placeholder="Your password"
             required
             value={password}
             onChange={e => setPassword(e.target.value)}
           />
         </div>
-        {error && <div className="text-red-500 text-sm">{error}</div>}
-        {success && <div className="text-green-600 text-sm">{success}</div>}
+        {error && (
+          <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative">
+            {error}
+          </div>
+        )}
+        {success && (
+          <div className="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative">
+            {success}
+          </div>
+        )}
         <Button type="submit" className="w-full" disabled={loading}>
           {loading ? "Signing up..." : "Sign Up"}
         </Button>
         <div className="text-center text-sm">
-          Already have an account?{' '}
-          <Link href="/login" className="underline underline-offset-4 text-blue-600">Login</Link>
+          Already have an account?{" "}
+          <Link href="/" className="text-blue-500 hover:text-blue-700">
+            Sign in
+          </Link>
         </div>
+
+        <div className="relative">
+          <div className="absolute inset-0 flex items-center">
+            <span className="w-full border-t" />
+          </div>
+          <div className="relative flex justify-center text-xs uppercase">
+            <span className="bg-background px-2 text-muted-foreground">
+              Or continue with
+            </span>
+          </div>
+        </div>
+
+        <Button variant="outline" type="button" onClick={handleAdminLogin} className="w-full">
+          Continue as Admin
+        </Button>
       </form>
     </div>
   );
 }
-

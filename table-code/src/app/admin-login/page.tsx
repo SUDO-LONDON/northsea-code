@@ -19,7 +19,7 @@ export default function AdminLogin() {
 
     // For demo purposes, using hardcoded credentials
     // In production, use proper authentication
-    if (username === "admin" && password === "admin123") {
+    if (username === "param" && password === "param12north5sea") {
       // Set admin authentication cookie with 24h expiry
       Cookies.set('adminAuth', 'true', { expires: 1 })
       router.push("/dashboard")

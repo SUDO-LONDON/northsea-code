@@ -9,14 +9,18 @@ export default function TablePage() {
     const data = useMemo(() => generateFakeData(12), []);
     const [selectedStock, setSelectedStock] = useState<Trade | null>(null);
 
+    const handleSelectAction = async (row: Trade) => {
+        setSelectedStock(row);
+    };
+
     return (
         <div className="p-6 space-y-6">
             <TradeTable
                 data={data}
-                onSelect={(row) => setSelectedStock(row)}
+                onSelectAction={handleSelectAction}
             />
 
-            <StockChart1 stock={selectedStock} />
+            {selectedStock && <StockChart1 data={selectedStock.chartData} />}
         </div>
     );
 }

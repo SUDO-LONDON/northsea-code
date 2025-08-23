@@ -1,37 +1,39 @@
-"use client";
+"use client"
 
 import '@/index.css'
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react"
 import {
-    ColumnDef,
     flexRender,
     getCoreRowModel,
+    createColumnHelper,
     useReactTable,
+    type Row,
+    type Table,
+    type Header,
+    type HeaderGroup,
+    type Cell,
 } from "@tanstack/react-table"
+import type { SortingState } from "@tanstack/react-table"
 import {
     LineChart,
     Line,
     ResponsiveContainer,
-} from "recharts";
-import { ArrowUp, ArrowDown } from "lucide-react";
+} from "recharts"
 import {
-    Table,
+    Table as UITable,
     TableBody,
     TableCell,
     TableHead,
     TableHeader,
     TableRow,
 } from "@/components/ui/table"
-import { Product } from "@/lib/products"
 
 // ---- Types shared with StockChart ----
 export type Trade = {
     spot: string;
     price: number;
     change: number;
-    // small spark for the table
     sparkline: number[];
-    // full chart for the big chart below
     chartData: { date: string; value: number }[];
 };
 
@@ -47,7 +49,7 @@ export function generateFakeData(count = 20): Trade[] {
         const change = +((Math.random() - 0.5) * 8).toFixed(2); // -4%..+4%
 
         // sparkline (20 points)
-        const sparkline = Array.from({ length: 20 }, (_, idx) =>
+        const sparkline = Array.from({ length: 20 }, () =>
             +(base * (1 + (Math.random() - 0.5) * 0.05)).toFixed(2)
         );
 
@@ -64,7 +66,6 @@ export function generateFakeData(count = 20): Trade[] {
 
 // ---- Tiny Sparkline used inside the table ----
 function Sparkline({ data }: { data: number[] }) {
-    // animate with a tiny random walk so it feels "alive"
     const [sparkData, setSparkData] = useState(data.map((v) => ({ price: v })));
     const lastPriceRef = useRef(data[data.length - 1]);
 
@@ -106,7 +107,7 @@ const columns = [
     }),
     columnHelper.accessor("price", {
         header: "Price",
-        cell: (info) => `$${info.getValue().toFixed(2)}`,
+        cell: (info) => `£${info.getValue().toFixed(2)}`,
     }),
     columnHelper.accessor("change", {
         header: "Change",
@@ -114,8 +115,8 @@ const columns = [
             const val = info.getValue();
             return (
                 <span className={val >= 0 ? "text-green-600" : "text-red-600"}>
-          {val.toFixed(2)}%
-        </span>
+                    {val.toFixed(2)}%
+                </span>
             );
         },
     }),
@@ -126,11 +127,11 @@ const columns = [
 ];
 
 export default function TradeTable({
-                                       data,
-                                       onSelect,
-                                   }: {
+    data,
+    onSelectAction,
+}: {
     data: Trade[];
-    onSelect?: (row: Trade) => void;
+    onSelectAction?: (row: Trade) => Promise<void>;
 }) {
     const [sorting, setSorting] = useState<SortingState>([]);
     const [pagination, setPagination] = useState({ pageIndex: 0, pageSize: 10 });
@@ -138,7 +139,6 @@ export default function TradeTable({
 
     const totalPages = Math.ceil(data.length / pagination.pageSize);
 
-    // slice the current page (client-side pagination scaffold)
     useEffect(() => {
         const start = pagination.pageIndex * pagination.pageSize;
         const end = start + pagination.pageSize;
@@ -152,49 +152,39 @@ export default function TradeTable({
         onSortingChange: setSorting,
         onPaginationChange: setPagination,
         getCoreRowModel: getCoreRowModel(),
-        getSortedRowModel: getSortedRowModel(),
         manualPagination: true,
         pageCount: totalPages,
     });
 
-    const renderSortIcon = (sorted: string | false) => {
-        if (!sorted) return null;
-        return sorted === "asc" ? (
-            <ArrowUp className="inline w-4 h-4 ml-1" />
-        ) : (
-            <ArrowDown className="inline w-4 h-4 ml-1" />
-        );
-    };
-
     return (
         <div className="bg-secondary-foreground shadow-md rounded-xl p-6 overflow-x-auto">
-            <Table>
+            <UITable>
                 <TableHeader>
-                    {table.getHeaderGroups().map((headerGroup) => (
+                    {table.getHeaderGroups().map((headerGroup: HeaderGroup<Trade>) => (
                         <TableRow key={headerGroup.id}>
-                            {headerGroup.headers.map((header) => {
-                                return (
-                                    <TableHead key={header.id}>
-                                        {header.isPlaceholder
-                                            ? null
-                                            : flexRender(
-                                                header.column.columnDef.header,
-                                                header.getContext()
-                                            )}
-                                    </TableHead>
-                                )
-                            })}
+                            {headerGroup.headers.map((header: Header<Trade, unknown>) => (
+                                <TableHead key={header.id}>
+                                    {header.isPlaceholder
+                                        ? null
+                                        : flexRender(
+                                            header.column.columnDef.header,
+                                            header.getContext()
+                                        )}
+                                </TableHead>
+                            ))}
                         </TableRow>
                     ))}
                 </TableHeader>
                 <TableBody>
                     {table.getRowModel().rows?.length ? (
-                        table.getRowModel().rows.map((row) => (
+                        table.getRowModel().rows.map((row: Row<Trade>) => (
                             <TableRow
                                 key={row.id}
                                 data-state={row.getIsSelected() && "selected"}
+                                className="cursor-pointer"
+                                onClick={() => onSelectAction?.(row.original)}
                             >
-                                {row.getVisibleCells().map((cell) => (
+                                {row.getVisibleCells().map((cell: Cell<Trade, unknown>) => (
                                     <TableCell key={cell.id}>
                                         {flexRender(cell.column.columnDef.cell, cell.getContext())}
                                     </TableCell>
@@ -209,9 +199,8 @@ export default function TradeTable({
                         </TableRow>
                     )}
                 </TableBody>
-            </Table>
+            </UITable>
 
-            {/* Pagination */}
             <div className="mt-5 flex items-center gap-4 justify-end text-sm text-gray-700">
                 <button
                     onClick={() =>
@@ -227,8 +216,8 @@ export default function TradeTable({
                 </button>
 
                 <span>
-            Page {pagination.pageIndex + 1} of {totalPages}
-        </span>
+                    Page {pagination.pageIndex + 1} of {totalPages}
+                </span>
 
                 <button
                     onClick={() =>
@@ -262,6 +251,5 @@ export default function TradeTable({
                 </select>
             </div>
         </div>
-
     );
 }

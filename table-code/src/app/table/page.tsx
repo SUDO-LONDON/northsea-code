@@ -21,7 +21,7 @@ export default function TradingPage() {
     loadProducts();
 
     // Set up periodic refresh
-    const interval = setInterval(loadProducts, 5000); // Refresh every 5 seconds
+    const interval = setInterval(loadProducts, 5000);
 
     return () => clearInterval(interval);
   }, []);
@@ -31,9 +31,6 @@ export default function TradingPage() {
       <div className="container mx-auto p-6">
         <div className="mb-8">
           <h1 className="text-3xl font-bold text-white mb-2">Trading Panel</h1>
-          <p className="text-gray-400">
-            Live product prices updated every 5 seconds
-          </p>
         </div>
 
         <div className="grid gap-6">
