@@ -31,7 +31,7 @@ const columns: ColumnDef<Product>[] = [
     header: () => <div className="text-left">Product</div>,
     cell: ({ row }) => (
       <div className="text-left">
-        <span className="font-medium text-white">{row.getValue("name")}</span>
+        <span className="font-medium text-gray-900">{row.getValue("name")}</span>
       </div>
     )
   },
@@ -40,7 +40,7 @@ const columns: ColumnDef<Product>[] = [
     header: () => <div className="text-center">HFO</div>,
     cell: ({ row }) => {
       const value = parseFloat(row.getValue("hfo"))
-      return <div className="text-center font-medium text-white">£{value.toFixed(2)}</div>
+      return <div className="text-center font-medium text-gray-900">£{value.toFixed(2)}</div>
     }
   },
   {
@@ -48,7 +48,7 @@ const columns: ColumnDef<Product>[] = [
     header: () => <div className="text-center">VLSFO</div>,
     cell: ({ row }) => {
       const value = parseFloat(row.getValue("vlsfo"))
-      return <div className="text-center font-medium text-white">£{value.toFixed(2)}</div>
+      return <div className="text-center font-medium text-gray-900">£{value.toFixed(2)}</div>
     }
   },
   {
@@ -56,7 +56,7 @@ const columns: ColumnDef<Product>[] = [
     header: () => <div className="text-center">MGO</div>,
     cell: ({ row }) => {
       const value = parseFloat(row.getValue("mgo"))
-      return <div className="text-center font-medium text-white">£{value.toFixed(2)}</div>
+      return <div className="text-center font-medium text-gray-900">£{value.toFixed(2)}</div>
     }
   },
   {
@@ -65,7 +65,7 @@ const columns: ColumnDef<Product>[] = [
     cell: ({ row }) => {
       const value = parseFloat(row.getValue("change"))
       return (
-        <div className={`text-center font-medium ${value >= 0 ? 'text-green-500' : 'text-red-500'}`}>
+        <div className={`text-center font-medium ${value >= 0 ? 'text-green-600' : 'text-red-600'}`}>
           {value >= 0 ? '+' : ''}{value.toFixed(2)}%
         </div>
       )
@@ -110,13 +110,13 @@ export function ProductsTable({ data }: { data: Product[] }) {
   })
 
   return (
-    <div className="rounded-xl overflow-hidden">
+    <div className="rounded-xl overflow-hidden border border-gray-200">
       <Table>
-        <TableHeader className="bg-dark-surface">
+        <TableHeader className="bg-gray-50">
           {table.getHeaderGroups().map((headerGroup) => (
-            <TableRow key={headerGroup.id} className="hover:bg-dark-surface">
+            <TableRow key={headerGroup.id} className="hover:bg-gray-50">
               {headerGroup.headers.map((header) => (
-                <TableHead key={header.id} className="text-gray-400 font-medium">
+                <TableHead key={header.id} className="text-gray-700 font-medium">
                   {header.isPlaceholder
                     ? null
                     : flexRender(
@@ -128,12 +128,12 @@ export function ProductsTable({ data }: { data: Product[] }) {
             </TableRow>
           ))}
         </TableHeader>
-        <TableBody>
+        <TableBody className="bg-white">
           {table.getRowModel().rows?.length ? (
             table.getRowModel().rows.map((row) => (
               <TableRow
                 key={row.id}
-                className="border-b border-gray-800 hover:bg-dark-surface/50"
+                className="border-b border-gray-200 hover:bg-gray-50"
               >
                 {row.getVisibleCells().map((cell) => (
                   <TableCell key={cell.id}>
@@ -144,7 +144,7 @@ export function ProductsTable({ data }: { data: Product[] }) {
             ))
           ) : (
             <TableRow>
-              <TableCell colSpan={columns.length} className="h-24 text-center text-gray-400">
+              <TableCell colSpan={columns.length} className="h-24 text-center text-gray-500">
                 Loading products...
               </TableCell>
             </TableRow>
