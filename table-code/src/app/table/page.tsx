@@ -27,20 +27,25 @@ export default function TradingPage() {
   }, []);
 
   return (
-    <div className="min-h-screen bg-gray-100">
+    <div className="bg-background min-h-screen">
       <div className="container mx-auto p-6">
         <div className="mb-8">
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">Trading Panel</h1>
+          <h1 className="text-4xl font-bold text-foreground mb-2">
+            Trading Panel
+          </h1>
+          <p className="text-muted-foreground">
+            Real-time market data and analytics
+          </p>
         </div>
 
         <div className="grid gap-6">
-          <Card className="border-gray-200 bg-white shadow-sm">
+          <Card className="border shadow-sm">
             <div className="p-6">
               <div className="mb-6">
-                <h2 className="text-xl font-semibold text-gray-900">
+                <h2 className="text-xl font-semibold text-foreground">
                   Price Overview
                 </h2>
-                <p className="text-sm text-gray-600 mt-1">
+                <p className="text-sm text-muted-foreground mt-1">
                   Current market prices for all products
                 </p>
               </div>
@@ -49,40 +54,54 @@ export default function TradingPage() {
           </Card>
 
           <div className="grid md:grid-cols-2 gap-6">
-            <Card className="border-gray-200 bg-white shadow-sm p-6">
-              <h3 className="text-lg font-semibold text-gray-900 mb-2">Quick Stats</h3>
-              <div className="grid grid-cols-2 gap-4">
-                <div className="p-4 rounded-lg bg-gray-50 border border-gray-200">
-                  <p className="text-sm text-gray-600">Total Products</p>
-                  <p className="text-2xl font-bold text-gray-900">
-                    {products.length}
-                  </p>
-                </div>
-                <div className="p-4 rounded-lg bg-gray-50 border border-gray-200">
-                  <p className="text-sm text-gray-600">Last Update</p>
-                  <p className="text-2xl font-bold text-gray-900">
-                    {products[0]?.lastUpdated
-                      ? new Date(products[0].lastUpdated).toLocaleTimeString()
-                      : "--:--"}
-                  </p>
+            <Card className="border shadow-sm">
+              <div className="p-6">
+                <h3 className="text-lg font-semibold text-foreground mb-2">
+                  Quick Stats
+                </h3>
+                <div className="grid grid-cols-2 gap-4">
+                  <div className="p-4 rounded-lg bg-muted border">
+                    <p className="text-sm text-muted-foreground">Total Products</p>
+                    <p className="text-2xl font-bold text-foreground">
+                      {products.length}
+                    </p>
+                  </div>
+                  <div className="p-4 rounded-lg bg-muted border">
+                    <p className="text-sm text-muted-foreground">Last Update</p>
+                    <p className="text-2xl font-bold text-foreground">
+                      {products[0]?.lastUpdated
+                        ? new Date(products[0].lastUpdated).toLocaleTimeString()
+                        : "--:--"}
+                    </p>
+                  </div>
                 </div>
               </div>
             </Card>
 
-            <Card className="border-gray-200 bg-white shadow-sm p-6">
-              <h3 className="text-lg font-semibold text-gray-900 mb-2">Price Range</h3>
-              <div className="grid grid-cols-2 gap-4">
-                <div className="p-4 rounded-lg bg-gray-50 border border-gray-200">
-                  <p className="text-sm text-gray-600">Lowest HFO Price</p>
-                  <p className="text-2xl font-bold text-gray-900">
-                    £{Math.min(...products.map((p) => p.hfo)).toFixed(2)}
-                  </p>
-                </div>
-                <div className="p-4 rounded-lg bg-gray-50 border border-gray-200">
-                  <p className="text-sm text-gray-600">Highest HFO Price</p>
-                  <p className="text-2xl font-bold text-gray-900">
-                    £{Math.max(...products.map((p) => p.hfo)).toFixed(2)}
-                  </p>
+            <Card className="border shadow-sm">
+              <div className="p-6">
+                <h3 className="text-lg font-semibold text-foreground mb-2">
+                  Price Range
+                </h3>
+                <div className="grid grid-cols-2 gap-4">
+                  <div className="p-4 rounded-lg bg-muted border">
+                    <p className="text-sm text-muted-foreground">Lowest HFO Price</p>
+                    <p className="text-2xl font-bold text-foreground">
+                      £
+                      {products.length > 0
+                        ? Math.min(...products.map((p) => p.hfo)).toFixed(2)
+                        : "0.00"}
+                    </p>
+                  </div>
+                  <div className="p-4 rounded-lg bg-muted border">
+                    <p className="text-sm text-muted-foreground">Highest HFO Price</p>
+                    <p className="text-2xl font-bold text-foreground">
+                      £
+                      {products.length > 0
+                        ? Math.max(...products.map((p) => p.hfo)).toFixed(2)
+                        : "0.00"}
+                    </p>
+                  </div>
                 </div>
               </div>
             </Card>
