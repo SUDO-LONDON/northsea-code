@@ -17,13 +17,6 @@ type PriceInputs = {
   change: string;
 };
 
-const DEFAULT_PRODUCT = {
-  hfo: 0,
-  vlsfo: 0,
-  mgo: 0,
-  change: 0
-};
-
 export default function Dashboard() {
   const router = useRouter()
   const [products, setProducts] = useState<Product[]>([])
