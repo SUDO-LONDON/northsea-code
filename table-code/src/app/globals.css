@@ -4,6 +4,81 @@
 
 @custom-variant dark (&:is(.dark *));
 
+:root {
+  --radius: 0.65rem;
+
+  /* Core Colors - matching the login page */
+  --background: #0f0d21;
+  --foreground: #fefeff;
+
+  --primary: #d86b07;
+  --primary-light: #e28a2b;
+  --primary-dark: #a25100;
+  --primary-foreground: #fefeff;
+
+  --secondary: #fab325;
+  --secondary-light: #ffd64d;
+  --secondary-dark: #c1921d;
+  --secondary-foreground: #0f0d21;
+
+  --accent: #f4910d;
+  --accent-foreground: #fefeff;
+
+  --tertiary: #babefd;
+  --tertiary-dark: #8884d4;
+
+  /* Missing variables for the table page */
+  --muted: #1a1830;
+  --muted-foreground: #9ca3af;
+  --card: #141225;
+  --card-foreground: #fefeff;
+  --popover: #141225;
+  --popover-foreground: #fefeff;
+  --border: #2d2a3e;
+  --input: #2d2a3e;
+  --ring: #d86b07;
+
+  /* Status colors */
+  --success: #28c76f;
+  --error: #ff4c51;
+  --warning: #ff9f43;
+  --info: #00cfe8;
+  --destructive: #ff4c51;
+  --destructive-foreground: #fefeff;
+}
+
+.dark {
+  --background: #0f0d21;
+  --foreground: #fefeff;
+  --primary: #d86b07;
+  --primary-light: #e28a2b;
+  --primary-dark: #a25100;
+  --primary-foreground: #fefeff;
+  --secondary: #fab325;
+  --secondary-light: #ffd64d;
+  --secondary-dark: #c1921d;
+  --secondary-foreground: #0f0d21;
+  --accent: #f4910d;
+  --accent-foreground: #fefeff;
+  --tertiary: #babefd;
+  --tertiary-dark: #8884d4;
+  --muted: #1a1830;
+  --muted-foreground: #9ca3af;
+  --card: #141225;
+  --card-foreground: #fefeff;
+  --popover: #141225;
+  --popover-foreground: #fefeff;
+  --border: #2d2a3e;
+  --input: #2d2a3e;
+  --ring: #d86b07;
+  --success: #28c76f;
+  --error: #ff4c51;
+  --warning: #ff9f43;
+  --info: #00cfe8;
+  --destructive: #ff4c51;
+  --destructive-foreground: #fefeff;
+}
+
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
@@ -49,80 +124,88 @@
   --color-dark-surface: oklch(0.155 0.02 250);
 }
 
-:root {
-  --radius: 0.625rem;
-  --background: oklch(1 0 0);
-  --foreground: oklch(0.145 0 0);
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.145 0 0);
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.145 0 0);
-  --primary: oklch(0.205 0 0);
-  --primary-foreground: oklch(0.985 0 0);
-  --secondary: oklch(0.97 0 0);
-  --secondary-foreground: oklch(0.205 0 0);
-  --muted: oklch(0.97 0 0);
-  --muted-foreground: oklch(0.556 0 0);
-  --accent: oklch(0.97 0 0);
-  --accent-foreground: oklch(0.205 0 0);
-  --destructive: oklch(0.577 0.245 27.325);
-  --border: oklch(0.922 0 0);
-  --input: oklch(0.922 0 0);
-  --ring: oklch(0.708 0 0);
-  --chart-1: oklch(0.646 0.222 41.116);
-  --chart-2: oklch(0.6 0.118 184.704);
-  --chart-3: oklch(0.398 0.07 227.392);
-  --chart-4: oklch(0.828 0.189 84.429);
-  --chart-5: oklch(0.769 0.188 70.08);
-  --sidebar: oklch(0.985 0 0);
-  --sidebar-foreground: oklch(0.145 0 0);
-  --sidebar-primary: oklch(0.205 0 0);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.97 0 0);
-  --sidebar-accent-foreground: oklch(0.205 0 0);
-  --sidebar-border: oklch(0.922 0 0);
-  --sidebar-ring: oklch(0.708 0 0);
-}
-
-.dark {
-  --background: oklch(0.145 0 0);
-  --foreground: oklch(0.985 0 0);
-  --card: oklch(0.205 0 0);
-  --card-foreground: oklch(0.985 0 0);
-  --popover: oklch(0.205 0 0);
-  --popover-foreground: oklch(0.985 0 0);
-  --primary: oklch(0.922 0 0);
-  --primary-foreground: oklch(0.205 0 0);
-  --secondary: oklch(0.269 0 0);
-  --secondary-foreground: oklch(0.985 0 0);
-  --muted: oklch(0.269 0 0);
-  --muted-foreground: oklch(0.708 0 0);
-  --accent: oklch(0.269 0 0);
-  --accent-foreground: oklch(0.985 0 0);
-  --destructive: oklch(0.704 0.191 22.216);
-  --border: oklch(1 0 0 / 10%);
-  --input: oklch(1 0 0 / 15%);
-  --ring: oklch(0.556 0 0);
-  --chart-1: oklch(0.488 0.243 264.376);
-  --chart-2: oklch(0.696 0.17 162.48);
-  --chart-3: oklch(0.769 0.188 70.08);
-  --chart-4: oklch(0.627 0.265 303.9);
-  --chart-5: oklch(0.645 0.246 16.439);
-  --sidebar: oklch(0.205 0 0);
-  --sidebar-foreground: oklch(0.985 0 0);
-  --sidebar-primary: oklch(0.488 0.243 264.376);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.269 0 0);
-  --sidebar-accent-foreground: oklch(0.985 0 0);
-  --sidebar-border: oklch(1 0 0 / 10%);
-  --sidebar-ring: oklch(0.556 0 0);
-}
-
 @layer base {
   * {
-    @apply border-border outline-ring/50;
+    @apply border-border;
   }
   body {
     @apply bg-background text-foreground;
   }
+
+  /* Ensure consistent container and layout styles */
+  .container {
+    @apply mx-auto px-4 sm:px-6 lg:px-8;
+    max-width: 1200px;
+  }
+}
+
+@layer components {
+  /* Card component styles to ensure consistent dimensions */
+  .card {
+    @apply rounded-xl border bg-card text-card-foreground shadow;
+    border-color: var(--border);
+    box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
+  }
+
+  /* Grid system consistency */
+  .grid {
+    display: grid;
+  }
+
+  .grid-cols-2 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  /* Responsive grid for medium screens and up */
+  @media (min-width: 768px) {
+    .md\:grid-cols-2 {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  /* Gap utilities */
+  .gap-4 {
+    gap: 1rem;
+  }
+
+  .gap-6 {
+    gap: 1.5rem;
+  }
+
+  /* Shadow utilities */
+  .shadow-sm {
+    box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  }
+
+  .shadow {
+    box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
+  }
+
+  /* Rounded corners */
+  .rounded-lg {
+    border-radius: var(--radius);
+  }
+
+  .rounded-xl {
+    border-radius: calc(var(--radius) + 4px);
+  }
+
+  /* Margin and padding consistency */
+  .mb-2 { margin-bottom: 0.5rem; }
+  .mb-6 { margin-bottom: 1.5rem; }
+  .mb-8 { margin-bottom: 2rem; }
+  .mt-1 { margin-top: 0.25rem; }
+  .p-4 { padding: 1rem; }
+  .p-6 { padding: 1.5rem; }
+
+  /* Text sizing */
+  .text-sm { font-size: 0.875rem; line-height: 1.25rem; }
+  .text-lg { font-size: 1.125rem; line-height: 1.75rem; }
+  .text-xl { font-size: 1.25rem; line-height: 1.75rem; }
+  .text-2xl { font-size: 1.5rem; line-height: 2rem; }
+  .text-4xl { font-size: 2.25rem; line-height: 2.5rem; }
+
+  /* Font weights */
+  .font-bold { font-weight: 700; }
+  .font-semibold { font-weight: 600; }
 }

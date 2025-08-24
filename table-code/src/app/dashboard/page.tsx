@@ -8,6 +8,7 @@ import { Label } from "@/components/ui/label"
 import { Card } from "@/components/ui/card"
 import Cookies from 'js-cookie'
 import { Product } from "@/lib/products"
+import { getProducts, initializeProducts } from "@/lib/productUtils"
 
 type PriceInputs = {
   hfo: string;
@@ -37,38 +38,14 @@ export default function Dashboard() {
     }
 
     try {
-      const savedProducts = localStorage.getItem("products")
-      if (savedProducts) {
-        const parsed = JSON.parse(savedProducts) as Product[]
-        // Ensure all products have the required fields
-        const validatedProducts = parsed.map((product: Product) => ({
-          ...DEFAULT_PRODUCT,
-          ...product,
-          lastUpdated: product.lastUpdated || new Date().toISOString()
-        }))
-        setProducts(validatedProducts)
-      } else {
-        // Initialize with default products
-        const initialProducts = Array.from({ length: 20 }, (_, i) => ({
-          id: (i + 1).toString(),
-          name: "blank",
-          ...DEFAULT_PRODUCT,
-          lastUpdated: new Date().toISOString()
-        }))
-        setProducts(initialProducts)
-        localStorage.setItem("products", JSON.stringify(initialProducts))
-      }
+      // Use the utility function to ensure we always have 20 products
+      const loadedProducts = getProducts()
+      setProducts(loadedProducts)
     } catch (error) {
       console.error("Error loading products:", error)
       // Initialize with defaults if there's an error
-      const initialProducts = Array.from({ length: 20 }, (_, i) => ({
-        id: (i + 1).toString(),
-        name: "blank",
-        ...DEFAULT_PRODUCT,
-        lastUpdated: new Date().toISOString()
-      }))
+      const initialProducts = initializeProducts()
       setProducts(initialProducts)
-      localStorage.setItem("products", JSON.stringify(initialProducts))
     } finally {
       setIsLoading(false)
     }
@@ -119,6 +96,11 @@ export default function Dashboard() {
     router.push("/")
   }
 
+  const handleResetProducts = () => {
+    const resetProducts = initializeProducts()
+    setProducts(resetProducts)
+  }
+
   if (isLoading) {
     return <div className="flex items-center justify-center min-h-screen">Loading...</div>
   }
@@ -128,9 +110,22 @@ export default function Dashboard() {
       <div className="max-w-6xl mx-auto">
         <div className="flex justify-between items-center mb-8">
           <h1 className="text-3xl font-bold text-gray-900">Price Management Dashboard</h1>
-          <Button onClick={handleLogout} variant="outline">
-            Logout
-          </Button>
+          <div className="flex gap-4">
+            <Button onClick={handleResetProducts} variant="outline">
+              Reset to 20 Products
+            </Button>
+            <Button onClick={handleLogout} variant="outline">
+              Logout
+            </Button>
+          </div>
+        </div>
+
+        <div className="mb-4 p-4 bg-blue-50 border border-blue-200 rounded-lg">
+          <p className="text-sm text-blue-800">
+            <strong>Total Products:</strong> {products.length} |
+            <strong> Product Names:</strong> {products.slice(0, 3).map(p => p.name).join(', ')}
+            {products.length > 3 ? '...' : ''}
+          </p>
         </div>
 
         <div className="grid gap-6">

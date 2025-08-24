@@ -4,17 +4,16 @@ import { useEffect, useState } from "react";
 import { ProductsTable } from "@/components/ProductsTable";
 import { Card } from "@/components/ui/card";
 import { Product } from "@/lib/products";
+import { getProducts } from "@/lib/productUtils";
 
 export default function TradingPage() {
   const [products, setProducts] = useState<Product[]>([]);
 
   useEffect(() => {
-    // Load products from localStorage
+    // Load products using the utility function that ensures 20 products
     const loadProducts = () => {
-      const savedProducts = localStorage.getItem("products");
-      if (savedProducts) {
-        setProducts(JSON.parse(savedProducts));
-      }
+      const loadedProducts = getProducts();
+      setProducts(loadedProducts);
     };
 
     // Initial load
