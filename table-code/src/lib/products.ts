@@ -10,7 +10,7 @@ export interface Product {
 
 export const PRODUCTS: Product[] = Array.from({ length: 20 }, (_, i) => ({
   id: (i + 1).toString(),
-  name: "blank",
+  name: `blank ${i + 1}`,
   hfo: 0,
   vlsfo: 0,
   mgo: 0,
