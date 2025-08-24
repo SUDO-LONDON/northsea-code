@@ -11,11 +11,20 @@ export function initializeProducts(): Product[] {
     lastUpdated: new Date().toISOString()
   }));
 
-  localStorage.setItem("products", JSON.stringify(products));
+  // Only use localStorage on the client side
+  if (typeof window !== 'undefined') {
+    localStorage.setItem("products", JSON.stringify(products));
+  }
   return products;
 }
 
 export function getProducts(): Product[] {
+  // Check if we're on the client side
+  if (typeof window === 'undefined') {
+    // Return empty array during SSR, will be populated on client side
+    return [];
+  }
+
   try {
     const savedProducts = localStorage.getItem("products");
     if (savedProducts) {

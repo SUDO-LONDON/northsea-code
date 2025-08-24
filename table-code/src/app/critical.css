@@ -1,4 +1,4 @@
-/* Critical CSS for preventing layout shifts on refresh */
+/* Critical CSS for preventing layout shifts on refresh - Enhanced */
 
 /* Ensure immediate layout stability */
 * {
@@ -8,68 +8,105 @@
 html, body {
   margin: 0;
   padding: 0;
-  background-color: #0f0d21;
-  color: #fefeff;
+  background-color: #0f0d21 !important;
+  color: #fefeff !important;
   font-family: system-ui, -apple-system, sans-serif;
 }
 
+/* Core color classes with !important to override any delays */
+.bg-background { background-color: #0f0d21 !important; }
+.text-foreground { color: #fefeff !important; }
+.text-muted-foreground { color: #9ca3af !important; }
+.bg-muted { background-color: #1a1830 !important; }
+.bg-card { background-color: #141225 !important; }
+.text-card-foreground { color: #fefeff !important; }
+.border { border-color: #2d2a3e !important; border-width: 1px !important; border-style: solid !important; }
+
 /* Container always has consistent width */
 .container {
-  width: 100%;
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 0 1rem;
+  width: 100% !important;
+  max-width: 1200px !important;
+  margin: 0 auto !important;
+  padding: 0 1.5rem !important;
 }
 
 @media (min-width: 640px) {
   .container {
-    padding: 0 1.5rem;
+    padding: 0 1.5rem !important;
   }
 }
 
 @media (min-width: 1024px) {
   .container {
-    padding: 0 2rem;
+    padding: 0 2rem !important;
   }
 }
 
-/* Grid system - always present */
+/* Grid system - always present with !important */
 .grid {
-  display: grid;
+  display: grid !important;
 }
 
 .grid-cols-2 {
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
 }
 
 @media (min-width: 768px) {
   .md\:grid-cols-2 {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
   }
 }
 
-/* Gap utilities */
-.gap-4 { gap: 1rem; }
-.gap-6 { gap: 1.5rem; }
+/* Gap utilities with !important */
+.gap-4 { gap: 1rem !important; }
+.gap-6 { gap: 1.5rem !important; }
 
-/* Card base styling */
+/* Card base styling with !important */
 .border {
-  border: 1px solid #2d2a3e;
+  border: 1px solid #2d2a3e !important;
 }
 
 .rounded-xl {
-  border-radius: 0.75rem;
+  border-radius: 0.75rem !important;
+}
+
+.rounded-lg {
+  border-radius: 0.65rem !important;
 }
 
 .shadow-sm {
-  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05) !important;
+}
+
+.shadow {
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px -1px rgba(0, 0, 0, 0.1) !important;
 }
 
 /* Prevent layout shift for common utilities */
-.min-h-screen { min-height: 100vh; }
-.p-6 { padding: 1.5rem; }
-.p-4 { padding: 1rem; }
-.mb-8 { margin-bottom: 2rem; }
-.mb-6 { margin-bottom: 1.5rem; }
-.mb-2 { margin-bottom: 0.5rem; }
-.mt-1 { margin-top: 0.25rem; }
+.min-h-screen { min-height: 100vh !important; }
+.p-6 { padding: 1.5rem !important; }
+.p-4 { padding: 1rem !important; }
+.mb-8 { margin-bottom: 2rem !important; }
+.mb-6 { margin-bottom: 1.5rem !important; }
+.mb-2 { margin-bottom: 0.5rem !important; }
+.mt-1 { margin-top: 0.25rem !important; }
+
+/* Text utilities with !important */
+.text-sm { font-size: 0.875rem !important; line-height: 1.25rem !important; }
+.text-lg { font-size: 1.125rem !important; line-height: 1.75rem !important; }
+.text-xl { font-size: 1.25rem !important; line-height: 1.75rem !important; }
+.text-2xl { font-size: 1.5rem !important; line-height: 2rem !important; }
+.text-4xl { font-size: 2.25rem !important; line-height: 2.5rem !important; }
+
+/* Font weights with !important */
+.font-bold { font-weight: 700 !important; }
+.font-semibold { font-weight: 600 !important; }
+
+/* Force immediate application of card styling */
+.card, [class*="card"] {
+  background-color: #141225 !important;
+  color: #fefeff !important;
+  border-radius: 0.75rem !important;
+  border: 1px solid #2d2a3e !important;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px -1px rgba(0, 0, 0, 0.1) !important;
+}

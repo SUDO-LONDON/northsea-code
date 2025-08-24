@@ -10,19 +10,21 @@ export default function TradingPage() {
   const [products, setProducts] = useState<Product[]>([]);
 
   useEffect(() => {
-    // Load products using the utility function that ensures 20 products
-    const loadProducts = () => {
-      const loadedProducts = getProducts();
-      setProducts(loadedProducts);
-    };
+    // Use setTimeout to ensure this runs after hydration
+    setTimeout(() => {
+      const loadProducts = () => {
+        const loadedProducts = getProducts();
+        setProducts(loadedProducts);
+      };
 
-    // Initial load
-    loadProducts();
+      // Initial load
+      loadProducts();
 
-    // Set up periodic refresh
-    const interval = setInterval(loadProducts, 5000);
+      // Set up periodic refresh
+      const interval = setInterval(loadProducts, 5000);
 
-    return () => clearInterval(interval);
+      return () => clearInterval(interval);
+    }, 0);
   }, []);
 
   return (
