@@ -30,18 +30,19 @@ export default function Dashboard() {
       return
     }
 
-    try {
-      // Use the utility function to ensure we always have 20 products
-      const loadedProducts = getProducts()
-      setProducts(loadedProducts)
-    } catch (error) {
-      console.error("Error loading products:", error)
-      // Initialize with defaults if there's an error
-      const initialProducts = initializeProducts()
-      setProducts(initialProducts)
-    } finally {
-      setIsLoading(false)
-    }
+    // Use setTimeout to ensure this runs after hydration
+    setTimeout(() => {
+      try {
+        const loadedProducts = getProducts()
+        setProducts(loadedProducts)
+      } catch (error) {
+        console.error("Error loading products:", error)
+        const initialProducts = initializeProducts()
+        setProducts(initialProducts)
+      } finally {
+        setIsLoading(false)
+      }
+    }, 0)
   }, [router])
 
   const handleValueChange = (id: string, field: keyof PriceInputs, value: string) => {
@@ -95,97 +96,144 @@ export default function Dashboard() {
   }
 
   if (isLoading) {
-    return <div className="flex items-center justify-center min-h-screen">Loading...</div>
+    return (
+      <div className="bg-background flex min-h-screen items-center justify-center">
+        <div className="text-foreground">Loading...</div>
+      </div>
+    )
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 p-6">
-      <div className="max-w-6xl mx-auto">
-        <div className="flex justify-between items-center mb-8">
-          <h1 className="text-3xl font-bold text-gray-900">Price Management Dashboard</h1>
-          <div className="flex gap-4">
-            <Button onClick={handleResetProducts} variant="outline">
-              Reset to 20 Products
-            </Button>
-            <Button onClick={handleLogout} variant="outline">
-              Logout
-            </Button>
+    <div className="bg-background min-h-screen">
+      <div className="container mx-auto p-6">
+        <div className="mb-8">
+          <div className="flex justify-between items-center">
+            <div>
+              <h1 className="text-4xl font-bold text-foreground mb-2">
+                Admin Dashboard
+              </h1>
+              <p className="text-muted-foreground">
+                Manage product prices and settings
+              </p>
+            </div>
+            <div className="flex gap-4">
+              <Button variant="outline" onClick={handleResetProducts}>
+                Reset to 20 Products
+              </Button>
+              <Button variant="outline" onClick={handleLogout}>
+                Logout
+              </Button>
+            </div>
           </div>
         </div>
 
-        <div className="mb-4 p-4 bg-blue-50 border border-blue-200 rounded-lg">
-          <p className="text-sm text-blue-800">
-            <strong>Total Products:</strong> {products.length} |
-            <strong> Product Names:</strong> {products.slice(0, 3).map(p => p.name).join(', ')}
-            {products.length > 3 ? '...' : ''}
-          </p>
-        </div>
-
         <div className="grid gap-6">
-          {products.map((product) => (
-            <Card key={product.id} className="p-6">
-              <h3 className="text-lg font-semibold mb-4">Product {product.id}: {product.name}</h3>
-
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-4">
-                <div>
-                  <Label htmlFor={`hfo-${product.id}`}>HFO (£)</Label>
-                  <Input
-                    id={`hfo-${product.id}`}
-                    type="number"
-                    step="0.01"
-                    placeholder={`Current: £${product.hfo.toFixed(2)}`}
-                    value={newPrices[product.id]?.hfo || ''}
-                    onChange={(e) => handleValueChange(product.id, 'hfo', e.target.value)}
-                  />
+          <Card className="border shadow-sm">
+            <div className="p-6">
+              <div className="mb-6">
+                <h2 className="text-xl font-semibold text-foreground">
+                  Quick Stats
+                </h2>
+                <p className="text-sm text-muted-foreground mt-1">
+                  Current product overview
+                </p>
+              </div>
+              <div className="grid grid-cols-2 gap-4">
+                <div className="p-4 rounded-lg bg-muted border">
+                  <p className="text-sm text-muted-foreground">Total Products</p>
+                  <p className="text-2xl font-bold text-foreground">
+                    {products.length}
+                  </p>
                 </div>
-
-                <div>
-                  <Label htmlFor={`vlsfo-${product.id}`}>VLSFO (£)</Label>
-                  <Input
-                    id={`vlsfo-${product.id}`}
-                    type="number"
-                    step="0.01"
-                    placeholder={`Current: £${product.vlsfo.toFixed(2)}`}
-                    value={newPrices[product.id]?.vlsfo || ''}
-                    onChange={(e) => handleValueChange(product.id, 'vlsfo', e.target.value)}
-                  />
-                </div>
-
-                <div>
-                  <Label htmlFor={`mgo-${product.id}`}>MGO (£)</Label>
-                  <Input
-                    id={`mgo-${product.id}`}
-                    type="number"
-                    step="0.01"
-                    placeholder={`Current: £${product.mgo.toFixed(2)}`}
-                    value={newPrices[product.id]?.mgo || ''}
-                    onChange={(e) => handleValueChange(product.id, 'mgo', e.target.value)}
-                  />
-                </div>
-
-                <div>
-                  <Label htmlFor={`change-${product.id}`}>Change (%)</Label>
-                  <Input
-                    id={`change-${product.id}`}
-                    type="number"
-                    step="0.01"
-                    placeholder={`Current: ${product.change.toFixed(2)}%`}
-                    value={newPrices[product.id]?.change || ''}
-                    onChange={(e) => handleValueChange(product.id, 'change', e.target.value)}
-                  />
+                <div className="p-4 rounded-lg bg-muted border">
+                  <p className="text-sm text-muted-foreground">Product Names</p>
+                  <p className="text-sm text-foreground">
+                    {products.slice(0, 3).map(p => p.name).join(', ')}
+                    {products.length > 3 ? '...' : ''}
+                  </p>
                 </div>
               </div>
+            </div>
+          </Card>
 
-              <div className="flex justify-between items-center">
-                <span className="text-sm text-gray-500">
-                  Last updated: {new Date(product.lastUpdated).toLocaleString()}
-                </span>
-                <Button
-                  onClick={() => handleUpdateProduct(product.id)}
-                  disabled={!newPrices[product.id]}
-                >
-                  Update Prices
-                </Button>
+          {products.map((product) => (
+            <Card key={product.id} className="border shadow-sm">
+              <div className="p-6">
+                <div className="mb-6">
+                  <h3 className="text-lg font-semibold text-foreground">
+                    Product {product.id}: {product.name}
+                  </h3>
+                  <p className="text-sm text-muted-foreground mt-1">
+                    Last updated: {new Date(product.lastUpdated).toLocaleString()}
+                  </p>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+                  <div className="grid gap-1">
+                    <Label htmlFor={`hfo-${product.id}`} className="text-foreground">
+                      HFO (£)
+                    </Label>
+                    <Input
+                      id={`hfo-${product.id}`}
+                      type="number"
+                      step="0.01"
+                      placeholder={`Current: £${product.hfo.toFixed(2)}`}
+                      value={newPrices[product.id]?.hfo || ''}
+                      onChange={(e) => handleValueChange(product.id, 'hfo', e.target.value)}
+                    />
+                  </div>
+
+                  <div className="grid gap-1">
+                    <Label htmlFor={`vlsfo-${product.id}`} className="text-foreground">
+                      VLSFO (£)
+                    </Label>
+                    <Input
+                      id={`vlsfo-${product.id}`}
+                      type="number"
+                      step="0.01"
+                      placeholder={`Current: £${product.vlsfo.toFixed(2)}`}
+                      value={newPrices[product.id]?.vlsfo || ''}
+                      onChange={(e) => handleValueChange(product.id, 'vlsfo', e.target.value)}
+                    />
+                  </div>
+
+                  <div className="grid gap-1">
+                    <Label htmlFor={`mgo-${product.id}`} className="text-foreground">
+                      MGO (£)
+                    </Label>
+                    <Input
+                      id={`mgo-${product.id}`}
+                      type="number"
+                      step="0.01"
+                      placeholder={`Current: £${product.mgo.toFixed(2)}`}
+                      value={newPrices[product.id]?.mgo || ''}
+                      onChange={(e) => handleValueChange(product.id, 'mgo', e.target.value)}
+                    />
+                  </div>
+
+                  <div className="grid gap-1">
+                    <Label htmlFor={`change-${product.id}`} className="text-foreground">
+                      Change (%)
+                    </Label>
+                    <Input
+                      id={`change-${product.id}`}
+                      type="number"
+                      step="0.01"
+                      placeholder={`Current: ${product.change.toFixed(2)}%`}
+                      value={newPrices[product.id]?.change || ''}
+                      onChange={(e) => handleValueChange(product.id, 'change', e.target.value)}
+                    />
+                  </div>
+                </div>
+
+                <div className="flex justify-end">
+                  <Button
+                    onClick={() => handleUpdateProduct(product.id)}
+                    disabled={!newPrices[product.id]}
+                  >
+                    Update Prices
+                  </Button>
+                </div>
               </div>
             </Card>
           ))}

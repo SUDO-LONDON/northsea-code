@@ -3,19 +3,22 @@
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import { Card } from "@/components/ui/card"
 import { useState } from "react"
 import { useRouter } from "next/navigation"
 import Cookies from 'js-cookie'
+import { cn } from "@/lib/utils"
 
 export default function AdminLogin() {
   const [username, setUsername] = useState("")
   const [password, setPassword] = useState("")
   const [error, setError] = useState("")
+  const [loading, setLoading] = useState(false)
   const router = useRouter()
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
+    setLoading(true)
+    setError("")
 
     // For demo purposes, using hardcoded credentials
     // In production, use proper authentication
@@ -26,47 +29,127 @@ export default function AdminLogin() {
     } else {
       setError("Invalid credentials")
     }
+    setLoading(false)
   }
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gray-100">
-      <Card className="w-[350px] p-6">
-        <h2 className="text-2xl font-bold text-center mb-6">Admin Login</h2>
-
-        {error && (
-          <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-4">
-            {error}
+    <div
+      className="bg-background flex min-h-svh flex-col items-center justify-center gap-6 p-6 md:p-10"
+      style={{
+        backgroundColor: '#0f0d21',
+        minHeight: '100vh',
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center',
+        gap: '1.5rem',
+        padding: '1.5rem'
+      }}
+    >
+      <div className="flex flex-col items-center space-y-4 mb-4">
+        <h1
+          className="text-4xl font-bold text-center"
+          style={{
+            fontSize: '2.25rem',
+            fontWeight: '700',
+            color: '#fefeff',
+            textAlign: 'center'
+          }}
+        >
+          Admin Portal
+        </h1>
+        <p
+          className="text-gray-500 text-center"
+          style={{ color: '#9ca3af', textAlign: 'center' }}
+        >
+          Sign in to access admin dashboard
+        </p>
+      </div>
+      <div className="w-full max-w-sm" style={{ width: '100%', maxWidth: '24rem' }}>
+        <div className={cn("grid gap-6")} style={{ display: 'grid', gap: '1.5rem' }}>
+          <form onSubmit={handleSubmit}>
+            <div className="grid gap-4" style={{ display: 'grid', gap: '1rem' }}>
+              {error && (
+                <div
+                  className="text-red-500 text-sm text-center p-2 bg-red-50 border border-red-200 rounded"
+                  style={{
+                    color: '#ef4444',
+                    fontSize: '0.875rem',
+                    textAlign: 'center',
+                    padding: '0.5rem',
+                    backgroundColor: '#fef2f2',
+                    border: '1px solid #fecaca',
+                    borderRadius: '0.375rem'
+                  }}
+                >
+                  {error}
+                </div>
+              )}
+              <div className="grid gap-1" style={{ display: 'grid', gap: '0.25rem' }}>
+                <Label className="sr-only" htmlFor="username">
+                  Username
+                </Label>
+                <Input
+                  id="username"
+                  placeholder="Username"
+                  type="text"
+                  autoCapitalize="none"
+                  autoComplete="username"
+                  autoCorrect="off"
+                  disabled={loading}
+                  value={username}
+                  onChange={(e) => setUsername(e.target.value)}
+                  required
+                />
+              </div>
+              <div className="grid gap-1" style={{ display: 'grid', gap: '0.25rem' }}>
+                <Label className="sr-only" htmlFor="password">
+                  Password
+                </Label>
+                <Input
+                  id="password"
+                  placeholder="Password"
+                  type="password"
+                  autoCapitalize="none"
+                  autoComplete="current-password"
+                  disabled={loading}
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  required
+                />
+              </div>
+              <Button disabled={loading} type="submit">
+                {loading && (
+                  <div className="mr-2 h-4 w-4 animate-spin rounded-full border-2 border-transparent border-t-current" />
+                )}
+                Admin Sign In
+              </Button>
+            </div>
+          </form>
+          <div className="relative">
+            <div className="absolute inset-0 flex items-center">
+              <span className="w-full border-t" style={{ borderColor: '#2d2a3e' }} />
+            </div>
+            <div className="relative flex justify-center text-xs uppercase">
+              <span
+                className="bg-background px-2 text-muted-foreground"
+                style={{
+                  backgroundColor: '#0f0d21',
+                  padding: '0 0.5rem',
+                  color: '#9ca3af',
+                  fontSize: '0.75rem',
+                  textTransform: 'uppercase'
+                }}
+              >
+                Or
+              </span>
+            </div>
           </div>
-        )}
-
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <div className="space-y-2">
-            <Label htmlFor="username">Username</Label>
-            <Input
-              id="username"
-              type="text"
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
-              required
-            />
-          </div>
-
-          <div className="space-y-2">
-            <Label htmlFor="password">Password</Label>
-            <Input
-              id="password"
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              required
-            />
-          </div>
-
-          <Button type="submit" className="w-full">
-            Login
+          <Button variant="outline" onClick={() => router.push("/")}>
+            Back to Login
           </Button>
-        </form>
-      </Card>
+        </div>
+      </div>
     </div>
   )
 }

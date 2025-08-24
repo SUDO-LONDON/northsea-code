@@ -8,6 +8,9 @@ const nextConfig: NextConfig = {
   experimental: {
     optimizeCss: false,
   },
+  compiler: {
+    removeConsole: false,
+  },
   async headers() {
     return [
       {
@@ -20,11 +23,24 @@ const nextConfig: NextConfig = {
         ],
       },
       {
-        source: "/(.*)",
+        source: "/_next/static/css/(.*)",
         headers: [
           {
             key: "Cache-Control",
             value: "public, max-age=31536000, immutable",
+          },
+          {
+            key: "X-Content-Type-Options",
+            value: "nosniff",
+          },
+        ],
+      },
+      {
+        source: "/table",
+        headers: [
+          {
+            key: "Cache-Control",
+            value: "no-cache, no-store, must-revalidate",
           },
         ],
       },
