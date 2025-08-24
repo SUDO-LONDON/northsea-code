@@ -210,6 +210,8 @@
   .mt-1 { margin-top: 0.25rem; }
   .p-4 { padding: 1rem; }
   .p-6 { padding: 1.5rem; }
+  .px-4 { padding-left: 1rem; padding-right: 1rem; }
+  .py-3 { padding-top: 0.75rem; padding-bottom: 0.75rem; }
 
   /* Text sizing */
   .text-sm { font-size: 0.875rem; line-height: 1.25rem; }
