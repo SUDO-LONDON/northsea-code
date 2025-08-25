@@ -1,6 +1,10 @@
-import type { Config } from "tailwindcss";
+/**
+ * Tailwind v4 config (JS) to avoid TypeScript type-checking on Vercel.
+ * Do not add unsupported properties like `safelist`.
+ */
 
-const config: Config = {
+/** @type {import('tailwindcss').Config} */
+const config = {
   content: [
     "./src/pages/**/*.{js,ts,jsx,tsx,mdx}",
     "./src/components/**/*.{js,ts,jsx,tsx,mdx}",
@@ -18,4 +22,5 @@ const config: Config = {
   plugins: [],
 };
 
-export default config;
+module.exports = config;
+
