@@ -76,13 +76,7 @@ export default function TradingPage() {
                   Current market prices for all products
                 </p>
               </div>
-              <ProductsTable
-                data={products}
-                accentColor="#65bd7d"
-                borderColor="black"
-                textColor="white"
-                backgroundColor="#222"
-              />
+              <ProductsTable data={products} />
             </div>
           </Card>
           <ClientOnly>
