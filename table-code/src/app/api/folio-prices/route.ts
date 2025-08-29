@@ -14,6 +14,18 @@ const IDS = [
   '6ccbf93e-d43d-46ab-ba50-c26659add883',
 ];
 
+interface PayloadEntry {
+  data?: {
+    Q25?: {
+      value?: number;
+    };
+  };
+}
+
+interface FolioApiResponse {
+  payload?: Record<string, PayloadEntry>;
+}
+
 export async function POST() {
   try {
     const token = await getToken();
@@ -29,23 +41,19 @@ export async function POST() {
       const error = await res.text();
       return NextResponse.json({ error }, { status: res.status });
     }
-    const data = await res.json();
+    const data: FolioApiResponse = await res.json();
     // Extract prices from nested structure: data.payload[ID].data.Q25.value
-    type Entry = { data?: { Q25?: { value?: number } } };
     let prices: { id: string; value: number }[] = [];
     if (data && typeof data === 'object' && data.payload && typeof data.payload === 'object') {
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      prices = Object.entries(data.payload).map(([id, entry]: [string, any]) => ({
+      prices = Object.entries(data.payload).map(([id, entry]: [string, PayloadEntry]) => ({
         id,
         value: entry?.data?.Q25?.value ?? 0,
       }));
     }
     return NextResponse.json(prices);
-  } catch (
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    error: any
-  ) {
-    return NextResponse.json({ error: error.message || 'Unknown error' }, { status: 500 });
+  } catch (error: unknown) {
+    const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+    return NextResponse.json({ error: errorMessage }, { status: 500 });
   }
 }
 
