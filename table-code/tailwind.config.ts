@@ -8,6 +8,17 @@ const config: Config = {
   ],
   theme: {
     extend: {
+      colors: {
+        background: "#222222",
+        foreground: "#ffffff",
+        accent: "#65bd7d",
+        border: "#000000",
+        card: "#282828",
+        muted: "#33343a",
+        "muted-foreground": "#9ca3af",
+        primary: "#65bd7d",
+        "primary-foreground": "#ffffff",
+      },
       borderRadius: {
         lg: "var(--radius)",
         md: "calc(var(--radius) - 2px)",

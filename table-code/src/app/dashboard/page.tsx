@@ -104,23 +104,23 @@ export default function Dashboard() {
   }
 
   return (
-    <div className="bg-background min-h-screen">
+    <div className="bg-gray-900 min-h-screen text-white">
       <div className="container mx-auto p-6">
         <div className="mb-8">
           <div className="flex justify-between items-center">
             <div>
-              <h1 className="text-4xl font-bold text-foreground mb-2">
+              <h1 className="text-4xl font-bold mb-2 text-[#65bd7d]">
                 Admin Dashboard
               </h1>
-              <p className="text-muted-foreground">
+              <p className="text-gray-300">
                 Manage product prices and settings
               </p>
             </div>
             <div className="flex gap-4">
-              <Button variant="outline" onClick={handleResetProducts}>
+              <Button variant="outline" onClick={handleResetProducts} className="border-black text-[#65bd7d] hover:bg-[#65bd7d] hover:text-black">
                 Reset to 20 Products
               </Button>
-              <Button variant="outline" onClick={handleLogout}>
+              <Button variant="outline" onClick={handleLogout} className="border-black text-[#65bd7d] hover:bg-[#65bd7d] hover:text-black">
                 Logout
               </Button>
             </div>
@@ -128,7 +128,7 @@ export default function Dashboard() {
         </div>
 
         <div className="grid gap-6">
-          <Card className="border shadow-sm">
+          <Card className="bg-gray-800 border border-black text-white shadow-sm">
             <div className="p-6">
               <div className="mb-6">
                 <h2 className="text-xl font-semibold text-foreground">
@@ -157,7 +157,7 @@ export default function Dashboard() {
           </Card>
 
           {products.map((product) => (
-            <Card key={product.id} className="border shadow-sm">
+            <Card key={product.id} className="bg-gray-800 border border-black text-white shadow-sm">
               <div className="p-6">
                 <div className="mb-6">
                   <h3 className="text-lg font-semibold text-foreground">
@@ -230,6 +230,7 @@ export default function Dashboard() {
                   <Button
                     onClick={() => handleUpdateProduct(product.id)}
                     disabled={!newPrices[product.id]}
+                    className="bg-[#65bd7d] text-black hover:bg-[#57a76e]"
                   >
                     Update Prices
                   </Button>

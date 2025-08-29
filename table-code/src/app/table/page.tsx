@@ -55,7 +55,7 @@ export default function TradingPage() {
   }, []);
 
   return (
-    <div className="bg-background min-h-screen">
+    <div className="min-h-screen bg-gray-900 text-white">
       <div className="container mx-auto p-6">
         <div className="mb-8">
           <h1 className="text-4xl font-bold text-foreground mb-2">
@@ -66,7 +66,7 @@ export default function TradingPage() {
           </p>
         </div>
         <div className="grid gap-6 md:grid-cols-3">
-          <Card className="border shadow-sm md:col-span-2">
+          <Card className="bg-gray-800 border border-black shadow-sm md:col-span-2">
             <div className="p-6">
               <div className="mb-6">
                 <h2 className="text-xl font-semibold text-foreground">
@@ -76,7 +76,13 @@ export default function TradingPage() {
                   Current market prices for all products
                 </p>
               </div>
-              <ProductsTable data={products} />
+              <ProductsTable
+                data={products}
+                accentColor="#65bd7d"
+                borderColor="black"
+                textColor="white"
+                backgroundColor="#222"
+              />
             </div>
           </Card>
           <ClientOnly>
