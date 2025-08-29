@@ -31,16 +31,21 @@ export async function POST() {
     }
     const data = await res.json();
     // Extract prices from nested structure: data.payload[ID].data.Q25.value
+    type Entry = { data?: { Q25?: { value?: number } } };
     let prices: { id: string; value: number }[] = [];
     if (data && typeof data === 'object' && data.payload && typeof data.payload === 'object') {
-      prices = Object.entries(data.payload).map(([id, entry]: [string, any]) => ({
+      prices = Object.entries(data.payload).map(([id, entry]: [string, Entry]) => ({
         id,
         value: entry?.data?.Q25?.value ?? 0,
       }));
     }
     return NextResponse.json(prices);
-  } catch (error: any) {
-    return NextResponse.json({ error: error.message || 'Unknown error' }, { status: 500 });
+  } catch (error: unknown) {
+    let message = 'Unknown error';
+    if (error && typeof error === 'object' && 'message' in error && typeof (error as any).message === 'string') {
+      message = (error as any).message;
+    }
+    return NextResponse.json({ error: message }, { status: 500 });
   }
 }
 
