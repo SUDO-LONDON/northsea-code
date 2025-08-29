@@ -11,36 +11,33 @@
   box-sizing: border-box;
 }
 
-html {
-  background-color: #0f0d21 !important;
-  color: #fefeff !important;
-}
-
-body {
-  background-color: #0f0d21 !important;
-  color: #fefeff !important;
+html, body {
+  @apply bg-background text-foreground;
   margin: 0;
   padding: 0;
   min-height: 100vh;
 }
 
 /* Override Tailwind base colors with direct values */
-.bg-background { background-color: #0f0d21 !important; }
-.text-foreground { color: #fefeff !important; }
-.bg-card { background-color: #141225 !important; }
-.text-card-foreground { color: #fefeff !important; }
-.bg-muted { background-color: #1a1830 !important; }
-.text-muted-foreground { color: #9ca3af !important; }
-.border { border-color: #2d2a3e !important; }
-.bg-primary { background-color: #d86b07 !important; }
-.text-primary-foreground { color: #fefeff !important; }
+.bg-background { @apply bg-background !important; }
+.text-foreground { @apply text-foreground !important; }
+.bg-card { @apply bg-card !important; }
+.text-card-foreground { @apply text-foreground !important; }
+.bg-muted { @apply bg-muted !important; }
+.text-muted-foreground { @apply text-muted-foreground !important; }
+.border { @apply border-border !important; }
+.bg-primary { @apply bg-primary !important; }
+.text-primary-foreground { @apply text-primary-foreground !important; }
+.text-accent { @apply text-accent !important; }
+.bg-accent { @apply bg-accent !important; }
+.border-accent { border-color: #65bd7d !important; }
 
 /* Table border styles - critical for table lines */
 .border-b {
-  border-bottom: 1px solid #2d2a3e !important;
+  border-bottom: 1px solid #000 !important;
 }
 .border-t {
-  border-top: 1px solid #2d2a3e !important;
+  border-top: 1px solid #000 !important;
 }
 
 /* Table specific styling */
