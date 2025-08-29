@@ -1,30 +1,57 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { ProductsTable } from "@/components/ProductsTable";
 import { Card } from "@/components/ui/card";
 import { Product } from "@/lib/products";
 import { getProducts } from "@/lib/productUtils";
+import ClientOnly from "@/components/ClientOnly";
+
+const PRODUCT_ID_MAP: { [id: string]: string } = {
+  "6ccbf93e-d43d-46ab-ba50-c26659add883": "M0 SING 380 FP",
+  "9c68de75-aed7-417b-abab-eaf576d0d6fe": "M0 SG 10PPM FP",
+  "99d27f4d-0a7e-44fe-b9de-9c27d27f08d2": "M0 0.5% GC FP",
+  "d71f82b9-21e2-49f0-9974-4a11a9e5b09f": "M0 0.1% BGS",
+  "29d3a405-cb03-45b4-9ebf-f0176b7ba06a": "M0 0.5% BGS FP",
+  "662e5a2f-f028-4d18-81dc-89be3ba01f3a": "M0 0.5% SG FP",
+  "e506264b-1bcd-429f-b018-f50e3f517133": "M0 3% GC FP",
+  "e9e305ee-8605-4503-b3e2-8f5763870cd2": "M0 3.5% BGS FP",
+  "b0738070-229c-4aa7-b5d0-45b4119dd0e0": "M0 1% FOB FP",
+};
+
+interface LivePrice {
+  id: string;
+  value: number;
+}
 
 export default function TradingPage() {
   const [products, setProducts] = useState<Product[]>([]);
+  const [livePrices, setLivePrices] = useState<LivePrice[]>([]);
 
   useEffect(() => {
-    // Use setTimeout to ensure this runs after hydration
-    setTimeout(() => {
-      const loadProducts = () => {
-        const loadedProducts = getProducts();
-        setProducts(loadedProducts);
-      };
+    const loadProducts = () => {
+      const loadedProducts = getProducts();
+      setProducts(loadedProducts);
+    };
+    loadProducts();
+    const interval = setInterval(loadProducts, 5000);
+    return () => clearInterval(interval);
+  }, []);
 
-      // Initial load
-      loadProducts();
-
-      // Set up periodic refresh
-      const interval = setInterval(loadProducts, 5000);
-
-      return () => clearInterval(interval);
-    }, 0);
+  useEffect(() => {
+    const fetchLivePrices = async () => {
+      try {
+        const res = await fetch("/api/folio-prices");
+        if (!res.ok) return;
+        const data = await res.json();
+        setLivePrices(Array.isArray(data) ? data : []);
+      } catch {
+        setLivePrices([]);
+      }
+    };
+    fetchLivePrices();
+    const interval = setInterval(fetchLivePrices, 5000);
+    return () => clearInterval(interval);
   }, []);
 
   return (
@@ -38,9 +65,8 @@ export default function TradingPage() {
             Real-time market data and analytics
           </p>
         </div>
-
-        <div className="grid gap-6">
-          <Card className="border shadow-sm">
+        <div className="grid gap-6 md:grid-cols-3">
+          <Card className="border shadow-sm md:col-span-2">
             <div className="p-6">
               <div className="mb-6">
                 <h2 className="text-xl font-semibold text-foreground">
@@ -53,60 +79,31 @@ export default function TradingPage() {
               <ProductsTable data={products} />
             </div>
           </Card>
-
-          <div className="grid md:grid-cols-2 gap-6">
+          <ClientOnly>
             <Card className="border shadow-sm">
               <div className="p-6">
-                <h3 className="text-lg font-semibold text-foreground mb-2">
-                  Quick Stats
-                </h3>
-                <div className="grid grid-cols-2 gap-4">
-                  <div className="p-4 rounded-lg bg-muted border">
-                    <p className="text-sm text-muted-foreground">Total Products</p>
-                    <p className="text-2xl font-bold text-foreground">
-                      {products.length}
-                    </p>
-                  </div>
-                  <div className="p-4 rounded-lg bg-muted border">
-                    <p className="text-sm text-muted-foreground">Last Update</p>
-                    <p className="text-2xl font-bold text-foreground">
-                      {products[0]?.lastUpdated
-                        ? new Date(products[0].lastUpdated).toLocaleTimeString()
-                        : "--:--"}
-                    </p>
-                  </div>
+                <h2 className="text-xl font-semibold text-foreground mb-4">
+                  Paper Trading (Artis Works)
+                </h2>
+                <div className="space-y-3">
+                  {Object.entries(PRODUCT_ID_MAP).map(([id, name]) => {
+                    const priceObj = livePrices.find((p) => p.id === id);
+                    return (
+                      <div
+                        key={id}
+                        className="flex flex-col border-b pb-2 last:border-b-0 last:pb-0"
+                      >
+                        <span className="font-medium text-foreground">{name}</span>
+                        <span className="text-lg font-bold text-primary">
+                          {priceObj && priceObj.value !== undefined ? `£${priceObj.value.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}` : "--"}
+                        </span>
+                      </div>
+                    );
+                  })}
                 </div>
               </div>
             </Card>
-
-            <Card className="border shadow-sm">
-              <div className="p-6">
-                <h3 className="text-lg font-semibold text-foreground mb-2">
-                  Price Range
-                </h3>
-                <div className="grid grid-cols-2 gap-4">
-                  <div className="p-4 rounded-lg bg-muted border">
-                    <p className="text-sm text-muted-foreground">Lowest HFO Price</p>
-                    <p className="text-2xl font-bold text-foreground">
-                      £
-                      {products.length > 0
-                        ? Math.min(...products.map((p) => p.hfo)).toFixed(2)
-                        : "0.00"}
-                    </p>
-                  </div>
-                  <div className="p-4 rounded-lg bg-muted border">
-                    <p className="text-sm text-muted-foreground">Highest HFO Price</p>
-                    <p className="text-2xl font-bold text-foreground">
-                      £
-                      {products.length > 0
-                        ? Math.max(...products.map((p) => p.hfo)).toFixed(2)
-                        : "0.00"}
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </Card>
-          </div>
+          </ClientOnly>
         </div>
       </div>
     </div>
