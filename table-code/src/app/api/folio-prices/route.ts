@@ -34,21 +34,18 @@ export async function POST() {
     type Entry = { data?: { Q25?: { value?: number } } };
     let prices: { id: string; value: number }[] = [];
     if (data && typeof data === 'object' && data.payload && typeof data.payload === 'object') {
-      prices = Object.entries(data.payload).map(([id, entry]) => {
-        const e = entry as { data?: { Q25?: { value?: number } } };
-        return {
-          id,
-          value: e?.data?.Q25?.value ?? 0,
-        };
-      });
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      prices = Object.entries(data.payload).map(([id, entry]: [string, any]) => ({
+        id,
+        value: entry?.data?.Q25?.value ?? 0,
+      }));
     }
     return NextResponse.json(prices);
-  } catch (error: unknown) {
-    let message = 'Unknown error';
-    if (error && typeof error === 'object' && 'message' in error && typeof (error as { message?: unknown }).message === 'string') {
-      message = (error as { message: string }).message;
-    }
-    return NextResponse.json({ error: message }, { status: 500 });
+  } catch (
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    error: any
+  ) {
+    return NextResponse.json({ error: error.message || 'Unknown error' }, { status: 500 });
   }
 }
 
