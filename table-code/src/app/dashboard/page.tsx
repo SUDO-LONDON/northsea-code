@@ -106,10 +106,6 @@ export default function Dashboard() {
   return (
     <div className="bg-gray-900 min-h-screen text-white">
       <div className="container mx-auto p-6">
-        <div className="flex justify-center mb-8">
-          <img src="/csc.png" alt="Artis Works Logo" className="max-w-full h-auto" style={{ maxHeight: '200px' }} />
-        </div>
-
         <div className="mb-8">
           <div className="flex justify-between items-center">
             <div>

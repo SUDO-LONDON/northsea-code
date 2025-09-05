@@ -57,17 +57,6 @@ export default function TradingPage() {
   return (
     <div className="min-h-screen bg-gray-900 text-white">
       <div className="container mx-auto p-6">
-        <div className="flex justify-center mb-8">
-          <img
-            src="/csc.png"
-            alt="Paper Trading Logo"
-            style={{
-              display: "block",
-              maxWidth: "100%",
-              height: "auto",
-            }}
-          />
-        </div>
         <div className="mb-8">
           <h1 className="text-4xl font-bold text-foreground mb-2">
             Trading Panel
