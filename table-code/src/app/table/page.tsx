@@ -86,7 +86,7 @@ export default function TradingPage() {
                   <img
                     src="/csc.png"
                     alt="Paper Trading Logo"
-                    style={{ display: "block", border: "2px solid red" }}
+                    style={{ display: "block" }}
                   />
                 </div>
                 <div className="space-y-3">
