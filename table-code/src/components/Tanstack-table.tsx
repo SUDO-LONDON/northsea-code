@@ -154,97 +154,104 @@ export default function TradeTable({
   });
 
   return (
-    <div className="bg-secondary-foreground shadow-md rounded-xl p-6 overflow-x-auto">
-      <UITable>
-        <TableHeader>
-          {table.getHeaderGroups().map((headerGroup: HeaderGroup<Trade>) => (
-            <TableRow key={headerGroup.id}>
-              {headerGroup.headers.map((header: Header<Trade, unknown>) => (
-                <TableHead key={header.id}>
-                  {header.isPlaceholder
-                    ? null
-                    : flexRender(
-                        header.column.columnDef.header,
-                        header.getContext()
-                      )}
-                </TableHead>
-              ))}
-            </TableRow>
-          ))}
-        </TableHeader>
-        <TableBody>
-          {table.getRowModel().rows?.length ? (
-            table.getRowModel().rows.map((row: Row<Trade>) => (
-              <TableRow
-                key={row.id}
-                data-state={row.getIsSelected() && "selected"}
-                className="cursor-pointer"
-              >
-                {row.getVisibleCells().map((cell: Cell<Trade, unknown>) => (
-                  <TableCell key={cell.id}>
-                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                  </TableCell>
+    <div>
+      <div className="flex items-center mb-4">
+        <img src="/csc.png" alt="Paper Trading Logo" className="h-10 w-10 mr-2" />
+        <span className="text-xl font-bold">Paper Trading</span>
+      </div>
+
+      <div className="bg-secondary-foreground shadow-md rounded-xl p-6 overflow-x-auto">
+        <UITable>
+          <TableHeader>
+            {table.getHeaderGroups().map((headerGroup: HeaderGroup<Trade>) => (
+              <TableRow key={headerGroup.id}>
+                {headerGroup.headers.map((header: Header<Trade, unknown>) => (
+                  <TableHead key={header.id}>
+                    {header.isPlaceholder
+                      ? null
+                      : flexRender(
+                          header.column.columnDef.header,
+                          header.getContext()
+                        )}
+                  </TableHead>
                 ))}
               </TableRow>
-            ))
-          ) : (
-            <TableRow>
-              <TableCell colSpan={columns.length} className="h-24 text-center">
-                No results.
-              </TableCell>
-            </TableRow>
-          )}
-        </TableBody>
-      </UITable>
+            ))}
+          </TableHeader>
+          <TableBody>
+            {table.getRowModel().rows?.length ? (
+              table.getRowModel().rows.map((row: Row<Trade>) => (
+                <TableRow
+                  key={row.id}
+                  data-state={row.getIsSelected() && "selected"}
+                  className="cursor-pointer"
+                >
+                  {row.getVisibleCells().map((cell: Cell<Trade, unknown>) => (
+                    <TableCell key={cell.id}>
+                      {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                    </TableCell>
+                  ))}
+                </TableRow>
+              ))
+            ) : (
+              <TableRow>
+                <TableCell colSpan={columns.length} className="h-24 text-center">
+                  No results.
+                </TableCell>
+              </TableRow>
+            )}
+          </TableBody>
+        </UITable>
 
-      <div className="mt-5 flex items-center gap-4 justify-end text-sm text-gray-700">
-        <button
-          onClick={() =>
-            setPagination({
-              ...pagination,
-              pageIndex: Math.max(pagination.pageIndex - 1, 0),
-            })
-          }
-          disabled={pagination.pageIndex === 0}
-          className="px-3 py-1 bg-indigo-100 text-indigo-700 rounded-md disabled:opacity-50 hover:bg-indigo-200"
-        >
-          Prev
-        </button>
+        <div className="mt-5 flex items-center gap-4 justify-end text-sm text-gray-700">
+          <button
+            onClick={() =>
+              setPagination({
+                ...pagination,
+                pageIndex: Math.max(pagination.pageIndex - 1, 0),
+              })
+            }
+            disabled={pagination.pageIndex === 0}
+            className="px-3 py-1 bg-indigo-100 text-indigo-700 rounded-md disabled:opacity-50 hover:bg-indigo-200"
+          >
+            Prev
+          </button>
 
-        <span>
-          Page {pagination.pageIndex + 1} of {totalPages}
-        </span>
+          <span>
+            Page {pagination.pageIndex + 1} of {totalPages}
+          </span>
 
-        <button
-          onClick={() =>
-            setPagination({
-              ...pagination,
-              pageIndex: Math.min(pagination.pageIndex + 1, totalPages - 1),
-            })
-          }
-          disabled={pagination.pageIndex + 1 >= totalPages}
-          className="px-3 py-1 bg-indigo-100 text-indigo-700 rounded-md disabled:opacity-50 hover:bg-indigo-200"
-        >
-          Next
-        </button>
+          <button
+            onClick={() =>
+              setPagination({
+                ...pagination,
+                pageIndex: Math.min(pagination.pageIndex + 1, totalPages - 1),
+              })
+            }
+            disabled={pagination.pageIndex + 1 >= totalPages}
+            className="px-3 py-1 bg-indigo-100 text-indigo-700 rounded-md disabled:opacity-50 hover:bg-indigo-200"
+          >
+            Next
+          </button>
 
-        <select
-          value={pagination.pageSize}
-          onChange={(e) =>
-            setPagination({
-              ...pagination,
-              pageSize: Number(e.target.value),
-              pageIndex: 0,
-            })
-          }
-          className="ml-2 p-1 border border-gray-300 rounded-md"
-        >
-          {[5, 10, 20, 50].map((size) => (
-            <option key={size} value={size}>
-              Show {size}
-            </option>
-          ))}
-        </select>
+          <select
+            value={pagination.pageSize}
+            onChange={(e) =>
+              setPagination({
+                ...pagination,
+                pageSize: Number(e.target.value),
+                pageIndex: 0,
+              })
+            }
+            className="ml-2 p-1 border border-gray-300 rounded-md"
+          >
+            {[5, 10, 20, 50].map((size) => (
+              <option key={size} value={size}>
+                Show {size}
+              </option>
+            ))}
+          </select>
+        </div>
       </div>
     </div>
   );
