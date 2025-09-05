@@ -57,6 +57,17 @@ export default function TradingPage() {
   return (
     <div className="min-h-screen bg-gray-900 text-white">
       <div className="container mx-auto p-6">
+        <div className="flex justify-center mb-8">
+          <img
+            src="/csc.png"
+            alt="Paper Trading Logo"
+            style={{
+              display: "block",
+              maxWidth: "100%",
+              height: "auto",
+            }}
+          />
+        </div>
         <div className="mb-8">
           <h1 className="text-4xl font-bold text-foreground mb-2">
             Trading Panel
@@ -82,9 +93,14 @@ export default function TradingPage() {
           <ClientOnly>
             <Card className="border shadow-sm">
               <div className="p-6">
-                <h2 className="text-xl font-semibold text-foreground mb-4">
-                  Paper Trading (Artis Works)
-                </h2>
+                <div className="flex items-center mb-6">
+                  <img
+                    src="/csc.png"
+                    alt="Paper Trading Logo"
+                    className="h-12 w-12 mr-4"
+                  />
+                  <span className="text-2xl font-bold">Paper Trading</span>
+                </div>
                 <div className="space-y-3">
                   {Object.entries(PRODUCT_ID_MAP).map(([id, name]) => {
                     const priceObj = livePrices.find((p) => p.id === id);
@@ -95,7 +111,12 @@ export default function TradingPage() {
                       >
                         <span className="font-medium text-foreground">{name}</span>
                         <span className="text-lg font-bold text-primary">
-                          {priceObj && priceObj.value !== undefined ? `£${priceObj.value.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}` : "--"}
+                          {priceObj && priceObj.value !== undefined
+                            ? `£${priceObj.value.toLocaleString(undefined, {
+                                minimumFractionDigits: 2,
+                                maximumFractionDigits: 2,
+                              })}`
+                            : "--"}
                         </span>
                       </div>
                     );
