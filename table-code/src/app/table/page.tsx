@@ -6,6 +6,7 @@ import { Card } from "@/components/ui/card";
 import { Product } from "@/lib/products";
 import { getProducts } from "@/lib/productUtils";
 import ClientOnly from "@/components/ClientOnly";
+import CommodityTickerPanel from "@/components/CommodityTickerPanel";
 
 const PRODUCT_ID_MAP: { [id: string]: string } = {
   "6ccbf93e-d43d-46ab-ba50-c26659add883": "M0 SING 380 FP",
@@ -80,11 +81,15 @@ export default function TradingPage() {
             </div>
           </Card>
           <ClientOnly>
-            <Card className="border shadow-sm">
-              <div className="p-6">
-                <h2 className="text-xl font-semibold text-foreground mb-4">
-                  Paper Trading (Artis Works)
-                </h2>
+            <Card className="border shadow-sm mb-0">
+              <div className="p-6 pb-3">
+                <div className="flex items-center justify-center mb-6">
+                  <img
+                    src="/csc.png"
+                    alt="Paper Trading Logo"
+                    style={{ display: "block" }}
+                  />
+                </div>
                 <div className="space-y-3">
                   {Object.entries(PRODUCT_ID_MAP).map(([id, name]) => {
                     const priceObj = livePrices.find((p) => p.id === id);
@@ -95,12 +100,21 @@ export default function TradingPage() {
                       >
                         <span className="font-medium text-foreground">{name}</span>
                         <span className="text-lg font-bold text-primary">
-                          {priceObj && priceObj.value !== undefined ? `£${priceObj.value.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}` : "--"}
+                          {priceObj && priceObj.value !== undefined
+                            ? `£${priceObj.value.toLocaleString(undefined, {
+                                minimumFractionDigits: 2,
+                                maximumFractionDigits: 2,
+                              })}`
+                            : "--"}
                         </span>
                       </div>
                     );
                   })}
                 </div>
+              </div>
+              {/* Move ticker panel inside this card, below the csc section */}
+              <div className="border-t border-gray-700">
+                <CommodityTickerPanel />
               </div>
             </Card>
           </ClientOnly>
