@@ -82,13 +82,12 @@ export default function TradingPage() {
           <ClientOnly>
             <Card className="border shadow-sm">
               <div className="p-6">
-                <div className="flex items-center mb-6">
+                <div className="flex items-center justify-center mb-6">
                   <img
                     src="/csc.png"
                     alt="Paper Trading Logo"
-                    className="h-12 w-12 mr-4"
+                    style={{ display: "block", border: "2px solid red" }}
                   />
-                  <span className="text-2xl font-bold">Paper Trading</span>
                 </div>
                 <div className="space-y-3">
                   {Object.entries(PRODUCT_ID_MAP).map(([id, name]) => {
