@@ -40,7 +40,7 @@ const columns: ColumnDef<Product>[] = [
     header: () => <div className="text-center">HFO</div>,
     cell: ({ row }) => {
       const value = parseFloat(row.getValue("hfo"))
-      return <div className="text-center font-medium text-foreground">£{value.toFixed(2)}</div>
+      return <div className="text-center font-medium text-foreground">${value.toFixed(2)}</div>
     }
   },
   {
@@ -48,7 +48,7 @@ const columns: ColumnDef<Product>[] = [
     header: () => <div className="text-center">VLSFO</div>,
     cell: ({ row }) => {
       const value = parseFloat(row.getValue("vlsfo"))
-      return <div className="text-center font-medium text-foreground">£{value.toFixed(2)}</div>
+      return <div className="text-center font-medium text-foreground">${value.toFixed(2)}</div>
     }
   },
   {
@@ -56,7 +56,7 @@ const columns: ColumnDef<Product>[] = [
     header: () => <div className="text-center">MGO</div>,
     cell: ({ row }) => {
       const value = parseFloat(row.getValue("mgo"))
-      return <div className="text-center font-medium text-foreground">£{value.toFixed(2)}</div>
+      return <div className="text-center font-medium text-foreground">${value.toFixed(2)}</div>
     }
   },
   {
