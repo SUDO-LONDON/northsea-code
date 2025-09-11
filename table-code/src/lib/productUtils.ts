@@ -37,16 +37,18 @@ export async function getProducts(): Promise<Product[]> {
   try {
     const { data, error } = await supabase
       .from('products')
-      .select('id, name, hfo, vlsfo, mgo, change, lastupdated')  // Use lowercase column name
+      .select('id, name, hfo, vlsfo, mgo, change, lastupdated')
       .order('id');
 
+    console.log("Supabase products fetch result:", { data, error });
+
     if (error) {
-      console.error("Error fetching products from database:", error);
+      console.error("Error fetching products from database (falling back to PRODUCTS):", error);
       return await initializeProducts();
     }
 
     if (!data || data.length === 0) {
-      console.log("No products found, initializing...");
+      console.warn("No products found in database (falling back to PRODUCTS)");
       return await initializeProducts();
     }
 
@@ -63,13 +65,14 @@ export async function getProducts(): Promise<Product[]> {
 
     // Validate data structure
     if (products.length !== PRODUCTS.length || !products.every((p, i) => p.name === PRODUCTS[i].name)) {
-      console.log("Product data is outdated, reinitializing...");
+      console.warn("Product data is outdated or mismatched (falling back to PRODUCTS)");
       return await initializeProducts();
     }
 
+    console.log("Products loaded from database:", products);
     return products;
   } catch (error) {
-    console.error("Error loading products:", error);
+    console.error("Error loading products (exception, falling back to PRODUCTS):", error);
     return await initializeProducts();
   }
 }
