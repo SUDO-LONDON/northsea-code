@@ -7,6 +7,8 @@ import { Product } from "@/lib/products";
 import { getProducts } from "@/lib/productUtils";
 import ClientOnly from "@/components/ClientOnly";
 import CommodityTickerPanel from "@/components/CommodityTickerPanel";
+import Cookies from 'js-cookie';
+import { useRouter } from "next/navigation";
 
 const PRODUCT_ID_MAP: { [id: string]: string } = {
     "6ccbf93e-d43d-46ab-ba50-c26659add883": "M0 SING 380 FP",
@@ -28,8 +30,14 @@ interface LivePrice {
 export default function TradingPage() {
     const [products, setProducts] = useState<Product[]>([]);
     const [livePrices, setLivePrices] = useState<LivePrice[]>([]);
-
+    const router = useRouter();
     useEffect(() => {
+        // Auth check
+        const isAuthenticated = Cookies.get('adminAuth');
+        if (!isAuthenticated) {
+            router.push("/");
+            return;
+        }
         const loadProducts = () => {
             const loadedProducts = getProducts();
             setProducts(loadedProducts);
@@ -37,7 +45,7 @@ export default function TradingPage() {
         loadProducts();
         const interval = setInterval(loadProducts, 5000);
         return () => clearInterval(interval);
-    }, []);
+    }, [router]);
 
     useEffect(() => {
         const fetchLivePrices = async () => {
@@ -135,4 +143,3 @@ export default function TradingPage() {
         </div>
     );
 }
-
