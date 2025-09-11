@@ -116,7 +116,8 @@ export async function POST() {
     }
 }
 
-// GET handler: redirect to POST for convenience
+// GET handler: redirect to POST for convenience test
 export async function GET() {
     return POST();
 }
+
