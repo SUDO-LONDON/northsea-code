@@ -38,10 +38,17 @@ export default function TradingPage() {
             router.push("/");
             return;
         }
-        const loadProducts = () => {
-            const loadedProducts = getProducts();
-            setProducts(loadedProducts);
+
+        const loadProducts = async () => {
+            try {
+                const loadedProducts = await getProducts();
+                setProducts(loadedProducts);
+            } catch (error) {
+                console.error("Error loading products:", error);
+                setProducts([]);
+            }
         };
+
         loadProducts();
         const interval = setInterval(loadProducts, 5000);
         return () => clearInterval(interval);
