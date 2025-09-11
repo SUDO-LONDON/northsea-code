@@ -8,7 +8,7 @@ import { Label } from "@/components/ui/label"
 import { Card } from "@/components/ui/card"
 import Cookies from 'js-cookie'
 import { Product } from "@/lib/products"
-import { getProducts, initializeProducts } from "@/lib/productUtils"
+import { getProducts, initializeProducts, updateProduct } from "@/lib/productUtils"
 
 type PriceInputs = {
     hfo: string;
@@ -21,6 +21,7 @@ export default function Dashboard() {
     const [products, setProducts] = useState<Product[]>([])
     const [newPrices, setNewPrices] = useState<Record<string, PriceInputs>>({})
     const [isLoading, setIsLoading] = useState(true)
+    const [updateLoading, setUpdateLoading] = useState<Record<string, boolean>>({})
 
     useEffect(() => {
         const isAuthenticated = Cookies.get('adminAuth')
@@ -29,19 +30,21 @@ export default function Dashboard() {
             return
         }
 
-        // Use setTimeout to ensure this runs after hydration
-        setTimeout(() => {
+        // Load products from database
+        const loadProducts = async () => {
             try {
-                const loadedProducts = getProducts()
+                const loadedProducts = await getProducts()
                 setProducts(loadedProducts)
             } catch (error) {
                 console.error("Error loading products:", error)
-                const initialProducts = initializeProducts()
+                const initialProducts = await initializeProducts()
                 setProducts(initialProducts)
             } finally {
                 setIsLoading(false)
             }
-        }, 0)
+        }
+
+        loadProducts()
     }, [router])
 
     const handleValueChange = (id: string, field: keyof PriceInputs, value: string) => {
@@ -80,51 +83,61 @@ export default function Dashboard() {
         return Number(percentageChange.toFixed(2))
     }
 
-    const handleUpdateProduct = (id: string) => {
+    const handleUpdateProduct = async (id: string) => {
         const prices = newPrices[id]
         if (!prices) return
 
-        setProducts(prev => {
-            const updated = prev.map(product => {
-                if (product.id === id) {
-                    // Use typed checks to allow partial updates
-                    const newHfo =
-                        prices.hfo !== undefined && prices.hfo.trim() !== ''
-                            ? parseFloat(prices.hfo)
-                            : product.hfo
-                    const newVlsfo =
-                        prices.vlsfo !== undefined && prices.vlsfo.trim() !== ''
-                            ? parseFloat(prices.vlsfo)
-                            : product.vlsfo
-                    const newMgo =
-                        prices.mgo !== undefined && prices.mgo.trim() !== ''
-                            ? parseFloat(prices.mgo)
-                            : product.mgo
+        setUpdateLoading(prev => ({ ...prev, [id]: true }))
 
-                    const oldAvg = (product.hfo + product.vlsfo + product.mgo) / 3
-                    const newAvg = (newHfo + newVlsfo + newMgo) / 3
-                    const percentageChange = oldAvg > 0 ? ((newAvg - oldAvg) / oldAvg) * 100 : 0
+        try {
+            const product = products.find(p => p.id === id)
+            if (!product) return
 
-                    return {
-                        ...product,
-                        hfo: newHfo,
-                        vlsfo: newVlsfo,
-                        mgo: newMgo,
-                        change: Number(percentageChange.toFixed(2)),
-                        lastUpdated: new Date().toISOString()
-                    }
-                }
-                return product
-            })
-            localStorage.setItem("products", JSON.stringify(updated))
-            return updated
-        })
+            // Calculate new values
+            const newHfo = prices.hfo !== undefined && prices.hfo.trim() !== ''
+                ? parseFloat(prices.hfo)
+                : product.hfo
+            const newVlsfo = prices.vlsfo !== undefined && prices.vlsfo.trim() !== ''
+                ? parseFloat(prices.vlsfo)
+                : product.vlsfo
+            const newMgo = prices.mgo !== undefined && prices.mgo.trim() !== ''
+                ? parseFloat(prices.mgo)
+                : product.mgo
 
-        // Clear the form entry for this product
-        setNewPrices(prev => {
-            const { [id]: _, ...rest } = prev
-            return rest
-        })
+            const oldAvg = (product.hfo + product.vlsfo + product.mgo) / 3
+            const newAvg = (newHfo + newVlsfo + newMgo) / 3
+            const percentageChange = oldAvg > 0 ? ((newAvg - oldAvg) / oldAvg) * 100 : 0
+
+            const updatedProduct = {
+                ...product,
+                hfo: newHfo,
+                vlsfo: newVlsfo,
+                mgo: newMgo,
+                change: Number(percentageChange.toFixed(2)),
+                lastUpdated: new Date().toISOString()
+            }
+
+            // Update in database
+            const success = await updateProduct(updatedProduct)
+
+            if (success) {
+                // Update local state
+                setProducts(prev => prev.map(p => p.id === id ? updatedProduct : p))
+
+                // Clear the form entry for this product
+                setNewPrices(prev => {
+                    const { [id]: _, ...rest } = prev
+                    return rest
+                })
+            } else {
+                alert('Failed to update product. Please try again.')
+            }
+        } catch (error) {
+            console.error('Error updating product:', error)
+            alert('Error updating product. Please try again.')
+        } finally {
+            setUpdateLoading(prev => ({ ...prev, [id]: false }))
+        }
     }
 
     const handleLogout = () => {
@@ -132,10 +145,17 @@ export default function Dashboard() {
         router.push("/")
     }
 
-    const handleResetProducts = () => {
-        const resetProducts = initializeProducts()
-        setProducts(resetProducts)
-        localStorage.setItem("products", JSON.stringify(resetProducts))
+    const handleResetProducts = async () => {
+        setIsLoading(true)
+        try {
+            const resetProducts = await initializeProducts()
+            setProducts(resetProducts)
+        } catch (error) {
+            console.error('Error resetting products:', error)
+            alert('Error resetting products. Please try again.')
+        } finally {
+            setIsLoading(false)
+        }
     }
 
     if (isLoading) {
@@ -279,10 +299,10 @@ export default function Dashboard() {
                                     <div className="flex justify-end">
                                         <Button
                                             onClick={() => handleUpdateProduct(product.id)}
-                                            disabled={!newPrices[product.id]}
+                                            disabled={!newPrices[product.id] || updateLoading[product.id]}
                                             className="bg-[#65bd7d] text-black hover:bg-[#57a76e]"
                                         >
-                                            Update Prices
+                                            {updateLoading[product.id] ? 'Updating...' : 'Update Prices'}
                                         </Button>
                                     </div>
                                 </div>
