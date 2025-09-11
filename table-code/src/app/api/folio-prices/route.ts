@@ -18,8 +18,8 @@ const IDS = [
 let cachedToken: string | null = null;
 let tokenExpiry: number | null = null;
 
-const FOLIO_CLIENT_ID = process.env.FOLIO_CLIENT_ID!;
-const FOLIO_CLIENT_SECRET = process.env.FOLIO_CLIENT_SECRET!;
+const FOLIO_CLIENT_ID = "iNuJKp1LRk3VBzeaDucHgGSZzGvSoQ8q";
+const FOLIO_CLIENT_SECRET = "Zy-Ip_GgAT1japzy-Fpwv80hNo9Y4WUGLugYI3V6ZtqcH_2kCznQrM7aWVGSgrFm";
 
 interface TokenResponse {
     access_token: string;
