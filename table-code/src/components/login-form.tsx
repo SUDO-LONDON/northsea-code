@@ -8,6 +8,7 @@ import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
+import Cookies from "js-cookie"
 
 export function LoginForm({
   className,
@@ -28,7 +29,10 @@ export function LoginForm({
       password,
     })
     if (error) setError(error.message)
-    else router.push("/table")
+    else {
+      Cookies.set("adminAuth", "true", { expires: 1 }) // Set cookie for 1 day
+      router.push("/table")
+    }
     setLoading(false)
   }
 
