@@ -20,7 +20,16 @@ export async function initializeProducts(): Promise<Product[]> {
       console.error("Error fetching products after reset:", error);
       return PRODUCTS;
     }
-    return data as Product[];
+    // Map DB result to Product type
+    return (data as any[]).map(item => ({
+      id: item.id,
+      name: item.name,
+      hfo: item.hfo,
+      vlsfo: item.vlsfo,
+      mgo: item.mgo,
+      change: item.change,
+      lastUpdated: item.lastupdated
+    }));
   } catch (error) {
     console.error("Error initializing products via API:", error);
     return PRODUCTS;
