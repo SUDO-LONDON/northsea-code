@@ -238,13 +238,13 @@ export default function Dashboard() {
                                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
                                         <div className="grid gap-1">
                                             <Label htmlFor={`hfo-${product.id}`} className="text-foreground">
-                                                HFO (£)
+                                                HFO ($)
                                             </Label>
                                             <Input
                                                 id={`hfo-${product.id}`}
                                                 type="number"
                                                 step="0.01"
-                                                placeholder={`Current: £${product.hfo.toFixed(2)}`}
+                                                placeholder={`Current: $${product.hfo.toFixed(2)}`}
                                                 value={newPrices[product.id]?.hfo || ''}
                                                 onChange={(e) => handleValueChange(product.id, 'hfo', e.target.value)}
                                             />
@@ -252,13 +252,13 @@ export default function Dashboard() {
 
                                         <div className="grid gap-1">
                                             <Label htmlFor={`vlsfo-${product.id}`} className="text-foreground">
-                                                VLSFO (£)
+                                                VLSFO ($)
                                             </Label>
                                             <Input
                                                 id={`vlsfo-${product.id}`}
                                                 type="number"
                                                 step="0.01"
-                                                placeholder={`Current: £${product.vlsfo.toFixed(2)}`}
+                                                placeholder={`Current: $${product.vlsfo.toFixed(2)}`}
                                                 value={newPrices[product.id]?.vlsfo || ''}
                                                 onChange={(e) => handleValueChange(product.id, 'vlsfo', e.target.value)}
                                             />
@@ -266,13 +266,13 @@ export default function Dashboard() {
 
                                         <div className="grid gap-1">
                                             <Label htmlFor={`mgo-${product.id}`} className="text-foreground">
-                                                MGO (£)
+                                                MGO ($)
                                             </Label>
                                             <Input
                                                 id={`mgo-${product.id}`}
                                                 type="number"
                                                 step="0.01"
-                                                placeholder={`Current: £${product.mgo.toFixed(2)}`}
+                                                placeholder={`Current: $${product.mgo.toFixed(2)}`}
                                                 value={newPrices[product.id]?.mgo || ''}
                                                 onChange={(e) => handleValueChange(product.id, 'mgo', e.target.value)}
                                             />

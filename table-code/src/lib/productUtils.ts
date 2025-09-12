@@ -2,33 +2,27 @@ import { Product, PRODUCTS } from "./products";
 import { supabase } from "./supabaseClient";
 
 export async function initializeProducts(): Promise<Product[]> {
-  // Deep copy PRODUCTS and map to database format
-  const products = PRODUCTS.map(p => ({
-    id: p.id,
-    name: p.name,
-    hfo: p.hfo,
-    vlsfo: p.vlsfo,
-    mgo: p.mgo,
-    change: p.change,
-    lastupdated: p.lastUpdated  // Only include lowercase column name
-  }));
-
   try {
-    // Clear existing products and insert new ones
-    await supabase.from('products').delete().neq('id', '');
-
-    const { error } = await supabase
-      .from('products')
-      .insert(products);
-
-    if (error) {
-      console.error("Error initializing products in database:", error);
-      return PRODUCTS; // Return original copy if DB fails
+    // Call the backend API to reset products in Supabase
+    const response = await fetch("/api/force-init", {
+      method: "POST",
+    });
+    if (!response.ok) {
+      console.error("API /api/force-init failed:", await response.text());
+      return PRODUCTS;
     }
-
-    return PRODUCTS;
+    // After reset, fetch the latest products from Supabase
+    const { data, error } = await supabase
+      .from("products")
+      .select("id, name, hfo, vlsfo, mgo, change, lastupdated")
+      .order("id");
+    if (error || !data) {
+      console.error("Error fetching products after reset:", error);
+      return PRODUCTS;
+    }
+    return data as Product[];
   } catch (error) {
-    console.error("Error initializing products:", error);
+    console.error("Error initializing products via API:", error);
     return PRODUCTS;
   }
 }
