@@ -127,7 +127,7 @@ export default function TradingPage() {
                         </span>
                                                 <span className="text-base sm:text-lg font-bold text-primary">
                           {priceObj && priceObj.value !== undefined
-                              ? `£${priceObj.value.toLocaleString(undefined, {
+                              ? `$${priceObj.value.toLocaleString(undefined, {
                                   minimumFractionDigits: 2,
                                   maximumFractionDigits: 2,
                               })}`
