@@ -4,8 +4,7 @@ import { PRODUCTS } from '@/lib/products';
 
 export async function POST() {
   try {
--- Allow all users to update any row
-(true)    // First, get all existing products to delete them properly
+    // First, get all existing products to delete them properly
     const { data: existingProducts } = await supabase
       .from('products')
       .select('id');
