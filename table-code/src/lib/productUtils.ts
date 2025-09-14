@@ -1,113 +1,154 @@
 import { Product, PRODUCTS } from "./products";
 import { supabase } from "./supabaseClient";
 
+// ✅ Reset only the prices + change, keep products intact
+export async function resetProductsPrices(): Promise<Product[]> {
+    try {
+        console.log("Resetting product prices...");
+
+        // Reset each product’s pricing back to defaults from PRODUCTS
+        for (const p of PRODUCTS) {
+            const { error } = await supabase
+                .from("products")
+                .update({
+                    hfo: p.hfo,
+                    vlsfo: p.vlsfo,
+                    mgo: p.mgo,
+                    change: 0,
+                    lastupdated: new Date().toISOString(),
+                })
+                .eq("id", p.id);
+
+            if (error) {
+                console.error(`Error resetting product ${p.id}:`, error);
+            }
+        }
+
+        // ✅ Fetch fresh data after reset
+        const { data, error: fetchError } = await supabase
+            .from("products")
+            .select("id, name, hfo, vlsfo, mgo, change, lastupdated")
+            .order("id");
+
+        if (fetchError || !data) {
+            console.error("Error fetching products after reset:", fetchError);
+            return PRODUCTS;
+        }
+
+        return (data as any[]).map((item) => ({
+            id: item.id,
+            name: item.name,
+            hfo: item.hfo,
+            vlsfo: item.vlsfo,
+            mgo: item.mgo,
+            change: item.change,
+            lastUpdated: item.lastupdated,
+        })) as Product[];
+    } catch (error) {
+        console.error("Unexpected error resetting product prices:", error);
+        return PRODUCTS;
+    }
+}
+
+// ✅ Initialize products (still uses your API route)
 export async function initializeProducts(): Promise<Product[]> {
-  try {
-    // Call the backend API to reset products in Supabase
-    const response = await fetch("/api/force-init", {
-      method: "POST",
-    });
-    if (!response.ok) {
-      console.error("API /api/force-init failed:", await response.text());
-      return PRODUCTS;
+    try {
+        const response = await fetch("/api/force-init", { method: "POST" });
+        if (!response.ok) {
+            console.error("API /api/force-init failed:", await response.text());
+            return PRODUCTS;
+        }
+
+        const { data, error } = await supabase
+            .from("products")
+            .select("id, name, hfo, vlsfo, mgo, change, lastupdated")
+            .order("id");
+
+        if (error || !data) {
+            console.error("Error fetching products after init:", error);
+            return PRODUCTS;
+        }
+
+        return (data as any[]).map((item) => ({
+            id: item.id,
+            name: item.name,
+            hfo: item.hfo,
+            vlsfo: item.vlsfo,
+            mgo: item.mgo,
+            change: item.change,
+            lastUpdated: item.lastupdated,
+        }));
+    } catch (error) {
+        console.error("Error initializing products via API:", error);
+        return PRODUCTS;
     }
-    // After reset, fetch the latest products from Supabase
-    const { data, error } = await supabase
-      .from("products")
-      .select("id, name, hfo, vlsfo, mgo, change, lastupdated")
-      .order("id");
-    if (error || !data) {
-      console.error("Error fetching products after reset:", error);
-      return PRODUCTS;
-    }
-    // Map DB result to Product type
-    return (data as any[]).map(item => ({
-      id: item.id,
-      name: item.name,
-      hfo: item.hfo,
-      vlsfo: item.vlsfo,
-      mgo: item.mgo,
-      change: item.change,
-      lastUpdated: item.lastupdated
-    }));
-  } catch (error) {
-    console.error("Error initializing products via API:", error);
-    return PRODUCTS;
-  }
 }
 
+// ✅ Fetch live products
 export async function getProducts(): Promise<Product[]> {
-  try {
-    const { data, error } = await supabase
-      .from('products')
-      .select('id, name, hfo, vlsfo, mgo, change, lastupdated')
-      .order('id');
+    try {
+        const { data, error } = await supabase
+            .from("products")
+            .select("id, name, hfo, vlsfo, mgo, change, lastupdated")
+            .order("id");
 
-    console.log("Supabase products fetch result:", { data, error });
+        if (error) {
+            console.error("Error fetching products, falling back:", error);
+            return await initializeProducts();
+        }
 
-    if (error) {
-      console.error("Error fetching products from database (falling back to PRODUCTS):", error);
-      return await initializeProducts();
+        if (!data || data.length === 0) {
+            console.warn("No products in DB, falling back to init");
+            return await initializeProducts();
+        }
+
+        const products = (data as any[]).map((item) => ({
+            id: item.id,
+            name: item.name,
+            hfo: item.hfo,
+            vlsfo: item.vlsfo,
+            mgo: item.mgo,
+            change: item.change,
+            lastUpdated: item.lastupdated,
+        })) as Product[];
+
+        if (
+            products.length !== PRODUCTS.length ||
+            !products.every((p, i) => p.name === PRODUCTS[i].name)
+        ) {
+            console.warn("Products mismatched — resetting...");
+            return await initializeProducts();
+        }
+
+        return products;
+    } catch (error) {
+        console.error("Error loading products, falling back:", error);
+        return await initializeProducts();
     }
-
-    if (!data || data.length === 0) {
-      console.warn("No products found in database (falling back to PRODUCTS)");
-      return await initializeProducts();
-    }
-
-    // Map database results back to Product interface format
-    const products = data.map(item => ({
-      id: item.id,
-      name: item.name,
-      hfo: item.hfo,
-      vlsfo: item.vlsfo,
-      mgo: item.mgo,
-      change: item.change,
-      lastUpdated: item.lastupdated  // Map from lowercase to camelCase
-    })) as Product[];
-
-    // Validate data structure
-    if (products.length !== PRODUCTS.length || !products.every((p, i) => p.name === PRODUCTS[i].name)) {
-      console.warn("Product data is outdated or mismatched (falling back to PRODUCTS)");
-      return await initializeProducts();
-    }
-
-    console.log("Products loaded from database:", products);
-    return products;
-  } catch (error) {
-    console.error("Error loading products (exception, falling back to PRODUCTS):", error);
-    return await initializeProducts();
-  }
 }
 
+// ✅ Update one product
 export async function updateProduct(updatedProduct: Product): Promise<boolean> {
-  try {
-    console.log("Attempting to update product:", updatedProduct.id, updatedProduct.name);
+    try {
+        const { error } = await supabase
+            .from("products")
+            .update({
+                hfo: updatedProduct.hfo,
+                vlsfo: updatedProduct.vlsfo,
+                mgo: updatedProduct.mgo,
+                change: updatedProduct.change,
+                lastupdated: updatedProduct.lastUpdated,
+            })
+            .eq("id", updatedProduct.id);
 
-    const { data, error } = await supabase
-      .from('products')
-      .update({
-        hfo: updatedProduct.hfo,
-        vlsfo: updatedProduct.vlsfo,
-        mgo: updatedProduct.mgo,
-        change: updatedProduct.change,
-        lastupdated: updatedProduct.lastUpdated  // Use lowercase to match database
-      })
-      .eq('id', updatedProduct.id)
-      .select();
+        if (error) {
+            console.error("Error updating product:", error);
+            return false;
+        }
 
-    if (error) {
-      console.error("Error updating product in database:", error);
-      console.error("Error code:", error.code);
-      console.error("Error message:", error.message);
-      console.error("Error details:", error.details);
-      return false;
+        return true;
+    } catch (error) {
+        console.error("Exception updating product:", error);
+        return false;
     }
-
-    console.log("Update successful, updated rows:", data?.length);
-    return true;
-  } catch (error) {
-    console.error("Error updating product:", error);
-    return false;
-  }
 }

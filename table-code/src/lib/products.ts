@@ -9,7 +9,7 @@ export interface Product {
 }
 
 export const PRODUCTS: Product[] = [
-  { id: "550e8400-e29b-41d4-a716-446655440001", name: "Rotterdam", hfo: 12, vlsfo: 0, mgo: 0, change: 0, lastUpdated: new Date().toISOString() },
+  { id: "550e8400-e29b-41d4-a716-446655440001", name: "Rotterdam", hfo: 0, vlsfo: 0, mgo: 0, change: 0, lastUpdated: new Date().toISOString() },
   { id: "550e8400-e29b-41d4-a716-446655440002", name: "Antwerp", hfo: 0, vlsfo: 0, mgo: 0, change: 0, lastUpdated: new Date().toISOString() },
   { id: "550e8400-e29b-41d4-a716-446655440003", name: "Hamburg", hfo: 0, vlsfo: 0, mgo: 0, change: 0, lastUpdated: new Date().toISOString() },
   { id: "550e8400-e29b-41d4-a716-446655440004", name: "Gibraltar", hfo: 0, vlsfo: 0, mgo: 0, change: 0, lastUpdated: new Date().toISOString() },
