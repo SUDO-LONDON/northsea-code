@@ -1,5 +1,5 @@
 "use client"
-
+import { supabase } from "@/lib/supabaseClient"
 import React, { useEffect, useState } from "react"
 import { useRouter } from "next/navigation"
 import { Button } from "@/components/ui/button"
@@ -93,7 +93,13 @@ export default function Dashboard() {
             const product = products.find(p => p.id === id)
             if (!product) return
 
-            // Calculate new values
+            // You already have the `newPrices` inputs, so use them
+            const prices = newPrices[id];
+
+            // Use your existing, working function to compute the change
+            const percentageChange = computePercentageChange(product, prices);
+
+            // Get the final values to update the database
             const newHfo = prices.hfo !== undefined && prices.hfo.trim() !== ''
                 ? parseFloat(prices.hfo)
                 : product.hfo
@@ -104,16 +110,12 @@ export default function Dashboard() {
                 ? parseFloat(prices.mgo)
                 : product.mgo
 
-            const oldAvg = (product.hfo + product.vlsfo + product.mgo) / 3
-            const newAvg = (newHfo + newVlsfo + newMgo) / 3
-            const percentageChange = oldAvg > 0 ? ((newAvg - oldAvg) / oldAvg) * 100 : 0
-
             const updatedProduct = {
                 ...product,
                 hfo: newHfo,
                 vlsfo: newVlsfo,
                 mgo: newMgo,
-                change: Number(percentageChange.toFixed(2)),
+                change: percentageChange, // Use the result from the shared function
                 lastUpdated: new Date().toISOString()
             }
 
@@ -146,17 +148,25 @@ export default function Dashboard() {
     }
 
     const handleResetProducts = async () => {
-        setIsLoading(true)
+        setIsLoading(true);
         try {
-            const resetProducts = await initializeProducts()
-            setProducts(resetProducts)
+            // The initializeProducts function already handles the database logic
+            // (deleting existing rows and inserting new ones) via the API endpoint.
+            const resetProducts = await initializeProducts();
+
+            // Update the local state with the products returned from the API call.
+            setProducts(resetProducts);
+
+            // Clear any lingering input values from the user.
+            setNewPrices({});
+
         } catch (error) {
-            console.error('Error resetting products:', error)
-            alert('Error resetting products. Please try again.')
+            console.error('Error resetting products:', error);
+            alert('Error resetting products. Please try again.');
         } finally {
-            setIsLoading(false)
+            setIsLoading(false);
         }
-    }
+    };
 
     if (isLoading) {
         return (
