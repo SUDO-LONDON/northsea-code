@@ -26,6 +26,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import Image from 'next/image';
 
 // ---- Types shared with StockChart ----
 export type Trade = {
@@ -156,7 +157,7 @@ export default function TradeTable({
   return (
     <div>
       <div className="flex items-center mb-4">
-        <img src="/csc.png" alt="Paper Trading Logo" className="h-10 w-10 mr-2" />
+        <Image src="/csc.png" alt="Paper Trading Logo" width={40} height={40} className="h-10 w-10 mr-2" />
         <span className="text-xl font-bold">Paper Trading</span>
       </div>
 
