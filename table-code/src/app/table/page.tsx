@@ -9,6 +9,7 @@ import ClientOnly from "@/components/ClientOnly";
 import CommodityTickerPanel from "@/components/CommodityTickerPanel";
 import Cookies from 'js-cookie';
 import { useRouter } from "next/navigation";
+import Image from 'next/image';
 
 const PRODUCT_ID_MAP: { [id: string]: string } = {
     "6ccbf93e-d43d-46ab-ba50-c26659add883": "M0 SING 380 FP",
@@ -108,9 +109,11 @@ export default function TradingPage() {
                         <Card className="border shadow-sm mb-4 sm:mb-0">
                             <div className="p-4 sm:p-6 pb-3">
                                 <div className="flex items-center justify-center mb-4 sm:mb-6">
-                                    <img
+                                    <Image
                                         src="/csc.png"
                                         alt="Paper Trading Logo"
+                                        width={100}
+                                        height={100}
                                         className="block max-w-full h-auto"
                                     />
                                 </div>

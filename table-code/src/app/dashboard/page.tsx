@@ -126,8 +126,9 @@ export default function Dashboard() {
 
                 // Clear the form entry for this product
                 setNewPrices(prev => {
-                    const { [id]: _, ...rest } = prev
-                    return rest
+                    const rest = { ...prev };
+                    delete rest[id];
+                    return rest;
                 })
             } else {
                 alert('Failed to update product. Please try again.')
