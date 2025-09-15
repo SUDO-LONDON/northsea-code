@@ -46,7 +46,7 @@ export default function SignUpPage() {
             email,
             password,
             options: {
-                redirectTo: 'https://northseatrading.vercel.app',
+                emailRedirectTo: 'https://northseatrading.vercel.app',
                 data: {
                     company_name: companyName,
                     position,
