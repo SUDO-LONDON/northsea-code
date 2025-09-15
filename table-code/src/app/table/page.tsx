@@ -13,13 +13,13 @@ import Image from 'next/image';
 import { supabase } from "@/lib/supabaseClient";
 
 const PRODUCT_ID_MAP: { [id: string]: string } = {
-    "e9e305ee-8605-4503-b3e2-8f5763870cd2": "MO 3.5% BGS FP- Rotterdam 3.5%",
-    "29d3a405-cb03-45b4-9ebf-f0176b7ba06a": "MO 0.5% BGS FP- Rotterdam 0.5%",
-    "b0738070-229c-4aa7-b5d0-45b4119dd0e0": "MO 1% FOB FP- NWE 1% FOB",
-    "662e5a2f-f028-4d18-81dc-89be3ba01f3a": "MO 0.5% SG- Singapore 0.5%",
-    "6ccbf93e-d43d-46ab-ba50-c26659add883": "MO Sing 380 FP- Singapore 380 CST",
-    "e506264b-1bcd-429f-b018-f50e3f517133": "MO 3% GC FP- USGC 3%",
-    "99d27f4d-0a7e-44fe-b9de-9c27d27f08d2": "MO 0.5% GC FP- USGC 0.5%",
+    "e9e305ee-8605-4503-b3e2-8f5763870cd2": "Rotterdam 3.5%",
+    "29d3a405-cb03-45b4-9ebf-f0176b7ba06a": "Rotterdam 0.5%",
+    "b0738070-229c-4aa7-b5d0-45b4119dd0e0": "NWE 1% FOB",
+    "662e5a2f-f028-4d18-81dc-89be3ba01f3a": "Singapore 0.5%",
+    "6ccbf93e-d43d-46ab-ba50-c26659add883": "Singapore 380 CST",
+    "e506264b-1bcd-429f-b018-f50e3f517133": "USGC 3%",
+    "99d27f4d-0a7e-44fe-b9de-9c27d27f08d2": "USGC 0.5%",
     "9c68de75-aed7-417b-abab-eaf576d0d6fe": "M0 SG 10PPM FP",
     "d71f82b9-21e2-49f0-9974-4a11a9e5b09f": "M0 0.1% BGS",
 };
