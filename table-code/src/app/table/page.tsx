@@ -11,16 +11,21 @@ import Cookies from 'js-cookie';
 import { useRouter } from "next/navigation";
 
 const PRODUCT_ID_MAP: { [id: string]: string } = {
-    "6ccbf93e-d43d-46ab-ba50-c26659add883": "M0 SING 380 FP",
+    "e9e305ee-8605-4503-b3e2-8f5763870cd2": "MO 3.5% BGS FP- Rotterdam 3.5%",
+    "29d3a405-cb03-45b4-9ebf-f0176b7ba06a": "MO 0.5% BGS FP- Rotterdam 0.5%",
+    "b0738070-229c-4aa7-b5d0-45b4119dd0e0": "MO 1% FOB FP- NWE 1% FOB",
+    "662e5a2f-f028-4d18-81dc-89be3ba01f3a": "MO 0.5% SG- Singapore 0.5%",
+    "6ccbf93e-d43d-46ab-ba50-c26659add883": "MO Sing 380 FP- Singapore 380 CST",
+    "e506264b-1bcd-429f-b018-f50e3f517133": "MO 3% GC FP- USGC 3%",
+    "99d27f4d-0a7e-44fe-b9de-9c27d27f08d2": "MO 0.5% GC FP- USGC 0.5%",
     "9c68de75-aed7-417b-abab-eaf576d0d6fe": "M0 SG 10PPM FP",
-    "99d27f4d-0a7e-44fe-b9de-9c27d27f08d2": "M0 0.5% GC FP",
     "d71f82b9-21e2-49f0-9974-4a11a9e5b09f": "M0 0.1% BGS",
-    "29d3a405-cb03-45b4-9ebf-f0176b7ba06a": "M0 0.5% BGS FP",
-    "662e5a2f-f028-4d18-81dc-89be3ba01f3a": "M0 0.5% SG FP",
-    "e506264b-1bcd-429f-b018-f50e3f517133": "M0 3% GC FP",
-    "e9e305ee-8605-4503-b3e2-8f5763870cd2": "M0 3.5% BGS FP",
-    "b0738070-229c-4aa7-b5d0-45b4119dd0e0": "M0 1% FOB FP",
 };
+
+// Split product IDs for display
+const PRODUCT_IDS = Object.keys(PRODUCT_ID_MAP);
+const CSC_COMMODITIES_IDS = PRODUCT_IDS.slice(0, 7);
+const GASOIL_IDS = PRODUCT_IDS.slice(-2);
 
 interface LivePrice {
     id: string;
@@ -74,11 +79,15 @@ export default function TradingPage() {
         <div className="min-h-screen bg-gray-900 text-white">
             <div className="container mx-auto p-4 sm:p-6">
                 <div className="mb-6 sm:mb-8">
-                    <h1 className="text-3xl sm:text-4xl font-bold text-foreground mb-1 sm:mb-2">
-                        Trading Panel
-                    </h1>
-                    <p className="text-sm sm:text-base text-muted-foreground">
-                        Real-time market data and analytics
+                    <div className="flex items-center mb-1 sm:mb-2">
+                        <img
+                            src="/logo.png"
+                            alt="Trading Panel Logo"
+                            className="h-[130px] max-h-none w-auto"
+                        />
+                    </div>
+                    <p className="text-sm sm:text-base text-muted-foreground font-bold">
+
                     </p>
                 </div>
 
@@ -88,7 +97,7 @@ export default function TradingPage() {
                         <div className="p-4 sm:p-6">
                             <div className="mb-4 sm:mb-6">
                                 <h2 className="text-lg sm:text-xl font-semibold text-foreground">
-                                    Price Overview
+                                    Bunker Prices
                                 </h2>
                                 <p className="text-xs sm:text-sm text-muted-foreground mt-1">
                                     Current market prices for all products
@@ -115,24 +124,49 @@ export default function TradingPage() {
                                     />
                                 </div>
                                 <div className="space-y-2 sm:space-y-3">
-                                    {Object.entries(PRODUCT_ID_MAP).map(([id, name]) => {
+                                    {CSC_COMMODITIES_IDS.map((id) => {
+                                        const name = PRODUCT_ID_MAP[id];
                                         const priceObj = livePrices.find((p) => p.id === id);
                                         return (
                                             <div
                                                 key={id}
                                                 className="flex flex-col border-b pb-2 last:border-b-0 last:pb-0"
                                             >
-                        <span className="font-medium text-foreground text-sm sm:text-base">
-                          {name}
-                        </span>
+                                                <span className="font-medium text-foreground text-sm sm:text-base">
+                                                    {name}
+                                                </span>
                                                 <span className="text-base sm:text-lg font-bold text-primary">
-                          {priceObj && priceObj.value !== undefined
-                              ? `$${priceObj.value.toLocaleString(undefined, {
-                                  minimumFractionDigits: 2,
-                                  maximumFractionDigits: 2,
-                              })}`
-                              : "--"}
-                        </span>
+                                                    {priceObj && priceObj.value !== undefined
+                                                        ? `$${priceObj.value.toLocaleString(undefined, {
+                                                            minimumFractionDigits: 2,
+                                                            maximumFractionDigits: 2,
+                                                        })}`
+                                                        : "--"}
+                                                </span>
+                                            </div>
+                                        );
+                                    })}
+                                    {/* Gasoils Section */}
+                                    <h3 className="font-semibold text-base sm:text-lg mt-4 mb-2">Gasoils:</h3>
+                                    {GASOIL_IDS.map((id) => {
+                                        const name = PRODUCT_ID_MAP[id];
+                                        const priceObj = livePrices.find((p) => p.id === id);
+                                        return (
+                                            <div
+                                                key={id}
+                                                className="flex flex-col border-b pb-2 last:border-b-0 last:pb-0"
+                                            >
+                                                <span className="font-medium text-foreground text-sm sm:text-base">
+                                                    {name}
+                                                </span>
+                                                <span className="text-base sm:text-lg font-bold text-primary">
+                                                    {priceObj && priceObj.value !== undefined
+                                                        ? `$${priceObj.value.toLocaleString(undefined, {
+                                                            minimumFractionDigits: 2,
+                                                            maximumFractionDigits: 2,
+                                                        })}`
+                                                        : "--"}
+                                                </span>
                                             </div>
                                         );
                                     })}
