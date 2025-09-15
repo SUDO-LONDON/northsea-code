@@ -5,7 +5,7 @@ import { PRODUCTS } from '@/lib/products';
 export async function POST() {
   try {
     // Check if products table exists and has the correct structure
-    const { data: structureTest, error: structureError } = await supabase
+    const { error: structureError } = await supabase
       .from('products')
       .select('id, name, hfo, vlsfo, mgo, change, lastupdated')  // Use lowercase column name
       .limit(1);

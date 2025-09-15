@@ -31,7 +31,7 @@ export default function CommodityTickerPanel() {
         if (!res.ok) throw new Error("API error");
         const data = await res.json();
         setCommodities(data);
-      } catch (err) {
+      } catch {
         setError("Error loading prices");
       } finally {
         setLoading(false);
