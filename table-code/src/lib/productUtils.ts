@@ -22,7 +22,7 @@ export async function initializeProducts(): Promise<Product[]> {
     }
     // Map DB result to Product type
     return Array.isArray(data)
-      ? data.map(item => ({
+      ? data.map((item: { id: string; name: string; hfo: number; vlsfo: number; mgo: number; change: number; lastupdated: string }) => ({
           id: item.id,
           name: item.name,
           hfo: item.hfo,

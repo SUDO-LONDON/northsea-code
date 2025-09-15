@@ -81,14 +81,17 @@ export default function TradingPage() {
             <div className="container mx-auto p-4 sm:p-6">
                 <div className="mb-6 sm:mb-8">
                     <div className="flex items-center mb-1 sm:mb-2">
-                        <img
+                        <Image
                             src="/logo.png"
                             alt="Trading Panel Logo"
-                            className="h-[130px] max-h-none w-auto"
+                            width={130}
+                            height={130}
+                            className="max-h-none w-auto"
+                            priority
                         />
                     </div>
                     <p className="text-sm sm:text-base text-muted-foreground font-bold">
-
+                        Bunker prices
                     </p>
                 </div>
 
