@@ -93,6 +93,6 @@ export async function POST() {
 }
 
 // GET handler: redirect to POST for convenience test
-export async function GET(request: Request) {
-    return POST(request);
+export async function GET() {
+    return POST();
 }
