@@ -25,13 +25,45 @@ const generateSparklineData = () => {
   }))
 }
 
+const getPriceSuffix = (name: string) => {
+  if (["USGC 3%", "USGC 0.5%", "Singapore 10ppm"].includes(name)) {
+    return " /BBLS";
+  }
+  return " / MT";
+};
+
+const PRODUCT_GROUPS: Record<string, string> = {
+  "Rotterdam": "Gasoil",
+  "Antwerp": "Gasoil",
+  "Hamburg": "Gasoil",
+  "Gibraltar": "Gasoil",
+  "Malta": "Gasoil",
+  "Valencia": "Gasoil",
+  "Istanbul": "Gasoil",
+  "Jeddah": "Gasoil",
+  "Fujairah": "Oil",
+  "Mumbai": "Oil",
+  "Kochi": "Oil",
+  "Mongla": "Oil",
+  "Colombo": "Oil",
+  "Singapore": "Oil",
+  "Busan": "Oil",
+  "Shanghai": "Oil",
+  "Los Angeles": "Oil",
+  "Houston": "Oil",
+  "Vancouver": "Oil",
+  "Panama": "Oil"
+};
+
+const getProductGroup = (name: string) => PRODUCT_GROUPS[name] || name;
+
 const columns: ColumnDef<Product>[] = [
   {
     accessorKey: "name",
     header: () => <div className="text-left">Product</div>,
     cell: ({ row }) => (
       <div className="text-left">
-        <span className="font-medium text-foreground">{row.getValue("name")}</span>
+        <span className="font-medium text-foreground">{getProductGroup(row.getValue("name"))}</span>
       </div>
     )
   },
@@ -39,24 +71,27 @@ const columns: ColumnDef<Product>[] = [
     accessorKey: "hfo",
     header: () => <div className="text-center">HFO</div>,
     cell: ({ row }) => {
-      const value = parseFloat(row.getValue("hfo"))
-      return <div className="text-center font-medium text-foreground">${value.toFixed(2)}</div>
+      const value = parseFloat(row.getValue("hfo"));
+      const name = row.getValue("name") as string;
+      return <div className="text-center font-medium text-foreground">${value.toFixed(2)}{getPriceSuffix(name)}</div>;
     }
   },
   {
     accessorKey: "vlsfo",
     header: () => <div className="text-center">VLSFO</div>,
     cell: ({ row }) => {
-      const value = parseFloat(row.getValue("vlsfo"))
-      return <div className="text-center font-medium text-foreground">${value.toFixed(2)}</div>
+      const value = parseFloat(row.getValue("vlsfo"));
+      const name = row.getValue("name") as string;
+      return <div className="text-center font-medium text-foreground">${value.toFixed(2)}{getPriceSuffix(name)}</div>;
     }
   },
   {
     accessorKey: "mgo",
     header: () => <div className="text-center">MGO</div>,
     cell: ({ row }) => {
-      const value = parseFloat(row.getValue("mgo"))
-      return <div className="text-center font-medium text-foreground">${value.toFixed(2)}</div>
+      const value = parseFloat(row.getValue("mgo"));
+      const name = row.getValue("name") as string;
+      return <div className="text-center font-medium text-foreground">${value.toFixed(2)}{getPriceSuffix(name)}</div>;
     }
   },
   {
