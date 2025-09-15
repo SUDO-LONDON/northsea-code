@@ -12,6 +12,7 @@ import { useRouter } from "next/navigation";
 import Image from 'next/image';
 import { supabase } from "@/lib/supabaseClient";
 import { AreaChart, Area, ResponsiveContainer } from "recharts";
+import Link from "next/link";
 
 const PRODUCT_ID_MAP: { [id: string]: string } = {
     "e9e305ee-8605-4503-b3e2-8f5763870cd2": "Rotterdam 3.5%",
@@ -104,14 +105,28 @@ export default function TradingPage() {
         <div className="bg-background min-h-screen text-white">
             <div className="container mx-auto p-4 sm:p-6">
                 <div className="mb-6 sm:mb-8">
-                    <div className="flex items-center mb-1 sm:mb-2">
-                        <Image
-                            src="/logo.png"
-                            alt="Trading Panel Logo"
-                            width={280}
-                            height={280}
-                            priority
-                        />
+                    <div className="flex justify-between items-center mb-1 sm:mb-2">
+                        <div>
+                            <Image
+                                src="/logo.png"
+                                alt="Trading Panel Logo"
+                                width={280}
+                                height={280}
+                                priority
+                            />
+                        </div>
+                        <div className="flex flex-col items-center">
+                            <Link href="https://northseatrading.org" target="_blank" rel="noopener noreferrer">
+                                <Image
+                                    src="/home - Edited.png"
+                                    alt="Home"
+                                    width={60}
+                                    height={60}
+                                    className="cursor-pointer rounded shadow"
+                                />
+                            </Link>
+                            <span className="text-xs text-muted-foreground mt-2">back to home</span>
+                        </div>
                     </div>
 
                 </div>
