@@ -43,7 +43,7 @@ export default function CommodityTickerPanel() {
   }, []);
 
   return (
-    <Card className="bg-gray-800 border border-black shadow-sm">
+    <Card className="bg-background border border-black shadow-sm">
       <div className="p-6">
         <h2 className="text-xl font-semibold text-foreground mb-4">
           Commodity Ticker
@@ -63,7 +63,7 @@ export default function CommodityTickerPanel() {
               return (
                 <div
                   key={item.name}
-                  className="flex flex-col items-start bg-gray-900 rounded-lg px-4 py-2 min-w-[180px] shadow"
+                  className="flex flex-col items-start bg-background rounded-lg px-4 py-2 min-w-[180px] shadow"
                 >
                   <span className="text-sm text-gray-400 mb-1">{item.name}</span>
                   <span className={`text-lg font-bold ${isUp ? "text-green-400" : "text-red-400"}`}>

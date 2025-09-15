@@ -68,7 +68,7 @@ export default function SignUpPage() {
     };
 
     return (
-        <div className="bg-background flex min-h-svh flex-col items-center justify-center gap-6 p-6 md:p-10">
+        <div className="bg-background min-h-screen flex flex-col items-center justify-center p-6">
             <div className="flex flex-col items-center space-y-4 mb-4">
                 <h1 className="text-4xl font-bold text-center">Create your Northsea account</h1>
                 <p className="text-gray-500 text-center">Register below to get started</p>

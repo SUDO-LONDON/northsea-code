@@ -77,27 +77,24 @@ export default function TradingPage() {
     }, []);
 
     return (
-        <div className="min-h-screen bg-gray-900 text-white">
+        <div className="bg-background min-h-screen text-white">
             <div className="container mx-auto p-4 sm:p-6">
                 <div className="mb-6 sm:mb-8">
                     <div className="flex items-center mb-1 sm:mb-2">
                         <Image
                             src="/logo.png"
                             alt="Trading Panel Logo"
-                            width={130}
-                            height={130}
-                            className="max-h-none w-auto"
+                            width={280}
+                            height={280}
                             priority
                         />
                     </div>
-                    <p className="text-sm sm:text-base text-muted-foreground font-bold">
-                        Bunker prices
-                    </p>
+
                 </div>
 
                 <div className="grid gap-4 sm:gap-6 sm:grid-cols-3">
                     {/* Main table card */}
-                    <Card className="bg-gray-800 border border-black shadow-sm sm:col-span-2">
+                    <Card className="bg-background border border-black shadow-sm sm:col-span-2">
                         <div className="p-4 sm:p-6">
                             <div className="mb-4 sm:mb-6">
                                 <h2 className="text-lg sm:text-xl font-semibold text-foreground">
@@ -124,9 +121,10 @@ export default function TradingPage() {
                                     <Image
                                         src="/csc.png"
                                         alt="Paper Trading Logo"
-                                        width={100}
-                                        height={100}
+                                        width={200}
+                                        height={200}
                                         className="block max-w-full h-auto"
+                                        style={{ filter: 'invert(1)' }}
                                     />
                                 </div>
                                 <div className="space-y-2 sm:space-y-3">

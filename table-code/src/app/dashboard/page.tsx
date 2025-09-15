@@ -177,7 +177,7 @@ export default function Dashboard() {
     }
 
     return (
-        <div className="bg-gray-900 min-h-screen text-white">
+        <div className="bg-background min-h-screen text-white">
             <div className="container mx-auto p-6">
                 <div className="mb-8">
                     <div className="flex justify-between items-center">
