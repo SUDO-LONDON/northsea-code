@@ -11,6 +11,7 @@ import Cookies from 'js-cookie';
 import { useRouter } from "next/navigation";
 import Image from 'next/image';
 import { supabase } from "@/lib/supabaseClient";
+import { AreaChart, Area, ResponsiveContainer } from "recharts";
 
 const PRODUCT_ID_MAP: { [id: string]: string } = {
     "e9e305ee-8605-4503-b3e2-8f5763870cd2": "Rotterdam 3.5%",
@@ -33,6 +34,14 @@ interface LivePrice {
     id: string;
     value: number;
 }
+
+// Helper for sparkline data
+const generateSparklineData = () => {
+  return Array.from({ length: 20 }, (_, i) => ({
+    x: i,
+    y: 50 + Math.random() * 20
+  }))
+};
 
 export default function TradingPage() {
     const [products, setProducts] = useState<Product[]>([]);
@@ -128,7 +137,7 @@ export default function TradingPage() {
                         </div>
                     </Card>
 
-                    {/* CSC Card */}
+                    {/* CSC Card - restored with Gasoils and CommodityTickerPanel */}
                     <ClientOnly>
                         <Card className="border shadow-sm mb-4 sm:mb-0">
                             <div className="p-4 sm:p-6 pb-3">
@@ -136,8 +145,8 @@ export default function TradingPage() {
                                     <Image
                                         src="/csc.png"
                                         alt="Paper Trading Logo"
-                                        width={200}
-                                        height={200}
+                                        width={280}
+                                        height={280}
                                         className="block max-w-full h-auto"
                                         style={{ filter: 'invert(1)' }}
                                     />
@@ -149,12 +158,32 @@ export default function TradingPage() {
                                         return (
                                             <div
                                                 key={id}
-                                                className="flex flex-col border-b pb-2 last:border-b-0 last:pb-0"
+                                                className="flex items-center border-b pb-2 last:border-b-0 last:pb-0"
                                             >
-                                                <span className="font-medium text-foreground text-sm sm:text-base">
+                                                <span className="font-medium text-foreground text-sm sm:text-base w-1/3">
                                                     {name}
                                                 </span>
-                                                <span className="text-base sm:text-lg font-bold text-primary">
+                                                <div className="w-[80px] h-[32px] mx-2">
+                                                    <ResponsiveContainer width="100%" height="100%">
+                                                        <AreaChart data={generateSparklineData()}>
+                                                            <defs>
+                                                                <linearGradient id="colorUv" x1="0" y1="0" x2="0" y2="1">
+                                                                    <stop offset="5%" stopColor="#10B981" stopOpacity={0.6}/>
+                                                                    <stop offset="95%" stopColor="#10B981" stopOpacity={0}/>
+                                                                </linearGradient>
+                                                            </defs>
+                                                            <Area
+                                                                type="monotone"
+                                                                dataKey="y"
+                                                                stroke="#10B981"
+                                                                fillOpacity={1}
+                                                                fill="url(#colorUv)"
+                                                                strokeWidth={2}
+                                                            />
+                                                        </AreaChart>
+                                                    </ResponsiveContainer>
+                                                </div>
+                                                <span className="text-base sm:text-lg font-bold text-primary w-1/3 text-right">
                                                     {priceObj && priceObj.value !== undefined
                                                         ? `$${priceObj.value.toLocaleString(undefined, {
                                                             minimumFractionDigits: 2,
@@ -173,12 +202,32 @@ export default function TradingPage() {
                                         return (
                                             <div
                                                 key={id}
-                                                className="flex flex-col border-b pb-2 last:border-b-0 last:pb-0"
+                                                className="flex items-center border-b pb-2 last:border-b-0 last:pb-0"
                                             >
-                                                <span className="font-medium text-foreground text-sm sm:text-base">
+                                                <span className="font-medium text-foreground text-sm sm:text-base w-1/3">
                                                     {name}
                                                 </span>
-                                                <span className="text-base sm:text-lg font-bold text-primary">
+                                                <div className="w-[80px] h-[32px] mx-2">
+                                                    <ResponsiveContainer width="100%" height="100%">
+                                                        <AreaChart data={generateSparklineData()}>
+                                                            <defs>
+                                                                <linearGradient id="colorUv" x1="0" y1="0" x2="0" y2="1">
+                                                                    <stop offset="5%" stopColor="#10B981" stopOpacity={0.6}/>
+                                                                    <stop offset="95%" stopColor="#10B981" stopOpacity={0}/>
+                                                                </linearGradient>
+                                                            </defs>
+                                                            <Area
+                                                                type="monotone"
+                                                                dataKey="y"
+                                                                stroke="#10B981"
+                                                                fillOpacity={1}
+                                                                fill="url(#colorUv)"
+                                                                strokeWidth={2}
+                                                            />
+                                                        </AreaChart>
+                                                    </ResponsiveContainer>
+                                                </div>
+                                                <span className="text-base sm:text-lg font-bold text-primary w-1/3 text-right">
                                                     {priceObj && priceObj.value !== undefined
                                                         ? `$${priceObj.value.toLocaleString(undefined, {
                                                             minimumFractionDigits: 2,
@@ -191,7 +240,6 @@ export default function TradingPage() {
                                     })}
                                 </div>
                             </div>
-
                             {/* Commodity Ticker Panel */}
                             <div className="border-t border-gray-700">
                                 <CommodityTickerPanel />
