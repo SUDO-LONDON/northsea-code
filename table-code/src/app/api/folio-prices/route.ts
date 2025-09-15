@@ -25,7 +25,7 @@ interface FolioApiResponse {
 }
 
 // POST handler: fetch prices
-export async function POST() {
+export async function POST(_: Request) {
     try {
         const token = await getToken();
 
@@ -49,7 +49,7 @@ export async function POST() {
         console.log('Folio API payload:', JSON.stringify(data.payload, null, 2));
 
         // Dynamically pick the first available Q key for each ID
-        const prices = Object.entries(data.payload || {}).map(([id, entry]) => {
+        const prices: { id: string; value: number }[] = Object.entries(data.payload || {}).map(([id, entry]) => {
             let value = 0;
 
             if (entry?.data) {
@@ -74,7 +74,8 @@ export async function POST() {
 
         // Calculate percentage change and update Supabase
         for (const priceObj of prices) {
-            const prev = previousProducts?.find((p: any) => p.id === priceObj.id);
+            // previousProducts is typed as { id: string; hfo: number }[]
+            const prev = previousProducts?.find(p => p.id === priceObj.id);
             const oldPrice = prev?.hfo ?? 0;
             const newPrice = priceObj.value;
             const change = oldPrice !== 0 ? ((newPrice - oldPrice) / oldPrice) * 100 : 0;
@@ -92,6 +93,6 @@ export async function POST() {
 }
 
 // GET handler: redirect to POST for convenience test
-export async function GET() {
-    return POST();
+export async function GET(request: Request) {
+    return POST(request);
 }

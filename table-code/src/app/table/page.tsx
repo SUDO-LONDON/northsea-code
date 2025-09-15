@@ -64,8 +64,9 @@ export default function TradingPage() {
                 event: '*',
                 schema: 'public',
                 table: 'products',
-            }, (payload) => {
-                loadProducts();
+            }, (_) => {
+                // Re-fetch products on any change
+                loadProducts()
             })
             .subscribe();
 
