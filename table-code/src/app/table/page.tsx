@@ -10,6 +10,7 @@ import CommodityTickerPanel from "@/components/CommodityTickerPanel";
 import Cookies from 'js-cookie';
 import { useRouter } from "next/navigation";
 import Image from 'next/image';
+import { supabase } from "@/lib/supabaseClient";
 
 const PRODUCT_ID_MAP: { [id: string]: string } = {
     "e9e305ee-8605-4503-b3e2-8f5763870cd2": "MO 3.5% BGS FP- Rotterdam 3.5%",
@@ -51,13 +52,26 @@ export default function TradingPage() {
                 setProducts(loadedProducts);
             } catch (error) {
                 console.error("Error loading products:", error);
-                setProducts([]);
             }
         };
 
         loadProducts();
-        const interval = setInterval(loadProducts, 5000);
-        return () => clearInterval(interval);
+
+        // Subscribe to real-time changes in products table
+        const subscription = supabase
+            .channel('products-changes')
+            .on('postgres_changes', {
+                event: '*',
+                schema: 'public',
+                table: 'products',
+            }, (payload) => {
+                loadProducts();
+            })
+            .subscribe();
+
+        return () => {
+            subscription.unsubscribe();
+        };
     }, [router]);
 
     useEffect(() => {

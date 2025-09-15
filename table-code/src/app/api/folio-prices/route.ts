@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import { getToken } from '@/lib/folioToken';
+import { supabase } from '@/lib/supabaseClient';
 
 const FOLIO_PRICES_URL = 'https://folio-api.artis.works/prices/v2/liveprices';
 
@@ -62,6 +63,26 @@ export async function POST() {
             return { id, value };
         });
 
+        // Fetch previous prices from Supabase
+        const { data: previousProducts, error: fetchError } = await supabase
+            .from('products')
+            .select('id, hfo')
+            .in('id', prices.map(p => p.id));
+        if (fetchError) {
+            console.error('Error fetching previous prices:', fetchError);
+        }
+
+        // Calculate percentage change and update Supabase
+        for (const priceObj of prices) {
+            const prev = previousProducts?.find((p: any) => p.id === priceObj.id);
+            const oldPrice = prev?.hfo ?? 0;
+            const newPrice = priceObj.value;
+            const change = oldPrice !== 0 ? ((newPrice - oldPrice) / oldPrice) * 100 : 0;
+            await supabase
+                .from('products')
+                .update({ hfo: newPrice, change })
+                .eq('id', priceObj.id);
+        }
 
         return NextResponse.json(prices);
     } catch (error: unknown) {

@@ -8,6 +8,7 @@ import { Card } from "@/components/ui/card"
 import Cookies from 'js-cookie'
 import { Product } from "@/lib/products"
 import { getProducts, initializeProducts, updateProduct } from "@/lib/productUtils"
+import { supabase } from "@/lib/supabaseClient"
 
 type PriceInputs = {
     hfo: string;
@@ -44,6 +45,23 @@ export default function Dashboard() {
         }
 
         loadProducts()
+
+        // Subscribe to real-time changes in products table
+        const subscription = supabase
+            .channel('products-changes')
+            .on('postgres_changes', {
+                event: '*',
+                schema: 'public',
+                table: 'products',
+            }, (payload) => {
+                // Re-fetch products on any change
+                loadProducts()
+            })
+            .subscribe()
+
+        return () => {
+            subscription.unsubscribe()
+        }
     }, [router])
 
     const handleValueChange = (id: string, field: keyof PriceInputs, value: string) => {
