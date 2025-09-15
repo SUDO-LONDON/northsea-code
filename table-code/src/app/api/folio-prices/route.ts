@@ -25,7 +25,7 @@ interface FolioApiResponse {
 }
 
 // POST handler: fetch prices
-export async function POST(_: Request) {
+export async function POST() {
     try {
         const token = await getToken();
 
