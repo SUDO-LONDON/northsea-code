@@ -25,38 +25,57 @@ const generateSparklineData = () => {
   }))
 }
 
+const GASOIL_NAMES = [
+  "M0 SG 10PPM FP",
+  "M0 0.1% BGS"
+];
+
+const BBLS_PRODUCTS = ["USGC 3%", "USGC 0.5%", "Singapore 10ppm"];
+const getUnit = (name: string) => {
+  if (name === "Rotterdam 0.1%") return " / MT";
+  if (BBLS_PRODUCTS.includes(name)) return " / BBLS";
+  return GASOIL_NAMES.includes(name) ? " / BBLS" : " / MT";
+};
+
 const columns: ColumnDef<Product>[] = [
   {
     accessorKey: "name",
     header: () => <div className="text-left">Product</div>,
-    cell: ({ row }) => (
-      <div className="text-left">
-        <span className="font-medium text-foreground">{row.getValue("name")}</span>
-      </div>
-    )
+    cell: ({ row }) => {
+      const name = row.getValue("name") as string;
+      const unit = GASOIL_NAMES.includes(name) ? " / BBLS" : " / MT";
+      return (
+        <div className="text-left">
+          <span className="font-medium text-foreground">{name}{unit}</span>
+        </div>
+      );
+    }
   },
   {
     accessorKey: "hfo",
     header: () => <div className="text-center">HFO</div>,
     cell: ({ row }) => {
-      const value = parseFloat(row.getValue("hfo"))
-      return <div className="text-center font-medium text-foreground">${value.toFixed(2)}</div>
+      const value = parseFloat(row.getValue("hfo"));
+      const name = row.getValue("name") as string;
+      return <div className="text-center font-medium text-foreground">${value.toFixed(2)}{getUnit(name)}</div>;
     }
   },
   {
     accessorKey: "vlsfo",
     header: () => <div className="text-center">VLSFO</div>,
     cell: ({ row }) => {
-      const value = parseFloat(row.getValue("vlsfo"))
-      return <div className="text-center font-medium text-foreground">${value.toFixed(2)}</div>
+      const value = parseFloat(row.getValue("vlsfo"));
+      const name = row.getValue("name") as string;
+      return <div className="text-center font-medium text-foreground">${value.toFixed(2)}{getUnit(name)}</div>;
     }
   },
   {
     accessorKey: "mgo",
     header: () => <div className="text-center">MGO</div>,
     cell: ({ row }) => {
-      const value = parseFloat(row.getValue("mgo"))
-      return <div className="text-center font-medium text-foreground">${value.toFixed(2)}</div>
+      const value = parseFloat(row.getValue("mgo"));
+      const name = row.getValue("name") as string;
+      return <div className="text-center font-medium text-foreground">${value.toFixed(2)}{getUnit(name)}</div>;
     }
   },
   {

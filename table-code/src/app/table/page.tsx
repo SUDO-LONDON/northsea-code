@@ -22,8 +22,8 @@ const PRODUCT_ID_MAP: { [id: string]: string } = {
     "6ccbf93e-d43d-46ab-ba50-c26659add883": "Singapore 380 CST",
     "e506264b-1bcd-429f-b018-f50e3f517133": "USGC 3%",
     "99d27f4d-0a7e-44fe-b9de-9c27d27f08d2": "USGC 0.5%",
-    "9c68de75-aed7-417b-abab-eaf576d0d6fe": "M0 SG 10PPM FP",
-    "d71f82b9-21e2-49f0-9974-4a11a9e5b09f": "M0 0.1% BGS",
+    "9c68de75-aed7-417b-abab-eaf576d0d6fe": "Singapore 10ppm",
+    "d71f82b9-21e2-49f0-9974-4a11a9e5b09f": "Rotterdam 0.1%",
 };
 
 // Split product IDs for display
@@ -42,6 +42,14 @@ const generateSparklineData = () => {
     x: i,
     y: 50 + Math.random() * 20
   }))
+};
+
+// Helper to get unit for product name
+const BBLS_PRODUCTS = ["USGC 3%", "USGC 0.5%", "Singapore 10ppm"];
+const getUnit = (name: string) => {
+  if (name === "Rotterdam 0.1%") return " / MT";
+  if (BBLS_PRODUCTS.includes(name)) return " / BBLS";
+  return GASOIL_IDS.map(id => PRODUCT_ID_MAP[id]).includes(name) ? " / BBLS" : " / MT";
 };
 
 export default function TradingPage() {
@@ -133,14 +141,15 @@ export default function TradingPage() {
 
                 <div className="grid gap-4 sm:gap-6 sm:grid-cols-3">
                     {/* Main table card */}
-                    <Card className="bg-background border border-black shadow-sm sm:col-span-2">
+                    <Card className="bg-background border border-white shadow-sm sm:col-span-2">
                         <div className="p-4 sm:p-6">
                             <div className="mb-4 sm:mb-6">
                                 <h2 className="text-lg sm:text-xl font-semibold text-foreground">
                                     Bunker Prices
                                 </h2>
                                 <p className="text-xs sm:text-sm text-muted-foreground mt-1">
-                                    Current market prices for all products
+                                    All Prices Per Metric Ton <br />
+                                    Graph values based on the average of all three grades.
                                 </p>
                             </div>
                             {/* Make table horizontally scrollable */}
@@ -160,8 +169,8 @@ export default function TradingPage() {
                                     <Image
                                         src="/csc.png"
                                         alt="Paper Trading Logo"
-                                        width={280}
-                                        height={280}
+                                        width={336}
+                                        height={336}
                                         className="block max-w-full h-auto"
                                         style={{ filter: 'invert(1)' }}
                                     />
@@ -198,19 +207,19 @@ export default function TradingPage() {
                                                         </AreaChart>
                                                     </ResponsiveContainer>
                                                 </div>
-                                                <span className="text-base sm:text-lg font-bold text-primary w-1/3 text-right">
+                                                <span className="text-sm sm:text-base font-bold text-primary w-1/3 text-right">
                                                     {priceObj && priceObj.value !== undefined
                                                         ? `$${priceObj.value.toLocaleString(undefined, {
                                                             minimumFractionDigits: 2,
                                                             maximumFractionDigits: 2,
-                                                        })}`
+                                                        })}${getUnit(name)}`
                                                         : "--"}
                                                 </span>
                                             </div>
                                         );
                                     })}
                                     {/* Gasoils Section */}
-                                    <h3 className="font-semibold text-base sm:text-lg mt-4 mb-2">Gasoils:</h3>
+                                    <h3 className="font-semibold text-base sm:text-lg mt-4 mb-2">Gasoil:</h3>
                                     {GASOIL_IDS.map((id) => {
                                         const name = PRODUCT_ID_MAP[id];
                                         const priceObj = livePrices.find((p) => p.id === id);
@@ -242,12 +251,12 @@ export default function TradingPage() {
                                                         </AreaChart>
                                                     </ResponsiveContainer>
                                                 </div>
-                                                <span className="text-base sm:text-lg font-bold text-primary w-1/3 text-right">
+                                                <span className="text-xs sm:text-sm font-bold text-primary w-1/3 text-right">
                                                     {priceObj && priceObj.value !== undefined
                                                         ? `$${priceObj.value.toLocaleString(undefined, {
                                                             minimumFractionDigits: 2,
                                                             maximumFractionDigits: 2,
-                                                        })}`
+                                                        })}${getUnit(name)}`
                                                         : "--"}
                                                 </span>
                                             </div>
