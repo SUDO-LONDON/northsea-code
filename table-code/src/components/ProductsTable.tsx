@@ -32,38 +32,17 @@ const getPriceSuffix = (name: string) => {
   return " / MT";
 };
 
-const PRODUCT_GROUPS: Record<string, string> = {
-  "Rotterdam": "Gasoil",
-  "Antwerp": "Gasoil",
-  "Hamburg": "Gasoil",
-  "Gibraltar": "Gasoil",
-  "Malta": "Gasoil",
-  "Valencia": "Gasoil",
-  "Istanbul": "Gasoil",
-  "Jeddah": "Gasoil",
-  "Fujairah": "Oil",
-  "Mumbai": "Oil",
-  "Kochi": "Oil",
-  "Mongla": "Oil",
-  "Colombo": "Oil",
-  "Singapore": "Oil",
-  "Busan": "Oil",
-  "Shanghai": "Oil",
-  "Los Angeles": "Oil",
-  "Houston": "Oil",
-  "Vancouver": "Oil",
-  "Panama": "Oil"
-};
-
-const getProductGroup = (name: string) => PRODUCT_GROUPS[name] || name;
-
 const columns: ColumnDef<Product>[] = [
   {
     accessorKey: "name",
     header: () => <div className="text-left">Product</div>,
     cell: ({ row }) => (
       <div className="text-left">
-        <span className="font-medium text-foreground">{getProductGroup(row.getValue("name"))}</span>
+        <span className="font-medium text-foreground">{row.getValue("name")}</span>
+        {/* Optionally, show group next to name for gasoil/oil */}
+        {PRODUCT_GROUPS[row.getValue("name") as string] && (
+          <span className="ml-2 text-xs text-muted-foreground">({PRODUCT_GROUPS[row.getValue("name") as string]})</span>
+        )}
       </div>
     )
   },
