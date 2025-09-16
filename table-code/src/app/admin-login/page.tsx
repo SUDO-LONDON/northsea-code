@@ -20,36 +20,14 @@ export default function AdminLogin() {
     setLoading(true)
     setError("")
 
-    // Use Supabase Auth for login
-    const { data, error: supabaseError } = await supabase.auth.signInWithPassword({
-      email: username,
-      password: password,
-    })
-
-    if (supabaseError) {
-      setError(supabaseError.message)
+    // Hardcoded admin credentials
+    if (username === "param" && password === "param12north5sea") {
+      router.push("/dashboard")
       setLoading(false)
       return
     }
 
-    if (data?.user) {
-      // Check if user is in admins table
-      const { data: adminData, error: adminError } = await supabase
-        .from('admins')
-        .select('id')
-        .eq('id', data.user.id)
-        .single()
-
-      if (adminError || !adminData) {
-        setError("Your account is not approved for admin access. Please wait for admin approval.")
-        await supabase.auth.signOut()
-        setLoading(false)
-        return
-      }
-      router.push("/dashboard")
-    } else {
-      setError("Invalid credentials")
-    }
+    setError("Invalid credentials")
     setLoading(false)
   }
 
