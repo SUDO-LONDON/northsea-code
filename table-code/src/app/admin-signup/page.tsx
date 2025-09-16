@@ -8,10 +8,11 @@ import { useRouter } from "next/navigation"
 import { supabase } from "@/lib/supabaseClient"
 import { cn } from "@/lib/utils"
 
-export default function AdminLogin() {
-  const [username, setUsername] = useState("")
+export default function AdminSignup() {
+  const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
   const [error, setError] = useState("")
+  const [success, setSuccess] = useState("")
   const [loading, setLoading] = useState(false)
   const router = useRouter()
 
@@ -19,11 +20,11 @@ export default function AdminLogin() {
     e.preventDefault()
     setLoading(true)
     setError("")
+    setSuccess("")
 
-    // Use Supabase Auth for login
-    const { data, error: supabaseError } = await supabase.auth.signInWithPassword({
-      email: username,
-      password: password,
+    const { data, error: supabaseError } = await supabase.auth.signUp({
+      email,
+      password,
     })
 
     if (supabaseError) {
@@ -32,25 +33,12 @@ export default function AdminLogin() {
       return
     }
 
-    if (data?.user) {
-      // Check if user is in admins table
-      const { data: adminData, error: adminError } = await supabase
-        .from('admins')
-        .select('id')
-        .eq('id', data.user.id)
-        .single()
-
-      if (adminError || !adminData) {
-        setError("Your account is not approved for admin access. Please wait for admin approval.")
-        await supabase.auth.signOut()
-        setLoading(false)
-        return
-      }
-      router.push("/dashboard")
-    } else {
-      setError("Invalid credentials")
-    }
+    setSuccess(
+      "Signup successful! Please wait for admin approval before you can log in."
+    )
     setLoading(false)
+    setEmail("")
+    setPassword("")
   }
 
   return (
@@ -65,13 +53,13 @@ export default function AdminLogin() {
             textAlign: 'center'
           }}
         >
-          Admin Portal
+          Admin Signup
         </h1>
         <p
           className="text-gray-500 text-center"
           style={{ color: '#9ca3af', textAlign: 'center' }}
         >
-          Sign in to access admin dashboard
+          Request access to the admin dashboard
         </p>
       </div>
       <div className="w-full max-w-sm" style={{ width: '100%', maxWidth: '24rem' }}>
@@ -94,20 +82,36 @@ export default function AdminLogin() {
                   {error}
                 </div>
               )}
+              {success && (
+                <div
+                  className="text-green-600 text-sm text-center p-2 bg-green-50 border border-green-200 rounded"
+                  style={{
+                    color: '#16a34a',
+                    fontSize: '0.875rem',
+                    textAlign: 'center',
+                    padding: '0.5rem',
+                    backgroundColor: '#f0fdf4',
+                    border: '1px solid #bbf7d0',
+                    borderRadius: '0.375rem'
+                  }}
+                >
+                  {success}
+                </div>
+              )}
               <div className="grid gap-1" style={{ display: 'grid', gap: '0.25rem' }}>
-                <Label className="sr-only" htmlFor="username">
-                  Username
+                <Label className="sr-only" htmlFor="email">
+                  Email
                 </Label>
                 <Input
-                  id="username"
-                  placeholder="Username"
-                  type="text"
+                  id="email"
+                  placeholder="Email"
+                  type="email"
                   autoCapitalize="none"
-                  autoComplete="username"
+                  autoComplete="email"
                   autoCorrect="off"
                   disabled={loading}
-                  value={username}
-                  onChange={(e) => setUsername(e.target.value)}
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
                   required
                 />
               </div>
@@ -120,7 +124,7 @@ export default function AdminLogin() {
                   placeholder="Password"
                   type="password"
                   autoCapitalize="none"
-                  autoComplete="current-password"
+                  autoComplete="new-password"
                   disabled={loading}
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
@@ -131,7 +135,7 @@ export default function AdminLogin() {
                 {loading && (
                   <div className="mr-2 h-4 w-4 animate-spin rounded-full border-2 border-transparent border-t-current" />
                 )}
-                Admin Sign In
+                Request Admin Access
               </Button>
             </div>
           </form>
@@ -154,11 +158,10 @@ export default function AdminLogin() {
               </span>
             </div>
           </div>
-          <Button variant="outline" onClick={() => router.push("/")}>
-            Back to Login
-          </Button>
+          <Button variant="outline" onClick={() => router.push("/admin-login")}>Back to Admin Login</Button>
         </div>
       </div>
     </div>
   )
 }
+
