@@ -53,7 +53,7 @@ export default function Dashboard() {
                 event: '*',
                 schema: 'public',
                 table: 'products',
-            }, () => {
+can            }, () => {
                 // Re-fetch products on any change
                 loadProducts()
             })
