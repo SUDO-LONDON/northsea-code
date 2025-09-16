@@ -42,7 +42,7 @@ export default function SignUpPage() {
             return;
         }
 
-        const { error } = await supabase.auth.signUp({
+        const { error, data } = await supabase.auth.signUp({
             email,
             password,
             options: {
@@ -59,6 +59,26 @@ export default function SignUpPage() {
         if (error) {
             setError(error.message);
         } else {
+            // Try to create a profile if user is returned (for some providers, user is null until email is confirmed)
+            const user = data?.user;
+            if (user) {
+                const { data: profile, error: profileError } = await supabase
+                  .from('profiles')
+                  .select('id')
+                  .eq('id', user.id)
+                  .single();
+                if (!profile && !profileError) {
+                  await supabase.from('profiles').insert({
+                    id: user.id,
+                    email: user.email,
+                    company_name: companyName,
+                    position,
+                    country_of_incorporation: country,
+                    phone,
+                    created_at: new Date().toISOString(),
+                  });
+                }
+            }
             setSuccess("Check your email for a confirmation link.");
         }
         setLoading(false);
