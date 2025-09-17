@@ -22,7 +22,7 @@ export default function AdminSignup() {
     setError("")
     setSuccess("")
 
-    const { data, error: supabaseError } = await supabase.auth.signUp({
+    const { error: supabaseError } = await supabase.auth.signUp({
       email,
       password,
     })
@@ -164,4 +164,3 @@ export default function AdminSignup() {
     </div>
   )
 }
-
