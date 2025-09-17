@@ -124,16 +124,9 @@ export default function TradingPage() {
                             />
                         </div>
                         <div className="flex flex-col items-center">
-                            <Link href="https://northseatrading.org" target="_blank" rel="noopener noreferrer">
-                                <Image
-                                    src="/home - Edited.png"
-                                    alt="Home"
-                                    width={60}
-                                    height={60}
-                                    className="cursor-pointer rounded shadow"
-                                />
-                            </Link>
-                            <span className="text-xs text-muted-foreground mt-2">back to home</span>
+                          <Link href="https://northseatrading.org" className="px-4 py-2 rounded bg-primary text-white font-medium shadow hover:bg-primary/80 transition-colors text-sm sm:text-base">
+                            Back to Home
+                          </Link>
                         </div>
                     </div>
 
