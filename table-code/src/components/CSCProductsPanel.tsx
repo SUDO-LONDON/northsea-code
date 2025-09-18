@@ -2,6 +2,7 @@
 
 import Image from "next/image"
 import { AreaChart, Area, ResponsiveContainer } from "recharts"
+import React, { useEffect, useState } from "react"
 
 // List of products to display
 const products = [
@@ -23,6 +24,33 @@ const generateSparklineData = () => {
 }
 
 export default function CSCProductsPanel() {
+  const [history, setHistory] = useState<{ x: string; y: number }[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    async function fetchHistory() {
+      setLoading(true);
+      setError(null);
+      try {
+        const res = await fetch("/api/csc-history");
+        if (!res.ok) throw new Error("Failed to fetch CSC history");
+        const data = await res.json();
+        // Transform to recharts format
+        setHistory(
+          Array.isArray(data)
+            ? data.map((d: any) => ({ x: d.recorded_at, y: d.value }))
+            : []
+        );
+      } catch (e: any) {
+        setError(e.message || "Unknown error");
+      } finally {
+        setLoading(false);
+      }
+    }
+    fetchHistory();
+  }, []);
+
   return (
     <div className="rounded-xl overflow-hidden border bg-card p-4 sm:p-6 w-full">
       <div className="flex flex-col items-center mb-6">
@@ -42,7 +70,7 @@ export default function CSCProductsPanel() {
             <span className="font-medium text-foreground text-base">{name}</span>
             <div className="w-[100px] h-[40px]">
               <ResponsiveContainer width="100%" height="100%">
-                <AreaChart data={generateSparklineData()}>
+                <AreaChart data={history.length ? history : generateSparklineData()}>
                   <defs>
                     <linearGradient id="colorUv" x1="0" y1="0" x2="0" y2="1">
                       <stop offset="5%" stopColor="#10B981" stopOpacity={0.6}/>
@@ -62,8 +90,9 @@ export default function CSCProductsPanel() {
             </div>
           </div>
         ))}
+        {loading && <div className="text-xs text-muted-foreground">Loading history...</div>}
+        {error && <div className="text-xs text-red-500">{error}</div>}
       </div>
     </div>
   )
 }
-
