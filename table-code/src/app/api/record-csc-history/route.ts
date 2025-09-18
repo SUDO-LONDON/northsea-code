@@ -5,7 +5,7 @@ export async function GET() {
   try {
     // Fetch FOLIO prices from the internal API
     const folioRes = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/folio-prices`);
-    if (!folioRes.ok) {
+     if (!folioRes.ok) {
       return new Response('Failed to fetch FOLIO prices', { status: 500 });
     }
     const prices = await folioRes.json();
