@@ -1,6 +1,7 @@
 // Supabase Edge Function: record-csc-panel
 // Fetches CSC value from /api/folio-prices and stores it in csc_panel_history every 15 minutes
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
+import { Resend } from "https://esm.sh/resend";
 
 serve(async (req) => {
   // Fetch FOLIO prices from the internal API
