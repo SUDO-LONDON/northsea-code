@@ -1,6 +1,6 @@
 // Supabase Edge Function: record-csc-panel
 // Fetches CSC value from /api/folio-prices and stores it in csc_panel_history every 15 minutes
-import { serve } from 'std/server';
+import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 
 serve(async (req) => {
   // Fetch FOLIO prices from the internal API
@@ -32,10 +32,9 @@ serve(async (req) => {
     return new Response('Failed to insert CSC value', { status: 500 });
   }
 
-  // Delete records older than 12 hours
-  const twelveHoursAgo = new Date(Date.now() - 12 * 60 * 60 * 1000).toISOString();
-  await supabase.from('csc_panel_history').delete().lt('recorded_at', twelveHoursAgo);
+  // Delete records older than 24 hours
+  const twentyFourHoursAgo = new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString();
+  await supabase.from('csc_panel_history').delete().lt('recorded_at', twentyFourHoursAgo);
 
   return new Response('CSC value recorded', { status: 200 });
 });
-
