@@ -1,28 +1,39 @@
 import { kv } from '@vercel/kv';
 import { NextResponse } from 'next/server';
 
+interface FolioPrice {
+  id: string;
+  value: number;
+  // ...other fields if needed
+}
+
+interface CSCPanelHistoryEntry {
+  value: number;
+  recorded_at: string;
+}
+
 export async function GET() {
   try {
     // Fetch FOLIO prices from the internal API
     const folioRes = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/folio-prices`);
-     if (!folioRes.ok) {
+    if (!folioRes.ok) {
       return new Response('Failed to fetch FOLIO prices', { status: 500 });
     }
-    const prices = await folioRes.json();
+    const prices: FolioPrice[] = await folioRes.json();
 
     // Extract CSC value
-    const cscEntry = prices.find((p: any) => p.id === 'e9e305ee-8605-4503-b3e2-8f5763870cd2');
+    const cscEntry = prices.find((p: FolioPrice) => p.id === 'e9e305ee-8605-4503-b3e2-8f5763870cd2');
     if (!cscEntry || typeof cscEntry.value !== 'number') {
       return new Response('CSC value not found', { status: 404 });
     }
 
-    const newRecord = {
+    const newRecord: CSCPanelHistoryEntry = {
       value: cscEntry.value,
       recorded_at: new Date().toISOString(),
     };
 
     // Get current history, add new record, and trim
-    const history = await kv.get<any[]>('csc_panel_history') || [];
+    const history = (await kv.get<CSCPanelHistoryEntry[]>('csc_panel_history')) || [];
     history.push(newRecord);
 
     // Keep only the last 96 records (24 hours * 4 records per hour)
@@ -38,4 +49,3 @@ export async function GET() {
     return NextResponse.json({ error: errorMessage }, { status: 500 });
   }
 }
-
