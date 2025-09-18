@@ -17,7 +17,9 @@ export async function GET() {
     // Fetch FOLIO prices from the internal API
     const folioRes = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/folio-prices`);
     if (!folioRes.ok) {
-      return new Response('Failed to fetch FOLIO prices', { status: 500 });
+      const errorText = await folioRes.text();
+      console.error('Failed to fetch FOLIO prices:', folioRes.status, errorText);
+      return NextResponse.json({ error: 'Failed to fetch FOLIO prices', status: folioRes.status, details: errorText }, { status: 500 });
     }
     const prices: FolioPrice[] = await folioRes.json();
 
@@ -45,6 +47,7 @@ export async function GET() {
 
     return NextResponse.json({ success: true, message: 'CSC value recorded.' });
   } catch (error) {
+    console.error('Error in record-csc-history:', error);
     const errorMessage = error instanceof Error ? error.message : 'An unknown error occurred';
     return NextResponse.json({ error: errorMessage }, { status: 500 });
   }
