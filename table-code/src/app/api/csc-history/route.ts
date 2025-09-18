@@ -4,6 +4,14 @@ import { NextResponse } from 'next/server';
 export async function GET() {
   const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || process.env.SUPABASE_URL;
   const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.SUPABASE_ANON_KEY;
+
+  if (!supabaseUrl || !supabaseKey) {
+    return NextResponse.json(
+      { error: "Missing Supabase URL or Key" },
+      { status: 500 }
+    );
+  }
+
   const supabase = createClient(supabaseUrl, supabaseKey);
 
   // Get the last 24 hours of data, ordered ascending
