@@ -6,12 +6,12 @@ export async function GET() {
   const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.SUPABASE_ANON_KEY;
   const supabase = createClient(supabaseUrl, supabaseKey);
 
-  // Get the last 12 hours of data, ordered ascending
-  const twelveHoursAgo = new Date(Date.now() - 12 * 60 * 60 * 1000).toISOString();
+  // Get the last 24 hours of data, ordered ascending
+  const twentyFourHoursAgo = new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString();
   const { data, error } = await supabase
     .from('csc_panel_history')
     .select('value, recorded_at')
-    .gte('recorded_at', twelveHoursAgo)
+    .gte('recorded_at', twentyFourHoursAgo)
     .order('recorded_at', { ascending: true });
 
   if (error) {
