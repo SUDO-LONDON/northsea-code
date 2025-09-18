@@ -23,6 +23,8 @@ const generateSparklineData = () => {
   }))
 }
 
+type CSCPanelHistoryEntry = { value: number; recorded_at: string };
+
 export default function CSCProductsPanel() {
   const [history, setHistory] = useState<{ x: string; y: number }[]>([]);
   const [loading, setLoading] = useState(true);
@@ -35,15 +37,15 @@ export default function CSCProductsPanel() {
       try {
         const res = await fetch("/api/csc-history");
         if (!res.ok) throw new Error("Failed to fetch CSC history");
-        const data = await res.json();
+        const data: CSCPanelHistoryEntry[] = await res.json();
         // Transform to recharts format
         setHistory(
           Array.isArray(data)
-            ? data.map((d: any) => ({ x: d.recorded_at, y: d.value }))
+            ? data.map((d) => ({ x: d.recorded_at, y: d.value }))
             : []
         );
-      } catch (e: any) {
-        setError(e.message || "Unknown error");
+      } catch (e: unknown) {
+        setError(e instanceof Error ? e.message : "Unknown error");
       } finally {
         setLoading(false);
       }
