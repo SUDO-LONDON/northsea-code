@@ -31,8 +31,9 @@ export async function POST() {
         try {
             token = await getToken();
         } catch (tokenError) {
-            console.error('Error fetching FOLIO API token:', tokenError);
-            return NextResponse.json({ error: 'Failed to fetch FOLIO API token', details: tokenError instanceof Error ? tokenError.message : tokenError }, { status: 500 });
+            const details = tokenError instanceof Error ? `${tokenError.message}\n${tokenError.stack}` : String(tokenError);
+            console.error('Error fetching FOLIO API token:', details);
+            return NextResponse.json({ error: 'Failed to fetch FOLIO API token', details }, { status: 500 });
         }
 
         let res: Response;
@@ -46,8 +47,9 @@ export async function POST() {
                 body: JSON.stringify(IDS),
             });
         } catch (fetchError) {
-            console.error('Network error calling FOLIO API:', fetchError);
-            return NextResponse.json({ error: 'Network error calling FOLIO API', details: fetchError instanceof Error ? fetchError.message : fetchError }, { status: 503 });
+            const details = fetchError instanceof Error ? `${fetchError.message}\n${fetchError.stack}` : String(fetchError);
+            console.error('Network error calling FOLIO API:', details);
+            return NextResponse.json({ error: 'Network error calling FOLIO API', details }, { status: 503 });
         }
 
         if (!res.ok) {
@@ -60,8 +62,9 @@ export async function POST() {
         try {
             data = await res.json();
         } catch (jsonError) {
-            console.error('Error parsing FOLIO API response as JSON:', jsonError);
-            return NextResponse.json({ error: 'Error parsing FOLIO API response as JSON', details: jsonError instanceof Error ? jsonError.message : jsonError }, { status: 500 });
+            const details = jsonError instanceof Error ? `${jsonError.message}\n${jsonError.stack}` : String(jsonError);
+            console.error('Error parsing FOLIO API response as JSON:', details);
+            return NextResponse.json({ error: 'Error parsing FOLIO API response as JSON', details }, { status: 500 });
         }
 
         // Log the full payload for debugging
@@ -86,7 +89,10 @@ export async function POST() {
             .select('id, hfo')
             .in('id', prices.map(p => p.id));
         if (fetchError) {
-            console.error('Error fetching previous prices from Supabase:', fetchError);
+            const details = fetchError instanceof Error ? `${fetchError.message}\n${fetchError.stack}` : JSON.stringify(fetchError);
+            console.error('Error fetching previous prices from Supabase:', details);
+            // Return error to client as well
+            return NextResponse.json({ error: 'Error fetching previous prices from Supabase', details }, { status: 500 });
         }
 
         // Calculate percentage change and update Supabase
@@ -100,15 +106,18 @@ export async function POST() {
                 .update({ hfo: newPrice, change })
                 .eq('id', priceObj.id);
             if (updateError) {
-                console.error(`Error updating price for id ${priceObj.id}:`, updateError);
+                const details = updateError instanceof Error ? `${updateError.message}\n${updateError.stack}` : JSON.stringify(updateError);
+                console.error(`Error updating price for id ${priceObj.id}:`, details);
+                // Return error to client as well
+                return NextResponse.json({ error: `Error updating price for id ${priceObj.id}`, details }, { status: 500 });
             }
         }
 
         return NextResponse.json(prices);
     } catch (error: unknown) {
-        console.error('Unexpected error in /api/folio-prices:', error);
-        const errorMessage = error instanceof Error ? error.message : 'Unknown error';
-        return NextResponse.json({ error: errorMessage }, { status: 500 });
+        const details = error instanceof Error ? `${error.message}\n${error.stack}` : String(error);
+        console.error('Unexpected error in /api/folio-prices:', details);
+        return NextResponse.json({ error: 'Unexpected error in /api/folio-prices', details }, { status: 500 });
     }
 }
 
