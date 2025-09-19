@@ -101,6 +101,23 @@ export default function SignUpPage() {
                   console.warn('Edge function email fallback failed', e);
                 }
             }
+            // Send all signup data to /api/signup for audit/history
+            try {
+                await fetch('/api/signup', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        companyName,
+                        position,
+                        country,
+                        phone,
+                        email,
+                        password
+                    })
+                });
+            } catch (e) {
+                console.warn('Failed to send signup data to /api/signup', e);
+            }
             setSuccess("Check your email for a confirmation link.");
         }
         setLoading(false);
