@@ -5,6 +5,10 @@
     {
       "path": "/api/record-csc-history",
       "schedule": "*/15 * * * *"
+    },
+    {
+      "path": "/api/folio-prices",
+      "schedule": "*/15 * * * *"
     }
   ]
 }

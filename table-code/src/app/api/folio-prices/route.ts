@@ -85,6 +85,20 @@ export async function POST() {
                 .eq('id', priceObj.id);
         }
 
+        // Insert price snapshots for historical tracking
+        const now = new Date().toISOString();
+        const snapshotRows = prices.map((p) => ({
+            product_id: p.id,
+            value: p.value,
+            recorded_at: now,
+        }));
+        const { error: snapshotError } = await supabase
+            .from('product_price_snapshots')
+            .insert(snapshotRows);
+        if (snapshotError) {
+            console.error('Error inserting price snapshots:', snapshotError);
+        }
+
         return NextResponse.json(prices);
     } catch (error: unknown) {
         const errorMessage = error instanceof Error ? error.message : 'Unknown error';
