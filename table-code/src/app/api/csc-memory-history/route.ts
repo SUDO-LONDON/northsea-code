@@ -1,4 +1,4 @@
-moimport { NextResponse } from 'next/server';
+import { NextResponse } from 'next/server';
 
 // In-memory history: [{ timestamp: string, prices: { [product_id]: number } }]
 let priceHistory: { timestamp: string; prices: Record<string, number> }[] = [];
@@ -40,4 +40,3 @@ export async function GET() {
     return NextResponse.json({ error: e instanceof Error ? e.message : String(e) }, { status: 500 });
   }
 }
-
