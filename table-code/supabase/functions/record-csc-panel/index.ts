@@ -1,41 +1,78 @@
 // Supabase Edge Function: record-csc-panel
-// Fetches CSC value from /api/folio-prices and stores it in csc_panel_history every 15 minutes
-import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
-import { Resend } from "https://esm.sh/resend";
+// This function fetches folio API data and stores it in csc_panel_history every 15 minutes, keeping only the last 24 hours of data.
 
-serve(async (req) => {
-  // Fetch FOLIO prices from the internal API
-  const folioRes = await fetch(`${Deno.env.get('INTERNAL_API_BASE') || 'http://localhost:3000'}/api/folio-prices`);
-  if (!folioRes.ok) {
-    return new Response('Failed to fetch FOLIO prices', { status: 500 });
-  }
-  const prices = await folioRes.json();
+import { serve } from 'std/server';
 
-  // Extract CSC value (adjust key as needed)
-  // Example: find the value for a specific product id or name
-  const cscEntry = prices.find((p: any) => p.id === 'e9e305ee-8605-4503-b3e2-8f5763870cd2'); // Adjust as needed
-  if (!cscEntry || typeof cscEntry.value !== 'number') {
-    return new Response('CSC value not found', { status: 404 });
-  }
+const FOLIO_TOKEN_URL = 'https://folio-api.artis.works/oauth/token';
+const FOLIO_PRICES_URL = 'https://folio-api.artis.works/prices/v2/liveprices';
 
-  // Insert into Supabase
-  const supabaseUrl = Deno.env.get('SUPABASE_URL');
-  const supabaseKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY');
-  const { createClient } = await import('https://esm.sh/@supabase/supabase-js');
-  const supabase = createClient(supabaseUrl, supabaseKey);
+const CLIENT_ID = Deno.env.get('FOLIO_CLIENT_ID');
+const CLIENT_SECRET = Deno.env.get('FOLIO_CLIENT_SECRET');
+const AUDIENCE = 'folio-api';
+const GRANT_TYPE = 'client_credentials';
 
-  // Insert the new value
-  const { error } = await supabase.from('csc_panel_history').insert({
-    value: cscEntry.value,
-    recorded_at: new Date().toISOString(),
+async function fetchToken() {
+  const params = new URLSearchParams();
+  params.append('audience', AUDIENCE);
+  params.append('grant_type', GRANT_TYPE);
+  params.append('client_id', CLIENT_ID!);
+  params.append('client_secret', CLIENT_SECRET!);
+
+  const res = await fetch(FOLIO_TOKEN_URL, {
+    method: 'POST',
+    headers: {
+      'accept': 'application/json',
+      'Content-Type': 'application/x-www-form-urlencoded',
+    },
+    body: params.toString(),
   });
-  if (error) {
-    return new Response('Failed to insert CSC value', { status: 500 });
+  if (!res.ok) throw new Error('Failed to fetch token');
+  const data = await res.json();
+  return data.access_token;
+}
+
+async function fetchFolioData(token: string) {
+  const res = await fetch(FOLIO_PRICES_URL, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+  if (!res.ok) throw new Error('Failed to fetch folio data');
+  return await res.json();
+}
+
+serve(async () => {
+  try {
+    const token = await fetchToken();
+    const folioData = await fetchFolioData(token);
+    // Extract the value you want to store. Adjust this as needed.
+    const value = folioData?.[0]?.price ?? null;
+    if (value === null) throw new Error('No value found in folio data');
+
+    // Insert into csc_panel_history
+    const insertRes = await fetch(`${Deno.env.get('SUPABASE_URL')}/rest/v1/csc_panel_history`, {
+      method: 'POST',
+      headers: {
+        'apikey': Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!,
+        'Authorization': `Bearer ${Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')}`,
+        'Content-Type': 'application/json',
+        'Prefer': 'return=representation',
+      },
+      body: JSON.stringify({ value, recorded_at: new Date().toISOString() }),
+    });
+    if (!insertRes.ok) throw new Error('Failed to insert into csc_panel_history');
+
+    // Delete records older than 24 hours
+    const cutoff = new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString();
+    await fetch(`${Deno.env.get('SUPABASE_URL')}/rest/v1/csc_panel_history?recorded_at=lt.${cutoff}`, {
+      method: 'DELETE',
+      headers: {
+        'apikey': Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!,
+        'Authorization': `Bearer ${Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')}`,
+      },
+    });
+
+    return new Response('Success', { status: 200 });
+  } catch (e) {
+    return new Response(`Error: ${e}`, { status: 500 });
   }
-
-  // Delete records older than 24 hours
-  const twentyFourHoursAgo = new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString();
-  await supabase.from('csc_panel_history').delete().lt('recorded_at', twentyFourHoursAgo);
-
-  return new Response('CSC value recorded', { status: 200 });
 });
+
