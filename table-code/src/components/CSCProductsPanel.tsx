@@ -45,18 +45,14 @@ export default function CSCProductsPanel() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
+  // Fetch chart data (if you want to keep the chart, otherwise remove this block)
   useEffect(() => {
-    async function fetchAll() {
-      setLoading(true);
-      setError(null);
+    async function fetchChart() {
       try {
-        // Fetch in-memory 1-hour history for chart
         const res = await fetch("/api/csc-memory-history");
         if (!res.ok) throw new Error("Failed to fetch CSC memory history");
         const data: { timestamp: string; prices: Record<string, number> }[] = await res.json();
-        // Build a time series for each product by product_id
         const out: Record<string, { x: string; y: number }[]> = {};
-        const prev: Record<string, number> = {};
         PRODUCT_NAME_ID_MAP.forEach(({ id }) => { out[id] = []; });
         data.forEach(entry => {
           PRODUCT_NAME_ID_MAP.forEach(({ id }) => {
@@ -65,26 +61,37 @@ export default function CSCProductsPanel() {
             }
           });
         });
-        // For each product, get the most recent value from history (not the second-to-last)
-        PRODUCT_NAME_ID_MAP.forEach(({ id }) => {
-          const arr = out[id];
-          if (arr.length > 0) {
-            prev[id] = arr[arr.length - 1].y;
-          }
-        });
         setSeries(out);
-        setPrevious(prev);
-        // Fetch latest prices from folio API for text
-        const latestPrices = await fetchLatestFolioPrices();
-        setLatest(latestPrices);
       } catch (e: unknown) {
         setError(e instanceof Error ? e.message : "Unknown error");
-      } finally {
-        setLoading(false);
       }
     }
-    fetchAll();
+    fetchChart();
   }, []);
+
+  // Poll folio API for latest prices and compare to previous
+  useEffect(() => {
+    let interval: NodeJS.Timeout;
+    let mounted = true;
+    async function pollFolio() {
+      try {
+        const newPrices = await fetchLatestFolioPrices();
+        setPrevious(prev => {
+          // Store the previous latest before updating
+          return { ...latest };
+        });
+        setLatest(newPrices);
+      } catch (e) {
+        // ignore
+      }
+    }
+    pollFolio();
+    interval = setInterval(pollFolio, 15000); // 15 seconds
+    return () => {
+      mounted = false;
+      clearInterval(interval);
+    };
+  }, [latest]);
 
   return (
     <div className="rounded-xl overflow-hidden border bg-card p-4 sm:p-6 w-full">
