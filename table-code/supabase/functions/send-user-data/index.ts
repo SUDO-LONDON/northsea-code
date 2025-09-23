@@ -1,10 +1,7 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
-import { Resend } from "resend";
 
 const RESEND_API_KEY = Deno.env.get("RESEND_API_KEY") ?? "";
 const RECIPIENT_EMAIL = Deno.env.get("RECIPIENT_EMAIL") ?? "";
-
-const resend = RESEND_API_KEY ? new Resend(RESEND_API_KEY) : null;
 
 function log(...args: any[]) {
   console.log(new Date().toISOString(), "[send-user-data]", ...args);
@@ -18,7 +15,7 @@ serve(async (req) => {
     });
   }
 
-  if (!RESEND_API_KEY || !RECIPIENT_EMAIL || !resend) {
+  if (!RESEND_API_KEY || !RECIPIENT_EMAIL) {
     log("Missing config", {
       hasKey: !!RESEND_API_KEY,
       hasRecipient: !!RECIPIENT_EMAIL,
@@ -51,7 +48,11 @@ serve(async (req) => {
 
   try {
     const meta = record.raw_user_meta_data || record.user_metadata || {};
-    const { company_name, position, country_of_incorporation, phone } = meta;
+    // Try to extract company_name, position, country_of_incorporation, phone from multiple possible locations
+    let company_name = record.company_name || meta.company_name || meta.company || "Not provided";
+    let position = record.position || meta.position || "Not provided";
+    let country_of_incorporation = record.country_of_incorporation || meta.country_of_incorporation || meta.country || "Not provided";
+    let phone = record.phone || meta.phone || "Not provided";
 
     log("Dispatch email", {
       id: record.id,
@@ -68,24 +69,35 @@ serve(async (req) => {
       <h1>New User Signup</h1>
       <ul>
         <li><strong>Email:</strong> ${record.email || "Not provided"}</li>
-        <li><strong>Company Name:</strong> ${company_name || "Not provided"}</li>
-        <li><strong>Position:</strong> ${position || "Not provided"}</li>
-        <li><strong>Country of Incorporation:</strong> ${country_of_incorporation || "Not provided"}</li>
-        <li><strong>Phone Number:</strong> ${phone || "Not provided"}</li>
+        <li><strong>Company Name:</strong> ${company_name}</li>
+        <li><strong>Position:</strong> ${position}</li>
+        <li><strong>Country of Incorporation:</strong> ${country_of_incorporation}</li>
+        <li><strong>Phone Number:</strong> ${phone}</li>
         <li><strong>User ID:</strong> ${record.id || "N/A"}</li>
         <li><strong>Created At:</strong> ${record.created_at || "N/A"}</li>
       </ul>
     `;
 
-    const sendResult = await resend.emails.send({
-      from: "onboarding@resend.dev",
-      to: RECIPIENT_EMAIL,
-      subject: "New User Signup",
-      html: emailBody,
+    // Use fetch to call Resend API directly
+    const response = await fetch("https://api.resend.com/emails", {
+      method: "POST",
+      headers: {
+        "Authorization": `Bearer ${RESEND_API_KEY}`,
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        from: "logs.northseatrading@sudolondon.com", // use your verified domain and correct from address
+        to: RECIPIENT_EMAIL,
+        subject: "New User Signup",
+        html: emailBody
+      })
     });
-
+    const sendResult = await response.json();
     log("Resend response", sendResult);
-
+    if (!response.ok) {
+      log("Resend API error", sendResult);
+      throw new Error(sendResult.error || "Failed to send email");
+    }
     return new Response(
       JSON.stringify({ message: "Email dispatched", resend: sendResult }),
       {
