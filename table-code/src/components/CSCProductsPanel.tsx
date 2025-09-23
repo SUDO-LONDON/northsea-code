@@ -29,7 +29,7 @@ async function fetchLatestFolioPrices(): Promise<Record<string, number>> {
 }
 
 export default function CSCProductsPanel() {
-  const [series, setSeries] = useState<Record<string, { x: string; y: number }[]>>({});
+  const [series, setSeries] = useState<Record<string, { x: string; y: number }>>({});
   const [latest, setLatest] = useState<Record<string, number>>({});
   const [previous, setPrevious] = useState<Record<string, number>>({});
   const [error, setError] = useState<string | null>(null);
@@ -99,15 +99,15 @@ export default function CSCProductsPanel() {
         {PRODUCT_NAME_ID_MAP.map(({ name, id }) => {
           const value = latest[id];
           const prev = previous[id];
-          let color = "text-foreground";
+          let colorClass = "text-foreground";
           if (value !== undefined && prev !== undefined) {
-            if (value > prev) color = "text-green-600";
-            else if (value < prev) color = "text-red-600";
+            if (value > prev) colorClass = "text-green-600";
+            else if (value < prev) colorClass = "text-red-600";
           }
           return (
             <div key={id} className="flex items-center justify-between border-b pb-2 last:border-b-0 last:pb-0">
               <span className="font-medium text-foreground text-base">{name}</span>
-              <span className={`ml-2 text-sm ${color}`}>
+              <span className={`ml-2 text-sm font-mono ${colorClass}`}>
                 {value !== undefined ? value : <span className="text-muted">--</span>}
               </span>
               <div className="w-[100px] h-[40px]">
