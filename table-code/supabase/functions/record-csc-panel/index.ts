@@ -15,8 +15,8 @@ async function fetchToken() {
   const params = new URLSearchParams();
   params.append('audience', AUDIENCE);
   params.append('grant_type', GRANT_TYPE);
-  params.append('client_id', CLIENT_ID!);
-  params.append('client_secret', CLIENT_SECRET!);
+  params.append('client_id', CLIENT_ID ?? '');
+  params.append('client_secret', CLIENT_SECRET ?? '');
 
   const res = await fetch(FOLIO_TOKEN_URL, {
     method: 'POST',
@@ -26,7 +26,11 @@ async function fetchToken() {
     },
     body: params.toString(),
   });
-  if (!res.ok) throw new Error('Failed to fetch token');
+  if (!res.ok) {
+    const errorText = await res.text();
+    console.error('Token fetch failed:', res.status, errorText);
+    throw new Error(`Failed to fetch token: ${res.status} ${errorText}`);
+  }
   const data = await res.json();
   return data.access_token;
 }
@@ -41,9 +45,11 @@ async function fetchFolioData(token: string) {
 
 serve(async () => {
   try {
+    // Log envs for debugging (mask secrets)
+    console.log('CLIENT_ID present:', !!CLIENT_ID);
+    console.log('CLIENT_SECRET present:', !!CLIENT_SECRET);
     const token = await fetchToken();
     const folioData = await fetchFolioData(token);
-    // Store the entire payload and generated_at timestamp for full fidelity
     const generatedAt = folioData.generated_at || new Date().toISOString();
     const payload = folioData.payload || {};
 
@@ -72,6 +78,7 @@ serve(async () => {
 
     return new Response('Success', { status: 200 });
   } catch (e) {
+    console.error('Edge Function error:', e);
     return new Response(`Error: ${e}`, { status: 500 });
   }
 });
