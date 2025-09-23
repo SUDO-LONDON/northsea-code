@@ -1,7 +1,7 @@
 // Supabase Edge Function: record-csc-panel
 // This function fetches folio API data and stores it in csc_panel_history every 15 minutes, keeping only the last 24 hours of data.
 
-import { serve } from 'std/server';
+import { serve } from "https://deno.land/std@0.224.0/http/server.ts";
 
 const FOLIO_TOKEN_URL = 'https://folio-api.artis.works/oauth/token';
 const FOLIO_PRICES_URL = 'https://folio-api.artis.works/prices/v2/liveprices';
@@ -75,4 +75,3 @@ serve(async () => {
     return new Response(`Error: ${e}`, { status: 500 });
   }
 });
-
