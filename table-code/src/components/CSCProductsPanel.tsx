@@ -25,20 +25,34 @@ const generateSparklineData = () => {
 
 type CSCPanelHistoryEntry = { product_id: string; value: number; recorded_at: string };
 
+// Helper to fetch latest prices from folio API
+async function fetchLatestFolioPrices(): Promise<Record<string, number>> {
+  try {
+    const res = await fetch("/api/folio-prices"); // You must have an API route that proxies to the folio API
+    if (!res.ok) throw new Error("Failed to fetch folio prices");
+    const data = await res.json();
+    // Assume data is an object: { [product_id]: price, ... }
+    return data;
+  } catch {
+    return {};
+  }
+}
+
 export default function CSCProductsPanel() {
   const [series, setSeries] = useState<Record<string, { x: string; y: number }[]>>({});
+  const [latest, setLatest] = useState<Record<string, number>>({});
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    async function fetchHistory() {
+    async function fetchAll() {
       setLoading(true);
       setError(null);
       try {
+        // Fetch historical data from Supabase
         const res = await fetch("/api/csc-panel-history");
         if (!res.ok) throw new Error("Failed to fetch CSC history");
         const data: CSCPanelHistoryEntry[] = await res.json();
-        // Build a time series for each product by product_id
         const out: Record<string, { x: string; y: number }[]> = {};
         PRODUCT_NAME_ID_MAP.forEach(({ id }) => { out[id] = []; });
         data.forEach(entry => {
@@ -47,13 +61,16 @@ export default function CSCProductsPanel() {
           }
         });
         setSeries(out);
+        // Fetch latest prices from folio API
+        const latestPrices = await fetchLatestFolioPrices();
+        setLatest(latestPrices);
       } catch (e: unknown) {
         setError(e instanceof Error ? e.message : "Unknown error");
       } finally {
         setLoading(false);
       }
     }
-    fetchHistory();
+    fetchAll();
   }, []);
 
   return (
@@ -73,6 +90,9 @@ export default function CSCProductsPanel() {
         {PRODUCT_NAME_ID_MAP.map(({ name, id }) => (
           <div key={id} className="flex items-center justify-between border-b pb-2 last:border-b-0 last:pb-0">
             <span className="font-medium text-foreground text-base">{name}</span>
+            <span className="ml-2 text-sm text-foreground">
+              {latest[id] !== undefined ? latest[id] : <span className="text-muted">--</span>}
+            </span>
             <div className="w-[100px] h-[40px]">
               {series[id]?.length ? (
                 <ResponsiveContainer width="100%" height="100%">
