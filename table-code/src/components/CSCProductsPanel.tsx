@@ -49,19 +49,22 @@ export default function CSCProductsPanel() {
       setLoading(true);
       setError(null);
       try {
-        // Fetch historical data from Supabase
-        const res = await fetch("/api/csc-panel-history");
-        if (!res.ok) throw new Error("Failed to fetch CSC history");
-        const data: CSCPanelHistoryEntry[] = await res.json();
+        // Fetch in-memory 1-hour history for chart
+        const res = await fetch("/api/csc-memory-history");
+        if (!res.ok) throw new Error("Failed to fetch CSC memory history");
+        const data: { timestamp: string; prices: Record<string, number> }[] = await res.json();
+        // Build a time series for each product by product_id
         const out: Record<string, { x: string; y: number }[]> = {};
         PRODUCT_NAME_ID_MAP.forEach(({ id }) => { out[id] = []; });
         data.forEach(entry => {
-          if (out[entry.product_id]) {
-            out[entry.product_id].push({ x: entry.recorded_at, y: entry.value });
-          }
+          PRODUCT_NAME_ID_MAP.forEach(({ id }) => {
+            if (entry.prices && entry.prices[id] !== undefined) {
+              out[id].push({ x: entry.timestamp, y: entry.prices[id] });
+            }
+          });
         });
         setSeries(out);
-        // Fetch latest prices from folio API
+        // Fetch latest prices from folio API for text
         const latestPrices = await fetchLatestFolioPrices();
         setLatest(latestPrices);
       } catch (e: unknown) {
