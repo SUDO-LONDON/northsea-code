@@ -4,16 +4,16 @@ import Image from "next/image"
 import { AreaChart, Area, ResponsiveContainer } from "recharts"
 import React, { useEffect, useState } from "react"
 
-// List of products to display
-const products = [
-  "Rotterdam 3.5%",
-  "Rotterdam 0.5%",
-  "NWE 1% FOB",
-  "Singapore 0.5%",
-  "Singapore 380 CST",
-  "USGC 3%",
-  "USGC 0.5%"
-]
+// Map old product names to new product IDs
+const PRODUCT_NAME_ID_MAP: { name: string; id: string }[] = [
+  { name: "Rotterdam 3.5%", id: "e9e305ee-8605-4503-b3e2-8f5763870cd2" },
+  { name: "Rotterdam 0.5%", id: "99d27f4d-0a7e-44fe-b9de-9c27d27f08d2" },
+  { name: "NWE 1% FOB", id: "b0738070-229c-4aa7-b5d0-45b4119dd0e0" },
+  { name: "Singapore 0.5%", id: "662e5a2f-f028-4d18-81dc-89be3ba01f3a" },
+  { name: "Singapore 380 CST", id: "6ccbf93e-d43d-46ab-ba50-c26659add883" },
+  { name: "USGC 3%", id: "e506264b-1bcd-429f-b018-f50e3f517133" },
+  { name: "USGC 0.5%", id: "29d3a405-cb03-45b4-9ebf-f0176b7ba06a" }
+];
 
 // Generate fake sparkline data for visualization
 const generateSparklineData = () => {
@@ -23,10 +23,10 @@ const generateSparklineData = () => {
   }))
 }
 
-type CSCPanelHistoryEntry = { value: number; recorded_at: string };
+type CSCPanelHistoryEntry = { value: Record<string, number>; recorded_at: string };
 
 export default function CSCProductsPanel() {
-  const [history, setHistory] = useState<{ x: string; y: number }[]>([]);
+  const [series, setSeries] = useState<Record<string, { x: string; y: number }[]>>({});
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -38,12 +38,17 @@ export default function CSCProductsPanel() {
         const res = await fetch("/api/csc-history");
         if (!res.ok) throw new Error("Failed to fetch CSC history");
         const data: CSCPanelHistoryEntry[] = await res.json();
-        // Transform to recharts format
-        setHistory(
-          Array.isArray(data)
-            ? data.map((d) => ({ x: d.recorded_at, y: d.value }))
-            : []
-        );
+        // Build a time series for each product by ID
+        const out: Record<string, { x: string; y: number }[]> = {};
+        PRODUCT_NAME_ID_MAP.forEach(({ id }) => { out[id] = []; });
+        data.forEach(entry => {
+          PRODUCT_NAME_ID_MAP.forEach(({ id }) => {
+            if (entry.value && entry.value[id] !== undefined) {
+              out[id].push({ x: entry.recorded_at, y: entry.value[id] });
+            }
+          });
+        });
+        setSeries(out);
       } catch (e: unknown) {
         setError(e instanceof Error ? e.message : "Unknown error");
       } finally {
@@ -67,34 +72,27 @@ export default function CSCProductsPanel() {
         <h2 className="text-lg font-semibold text-foreground">CSC Commodities</h2>
       </div>
       <div className="space-y-4">
-        {products.map((name) => (
-          <div key={name} className="flex items-center justify-between border-b pb-2 last:border-b-0 last:pb-0">
+        {PRODUCT_NAME_ID_MAP.map(({ name, id }) => (
+          <div key={id} className="flex items-center justify-between border-b pb-2 last:border-b-0 last:pb-0">
             <span className="font-medium text-foreground text-base">{name}</span>
             <div className="w-[100px] h-[40px]">
               <ResponsiveContainer width="100%" height="100%">
-                <AreaChart data={history.length ? history : generateSparklineData()}>
+                <AreaChart data={series[id]?.length ? series[id] : generateSparklineData()}>
                   <defs>
                     <linearGradient id="colorUv" x1="0" y1="0" x2="0" y2="1">
                       <stop offset="5%" stopColor="#10B981" stopOpacity={0.6}/>
                       <stop offset="95%" stopColor="#10B981" stopOpacity={0}/>
                     </linearGradient>
                   </defs>
-                  <Area
-                    type="monotone"
-                    dataKey="y"
-                    stroke="#10B981"
-                    fillOpacity={1}
-                    fill="url(#colorUv)"
-                    strokeWidth={2}
-                  />
+                  <Area type="monotone" dataKey="y" stroke="#10B981" fillOpacity={1} fill="url(#colorUv)" />
                 </AreaChart>
               </ResponsiveContainer>
             </div>
           </div>
         ))}
-        {loading && <div className="text-xs text-muted-foreground">Loading history...</div>}
-        {error && <div className="text-xs text-red-500">{error}</div>}
       </div>
+      {loading && <div className="text-center text-muted">Loading...</div>}
+      {error && <div className="text-center text-red-500">{error}</div>}
     </div>
-  )
+  );
 }
