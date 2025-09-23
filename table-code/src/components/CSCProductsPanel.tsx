@@ -65,13 +65,11 @@ export default function CSCProductsPanel() {
             }
           });
         });
-        // For each product, get the second-to-last value (previous)
+        // For each product, get the most recent value from history (not the second-to-last)
         PRODUCT_NAME_ID_MAP.forEach(({ id }) => {
           const arr = out[id];
-          if (arr.length > 1) {
-            prev[id] = arr[arr.length - 2].y;
-          } else if (arr.length === 1) {
-            prev[id] = arr[0].y;
+          if (arr.length > 0) {
+            prev[id] = arr[arr.length - 1].y;
           }
         });
         setSeries(out);
