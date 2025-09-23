@@ -48,11 +48,11 @@ serve(async (req) => {
 
   try {
     const meta = record.raw_user_meta_data || record.user_metadata || {};
-    // Try to extract company_name, position, country_of_incorporation, phone from multiple possible locations
-    let company_name = record.company_name || meta.company_name || meta.company || "Not provided";
-    let position = record.position || meta.position || "Not provided";
-    let country_of_incorporation = record.country_of_incorporation || meta.country_of_incorporation || meta.country || "Not provided";
-    let phone = record.phone || meta.phone || "Not provided";
+    // Try to extract company_name, position, country_of_incorporation, phone from multiple possible locations and key variants
+    let company_name = record.company_name || meta.company_name || meta.company || meta.companyName || record.companyName || "Not provided";
+    let position = record.position || meta.position || meta.job_title || meta.jobTitle || record.job_title || record.jobTitle || "Not provided";
+    let country_of_incorporation = record.country_of_incorporation || meta.country_of_incorporation || meta.country || meta.countryOfIncorporation || record.country || record.countryOfIncorporation || "Not provided";
+    let phone = record.phone || meta.phone || meta.phone_number || meta.phoneNumber || record.phone_number || record.phoneNumber || "Not provided";
 
     log("Dispatch email", {
       id: record.id,
