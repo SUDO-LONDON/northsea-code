@@ -43,9 +43,9 @@ serve(async () => {
   try {
     const token = await fetchToken();
     const folioData = await fetchFolioData(token);
-    // Extract the value you want to store. Adjust this as needed.
-    const value = folioData?.[0]?.price ?? null;
-    if (value === null) throw new Error('No value found in folio data');
+    // Store the entire payload and generated_at timestamp for full fidelity
+    const generatedAt = folioData.generated_at || new Date().toISOString();
+    const payload = folioData.payload || {};
 
     // Insert into csc_panel_history
     const insertRes = await fetch(`${Deno.env.get('SUPABASE_URL')}/rest/v1/csc_panel_history`, {
@@ -56,7 +56,7 @@ serve(async () => {
         'Content-Type': 'application/json',
         'Prefer': 'return=representation',
       },
-      body: JSON.stringify({ value, recorded_at: new Date().toISOString() }),
+      body: JSON.stringify({ value: payload, recorded_at: generatedAt }),
     });
     if (!insertRes.ok) throw new Error('Failed to insert into csc_panel_history');
 
