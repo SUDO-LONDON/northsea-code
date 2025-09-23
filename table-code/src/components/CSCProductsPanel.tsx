@@ -15,16 +15,6 @@ const PRODUCT_NAME_ID_MAP: { name: string; id: string }[] = [
   { name: "USGC 0.5%", id: "29d3a405-cb03-45b4-9ebf-f0176b7ba06a" }
 ];
 
-// Generate fake sparkline data for visualization
-const generateSparklineData = () => {
-  return Array.from({ length: 20 }, (_, i) => ({
-    x: i,
-    y: 50 + Math.random() * 20
-  }))
-}
-
-type CSCPanelHistoryEntry = { product_id: string; value: number; recorded_at: string };
-
 // Helper to fetch latest prices from folio API
 async function fetchLatestFolioPrices(): Promise<Record<string, number>> {
   try {
@@ -62,7 +52,7 @@ export default function CSCProductsPanel() {
           });
         });
         setSeries(out);
-      } catch (e: unknown) {
+      } catch (e) {
         setError(e instanceof Error ? e.message : "Unknown error");
       }
     }
@@ -72,23 +62,18 @@ export default function CSCProductsPanel() {
   // Poll folio API for latest prices and compare to previous
   useEffect(() => {
     let interval: NodeJS.Timeout;
-    let mounted = true;
     async function pollFolio() {
       try {
         const newPrices = await fetchLatestFolioPrices();
-        setPrevious(prev => {
-          // Store the previous latest before updating
-          return { ...latest };
-        });
+        setPrevious(() => ({ ...latest }));
         setLatest(newPrices);
-      } catch (e) {
+      } catch {
         // ignore
       }
     }
     pollFolio();
     interval = setInterval(pollFolio, 15000); // 15 seconds
     return () => {
-      mounted = false;
       clearInterval(interval);
     };
   }, [latest]);
