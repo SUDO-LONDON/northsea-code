@@ -32,7 +32,6 @@ export default function CSCProductsPanel() {
   const [series, setSeries] = useState<Record<string, { x: string; y: number }[]>>({});
   const [latest, setLatest] = useState<Record<string, number>>({});
   const [previous, setPrevious] = useState<Record<string, number>>({});
-  const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
   // Fetch chart data (if you want to keep the chart, otherwise remove this block)
@@ -61,8 +60,7 @@ export default function CSCProductsPanel() {
 
   // Poll folio API for latest prices and compare to previous
   useEffect(() => {
-    let interval: NodeJS.Timeout;
-    async function pollFolio() {
+    const interval = setInterval(async () => {
       try {
         const newPrices = await fetchLatestFolioPrices();
         setPrevious(() => ({ ...latest }));
@@ -70,9 +68,15 @@ export default function CSCProductsPanel() {
       } catch {
         // ignore
       }
-    }
-    pollFolio();
-    interval = setInterval(pollFolio, 15000); // 15 seconds
+    }, 15000); // 15 seconds
+    // Initial fetch
+    (async () => {
+      try {
+        const newPrices = await fetchLatestFolioPrices();
+        setPrevious(() => ({ ...latest }));
+        setLatest(newPrices);
+      } catch {}
+    })();
     return () => {
       clearInterval(interval);
     };
@@ -127,7 +131,6 @@ export default function CSCProductsPanel() {
           );
         })}
       </div>
-      {loading && <div className="text-center text-muted">Loading...</div>}
       {error && <div className="text-center text-red-500">{error}</div>}
     </div>
   );
