@@ -29,7 +29,7 @@ async function fetchLatestFolioPrices(): Promise<Record<string, number>> {
 }
 
 export default function CSCProductsPanel() {
-  const [series, setSeries] = useState<Record<string, { x: string; y: number }>>({});
+  const [series, setSeries] = useState<Record<string, { x: string; y: number }[]>>({});
   const [latest, setLatest] = useState<Record<string, number>>({});
   const [previous, setPrevious] = useState<Record<string, number>>({});
   const [error, setError] = useState<string | null>(null);
