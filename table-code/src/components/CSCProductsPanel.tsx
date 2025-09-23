@@ -23,7 +23,7 @@ const generateSparklineData = () => {
   }))
 }
 
-type CSCPanelHistoryEntry = { value: Record<string, number>; recorded_at: string };
+type CSCPanelHistoryEntry = { product_id: string; value: number; recorded_at: string };
 
 export default function CSCProductsPanel() {
   const [series, setSeries] = useState<Record<string, { x: string; y: number }[]>>({});
@@ -35,18 +35,16 @@ export default function CSCProductsPanel() {
       setLoading(true);
       setError(null);
       try {
-        const res = await fetch("/api/csc-history");
+        const res = await fetch("/api/csc-panel-history");
         if (!res.ok) throw new Error("Failed to fetch CSC history");
         const data: CSCPanelHistoryEntry[] = await res.json();
-        // Build a time series for each product by ID
+        // Build a time series for each product by product_id
         const out: Record<string, { x: string; y: number }[]> = {};
         PRODUCT_NAME_ID_MAP.forEach(({ id }) => { out[id] = []; });
         data.forEach(entry => {
-          PRODUCT_NAME_ID_MAP.forEach(({ id }) => {
-            if (entry.value && entry.value[id] !== undefined) {
-              out[id].push({ x: entry.recorded_at, y: entry.value[id] });
-            }
-          });
+          if (out[entry.product_id]) {
+            out[entry.product_id].push({ x: entry.recorded_at, y: entry.value });
+          }
         });
         setSeries(out);
       } catch (e: unknown) {
@@ -76,17 +74,21 @@ export default function CSCProductsPanel() {
           <div key={id} className="flex items-center justify-between border-b pb-2 last:border-b-0 last:pb-0">
             <span className="font-medium text-foreground text-base">{name}</span>
             <div className="w-[100px] h-[40px]">
-              <ResponsiveContainer width="100%" height="100%">
-                <AreaChart data={series[id]?.length ? series[id] : generateSparklineData()}>
-                  <defs>
-                    <linearGradient id="colorUv" x1="0" y1="0" x2="0" y2="1">
-                      <stop offset="5%" stopColor="#10B981" stopOpacity={0.6}/>
-                      <stop offset="95%" stopColor="#10B981" stopOpacity={0}/>
-                    </linearGradient>
-                  </defs>
-                  <Area type="monotone" dataKey="y" stroke="#10B981" fillOpacity={1} fill="url(#colorUv)" />
-                </AreaChart>
-              </ResponsiveContainer>
+              {series[id]?.length ? (
+                <ResponsiveContainer width="100%" height="100%">
+                  <AreaChart data={series[id]}>
+                    <defs>
+                      <linearGradient id="colorUv" x1="0" y1="0" x2="0" y2="1">
+                        <stop offset="5%" stopColor="#10B981" stopOpacity={0.6}/>
+                        <stop offset="95%" stopColor="#10B981" stopOpacity={0}/>
+                      </linearGradient>
+                    </defs>
+                    <Area type="monotone" dataKey="y" stroke="#10B981" fillOpacity={1} fill="url(#colorUv)" />
+                  </AreaChart>
+                </ResponsiveContainer>
+              ) : (
+                <div className="text-xs text-muted">No data</div>
+              )}
             </div>
           </div>
         ))}
