@@ -4,7 +4,9 @@
     "@supabase/supabase-js": "^2.56.0",
     "@vercel/kv": "^3.0.0",
     "bcryptjs": "^3.0.2",
-    "build": "^0.1.4"
+    "build": "^0.1.4",
+    "deno": "^2.5.1",
+    "resend": "^6.1.0"
   },
   "devDependencies": {
     "supabase": "^2.40.7"
