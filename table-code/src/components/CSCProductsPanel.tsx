@@ -41,6 +41,7 @@ async function fetchLatestFolioPrices(): Promise<Record<string, number>> {
 export default function CSCProductsPanel() {
   const [series, setSeries] = useState<Record<string, { x: string; y: number }[]>>({});
   const [latest, setLatest] = useState<Record<string, number>>({});
+  const [previous, setPrevious] = useState<Record<string, number>>({});
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -55,6 +56,7 @@ export default function CSCProductsPanel() {
         const data: { timestamp: string; prices: Record<string, number> }[] = await res.json();
         // Build a time series for each product by product_id
         const out: Record<string, { x: string; y: number }[]> = {};
+        const prev: Record<string, number> = {};
         PRODUCT_NAME_ID_MAP.forEach(({ id }) => { out[id] = []; });
         data.forEach(entry => {
           PRODUCT_NAME_ID_MAP.forEach(({ id }) => {
@@ -63,7 +65,17 @@ export default function CSCProductsPanel() {
             }
           });
         });
+        // For each product, get the second-to-last value (previous)
+        PRODUCT_NAME_ID_MAP.forEach(({ id }) => {
+          const arr = out[id];
+          if (arr.length > 1) {
+            prev[id] = arr[arr.length - 2].y;
+          } else if (arr.length === 1) {
+            prev[id] = arr[0].y;
+          }
+        });
         setSeries(out);
+        setPrevious(prev);
         // Fetch latest prices from folio API for text
         const latestPrices = await fetchLatestFolioPrices();
         setLatest(latestPrices);
@@ -90,31 +102,40 @@ export default function CSCProductsPanel() {
         <h2 className="text-lg font-semibold text-foreground">CSC Commodities</h2>
       </div>
       <div className="space-y-4">
-        {PRODUCT_NAME_ID_MAP.map(({ name, id }) => (
-          <div key={id} className="flex items-center justify-between border-b pb-2 last:border-b-0 last:pb-0">
-            <span className="font-medium text-foreground text-base">{name}</span>
-            <span className="ml-2 text-sm text-foreground">
-              {latest[id] !== undefined ? latest[id] : <span className="text-muted">--</span>}
-            </span>
-            <div className="w-[100px] h-[40px]">
-              {series[id]?.length ? (
-                <ResponsiveContainer width="100%" height="100%">
-                  <AreaChart data={series[id]}>
-                    <defs>
-                      <linearGradient id="colorUv" x1="0" y1="0" x2="0" y2="1">
-                        <stop offset="5%" stopColor="#10B981" stopOpacity={0.6}/>
-                        <stop offset="95%" stopColor="#10B981" stopOpacity={0}/>
-                      </linearGradient>
-                    </defs>
-                    <Area type="monotone" dataKey="y" stroke="#10B981" fillOpacity={1} fill="url(#colorUv)" />
-                  </AreaChart>
-                </ResponsiveContainer>
-              ) : (
-                <div className="text-xs text-muted">No data</div>
-              )}
+        {PRODUCT_NAME_ID_MAP.map(({ name, id }) => {
+          const value = latest[id];
+          const prev = previous[id];
+          let color = "text-foreground";
+          if (value !== undefined && prev !== undefined) {
+            if (value > prev) color = "text-green-600";
+            else if (value < prev) color = "text-red-600";
+          }
+          return (
+            <div key={id} className="flex items-center justify-between border-b pb-2 last:border-b-0 last:pb-0">
+              <span className="font-medium text-foreground text-base">{name}</span>
+              <span className={`ml-2 text-sm ${color}`}>
+                {value !== undefined ? value : <span className="text-muted">--</span>}
+              </span>
+              <div className="w-[100px] h-[40px]">
+                {series[id]?.length ? (
+                  <ResponsiveContainer width="100%" height="100%">
+                    <AreaChart data={series[id]}>
+                      <defs>
+                        <linearGradient id="colorUv" x1="0" y1="0" x2="0" y2="1">
+                          <stop offset="5%" stopColor="#10B981" stopOpacity={0.6}/>
+                          <stop offset="95%" stopColor="#10B981" stopOpacity={0}/>
+                        </linearGradient>
+                      </defs>
+                      <Area type="monotone" dataKey="y" stroke="#10B981" fillOpacity={1} fill="url(#colorUv)" />
+                    </AreaChart>
+                  </ResponsiveContainer>
+                ) : (
+                  <div className="text-xs text-muted">No data</div>
+                )}
+              </div>
             </div>
-          </div>
-        ))}
+          );
+        })}
       </div>
       {loading && <div className="text-center text-muted">Loading...</div>}
       {error && <div className="text-center text-red-500">{error}</div>}
