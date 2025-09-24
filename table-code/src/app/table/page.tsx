@@ -34,6 +34,7 @@ const GASOIL_IDS = PRODUCT_IDS.slice(-2);
 interface LivePrice {
     id: string;
     value: number;
+    history?: number[];
 }
 
 // Helper for sparkline data
@@ -172,6 +173,16 @@ export default function TradingPage() {
                                     {CSC_COMMODITIES_IDS.map((id) => {
                                         const name = PRODUCT_ID_MAP[id];
                                         const priceObj = livePrices.find((p) => p.id === id);
+                                        // Assume priceObj.history is an array of price values for the sparkline
+                                        const sparklineData = priceObj && Array.isArray(priceObj.history)
+                                            ? priceObj.history.map((y, x) => ({ x, y }))
+                                            : generateSparklineData();
+                                        let color = "#10B981"; // green default
+                                        if (sparklineData.length > 1) {
+                                            const last = sparklineData[sparklineData.length - 1].y;
+                                            const prev = sparklineData[sparklineData.length - 2].y;
+                                            color = last >= prev ? "#10B981" : "#EF4444"; // red if down
+                                        }
                                         return (
                                             <div
                                                 key={id}
@@ -182,25 +193,25 @@ export default function TradingPage() {
                                                 </span>
                                                 <div className="w-[80px] h-[32px] mx-2">
                                                     <ResponsiveContainer width="100%" height="100%">
-                                                        <AreaChart data={generateSparklineData()}>
+                                                        <AreaChart data={sparklineData}>
                                                             <defs>
-                                                                <linearGradient id="colorUv" x1="0" y1="0" x2="0" y2="1">
-                                                                    <stop offset="5%" stopColor="#10B981" stopOpacity={0.6}/>
-                                                                    <stop offset="95%" stopColor="#10B981" stopOpacity={0}/>
+                                                                <linearGradient id={`colorUv-${id}`} x1="0" y1="0" x2="0" y2="1">
+                                                                    <stop offset="5%" stopColor={color} stopOpacity={0.6}/>
+                                                                    <stop offset="95%" stopColor={color} stopOpacity={0}/>
                                                                 </linearGradient>
                                                             </defs>
                                                             <Area
                                                                 type="monotone"
                                                                 dataKey="y"
-                                                                stroke="#10B981"
+                                                                stroke={color}
                                                                 fillOpacity={1}
-                                                                fill="url(#colorUv)"
+                                                                fill={`url(#colorUv-${id})`}
                                                                 strokeWidth={2}
                                                             />
                                                         </AreaChart>
                                                     </ResponsiveContainer>
                                                 </div>
-                                                <span className="text-sm sm:text-base font-bold text-primary w-1/3 text-right">
+                                                <span className="text-sm sm:text-base font-bold w-1/3 text-right" style={{ color }}>
                                                     {priceObj && priceObj.value !== undefined
                                                         ? `$${priceObj.value.toLocaleString(undefined, {
                                                             minimumFractionDigits: 2,
@@ -216,6 +227,16 @@ export default function TradingPage() {
                                     {GASOIL_IDS.map((id) => {
                                         const name = PRODUCT_ID_MAP[id];
                                         const priceObj = livePrices.find((p) => p.id === id);
+                                        // Assume priceObj.history is an array of price values for the sparkline
+                                        const sparklineData = priceObj && Array.isArray(priceObj.history)
+                                            ? priceObj.history.map((y, x) => ({ x, y }))
+                                            : generateSparklineData();
+                                        let color = "#10B981"; // green default
+                                        if (sparklineData.length > 1) {
+                                            const last = sparklineData[sparklineData.length - 1].y;
+                                            const prev = sparklineData[sparklineData.length - 2].y;
+                                            color = last >= prev ? "#10B981" : "#EF4444"; // red if down
+                                        }
                                         return (
                                             <div
                                                 key={id}
@@ -226,25 +247,25 @@ export default function TradingPage() {
                                                 </span>
                                                 <div className="w-[80px] h-[32px] mx-2">
                                                     <ResponsiveContainer width="100%" height="100%">
-                                                        <AreaChart data={generateSparklineData()}>
+                                                        <AreaChart data={sparklineData}>
                                                             <defs>
-                                                                <linearGradient id="colorUv" x1="0" y1="0" x2="0" y2="1">
-                                                                    <stop offset="5%" stopColor="#10B981" stopOpacity={0.6}/>
-                                                                    <stop offset="95%" stopColor="#10B981" stopOpacity={0}/>
+                                                                <linearGradient id={`colorUv-${id}`} x1="0" y1="0" x2="0" y2="1">
+                                                                    <stop offset="5%" stopColor={color} stopOpacity={0.6}/>
+                                                                    <stop offset="95%" stopColor={color} stopOpacity={0}/>
                                                                 </linearGradient>
                                                             </defs>
                                                             <Area
                                                                 type="monotone"
                                                                 dataKey="y"
-                                                                stroke="#10B981"
+                                                                stroke={color}
                                                                 fillOpacity={1}
-                                                                fill="url(#colorUv)"
+                                                                fill={`url(#colorUv-${id})`}
                                                                 strokeWidth={2}
                                                             />
                                                         </AreaChart>
                                                     </ResponsiveContainer>
                                                 </div>
-                                                <span className="text-xs sm:text-sm font-bold text-primary w-1/3 text-right">
+                                                <span className="text-xs sm:text-sm font-bold w-1/3 text-right" style={{ color }}>
                                                     {priceObj && priceObj.value !== undefined
                                                         ? `$${priceObj.value.toLocaleString(undefined, {
                                                             minimumFractionDigits: 2,
