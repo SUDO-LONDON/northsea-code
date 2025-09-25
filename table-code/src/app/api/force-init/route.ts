@@ -27,7 +27,7 @@ export async function POST() {
       vlsfo: p.vlsfo,
       mgo: p.mgo,
       change: p.change,
-      lastupdated: p.lastUpdated
+      lastupdated: p.lastupdated // fixed: was p.lastUpdated
     }));
 
     // Insert all products
