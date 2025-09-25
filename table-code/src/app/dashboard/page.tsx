@@ -128,7 +128,7 @@ export default function Dashboard() {
                 vlsfo: newVlsfo,
                 mgo: newMgo,
                 change: percentageChange,
-                lastUpdated: new Date().toISOString()
+                lastupdated: new Date().toISOString()
             })
 
             // Local state will be updated by the real-time subscription
@@ -244,7 +244,7 @@ export default function Dashboard() {
                                             Product {product.id}: {product.name}
                                         </h3>
                                         <p className="text-sm text-muted-foreground mt-1">
-                                            Last updated: {new Date(product.lastUpdated).toLocaleString()}
+                                            Last updated: {new Date(product.lastupdated).toLocaleString()}
                                         </p>
                                     </div>
 

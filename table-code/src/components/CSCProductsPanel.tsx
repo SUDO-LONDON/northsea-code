@@ -65,7 +65,7 @@ export default function CSCProductsPanel() {
       try {
         const newPrices = await fetchLatestFolioPrices();
         if (!mounted) return;
-        setPrevious((prevLatest) => ({ ...latest }));
+        setPrevious(latest);
         setLatest(newPrices);
       } catch {
         // ignore
@@ -77,7 +77,7 @@ export default function CSCProductsPanel() {
       mounted = false;
       clearInterval(interval);
     };
-  }, []);
+  }, [latest]);
 
   return (
     <div className="rounded-xl overflow-hidden border bg-card p-4 sm:p-6 w-full">
