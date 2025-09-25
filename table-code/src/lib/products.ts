@@ -6,6 +6,7 @@ export interface Product {
   mgo: number;
   change: number;
   lastUpdated: string;
+  history?: number[]; // Optional history property for sparkline data
 }
 
 export const PRODUCTS: Product[] = [
