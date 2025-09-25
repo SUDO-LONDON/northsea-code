@@ -87,9 +87,9 @@ const columns: ColumnDef<Product>[] = [
     accessorKey: "change",
     header: () => <div className="text-center">Change</div>,
     cell: ({ row }) => {
-      let value = row.getValue("change");
+      const value = row.getValue("change");
       // Fallback for missing/invalid values
-      let num = typeof value === 'number' && !isNaN(value)
+      const num = typeof value === 'number' && !isNaN(value)
         ? value
         : (typeof value === 'string' && !isNaN(parseFloat(value))
           ? parseFloat(value)
