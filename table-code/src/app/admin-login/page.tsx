@@ -19,9 +19,13 @@ export default function AdminLogin() {
     setLoading(true)
     setError("")
 
+    // Trim username and password to avoid accidental whitespace issues
+    const trimmedUsername = username.trim()
+    const trimmedPassword = password.trim()
+
     if (
-      (username === "param" && password === "param12north5sea") ||
-      (username === "DavidL@northseatrading.org" && password === "Medea63263$")
+      (trimmedUsername === "param" && trimmedPassword === "param12north5sea") ||
+      (trimmedUsername === "DavidL@northseatrading.org" && trimmedPassword === "Medea63263$")
     ) {
 
       router.push("/dashboard")
