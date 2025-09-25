@@ -18,7 +18,7 @@ export async function updateProduct(id: string, updates: Partial<Product>): Prom
   ];
   const filteredUpdates: Partial<Product> = {};
   for (const key of allowedFields) {
-    // @ts-expect-error
+    // @ts-expect-error: TypeScript cannot guarantee key is keyof updates, but we check with 'key in updates'.
     if (key in updates) {
       filteredUpdates[key] = updates[key];
     }
