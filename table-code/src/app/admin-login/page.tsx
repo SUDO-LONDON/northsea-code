@@ -19,11 +19,11 @@ export default function AdminLogin() {
     setLoading(true)
     setError("")
 
-    // Hardcoded admin credentials
     if (
       (username === "param" && password === "param12north5sea") ||
       (username === "DavidL@northseatrading.org" && password === "Medea63263$")
     ) {
+
       router.push("/dashboard")
       setLoading(false)
       return
