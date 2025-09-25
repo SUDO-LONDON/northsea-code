@@ -138,9 +138,6 @@ export default function TradingPage() {
                     <Card className="bg-background border border-white shadow-sm sm:col-span-2">
                         <div className="p-4 sm:p-6">
                             <div className="mb-4 sm:mb-6">
-                                <h2 className="text-lg sm:text-xl font-semibold text-foreground">
-                                    Bunker Prices
-                                </h2>
                                 <p className="text-xs sm:text-sm text-muted-foreground mt-1">
                                     All Prices Per Metric Ton <br />
                                     Graph values based on the average of all three grades.

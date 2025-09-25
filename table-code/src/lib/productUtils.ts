@@ -14,7 +14,7 @@ export async function getProducts(): Promise<Product[]> {
 export async function updateProduct(id: string, updates: Partial<Product>): Promise<Product> {
   // Only send fields that exist in the DB
   const allowedFields: (keyof Product)[] = [
-    "name", "hfo", "vlsfo", "mgo", "change", "lastUpdated"
+    "name", "hfo", "vlsfo", "mgo", "change", "lastupdated"
   ];
   const filteredUpdates: Record<string, unknown> = {};
   for (const key of allowedFields) {

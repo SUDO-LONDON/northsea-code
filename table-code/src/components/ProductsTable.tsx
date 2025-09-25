@@ -14,8 +14,11 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table"
+import { Button } from "@/components/ui/button"
 import { Product } from "@/lib/products"
 import { AreaChart, Area, ResponsiveContainer } from "recharts"
+import { downloadCSV } from "@/lib/csvExport"
+import { Download } from "lucide-react"
 
 // Generate sparkline data that matches the direction and magnitude of percentage change
 const generateDirectionalSparklineData = (change: number) => {
@@ -137,8 +140,26 @@ export function ProductsTable({ data }: { data: Product[] }) {
     getCoreRowModel: getCoreRowModel(),
   })
 
+  const handleDownload = () => {
+    downloadCSV(data, 'bunker_prices');
+  };
+
   return (
     <div className="rounded-xl overflow-hidden border">
+      {/* Download button header */}
+      <div className="flex justify-between items-center p-4 bg-muted border-b">
+        <h3 className="text-lg font-semibold text-foreground">Bunker Prices Data</h3>
+        <Button 
+          onClick={handleDownload}
+          variant="outline"
+          className="flex items-center gap-2 text-foreground border-foreground hover:bg-foreground hover:text-background"
+          disabled={data.length === 0}
+        >
+          <Download size={16} />
+          Download CSV
+        </Button>
+      </div>
+      
       <Table>
         <TableHeader className="bg-muted">
           {table.getHeaderGroups().map((headerGroup) => (

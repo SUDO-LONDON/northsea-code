@@ -61,7 +61,7 @@ CREATE TABLE products (
       // Map products to use lowercase column name
       const productsForDB = PRODUCTS.map(p => ({
         ...p,
-        lastupdated: p.lastUpdated
+        lastupdated: p.lastupdated
       }));
 
       const { error: insertError } = await supabase
