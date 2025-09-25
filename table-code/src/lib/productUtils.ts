@@ -16,7 +16,7 @@ export async function updateProduct(id: string, updates: Partial<Product>): Prom
   const allowedFields: (keyof Product)[] = [
     "name", "hfo", "vlsfo", "mgo", "change", "lastUpdated"
   ];
-  const filteredUpdates: Partial<Product> = {};
+  const filteredUpdates: Record<string, unknown> = {};
   for (const key of allowedFields) {
     if (key in updates) {
       filteredUpdates[key] = updates[key];
