@@ -1,5 +1,5 @@
 import { supabase } from "@/lib/supabaseClient";
-import { Product } from "@/lib/products";
+import { Product, PRODUCTS } from "@/lib/products";
 
 // Fetch all products from Supabase
 export async function getProducts(): Promise<Product[]> {
@@ -22,3 +22,14 @@ export async function updateProduct(id: string, updates: Partial<Product>): Prom
   return data as Product;
 }
 
+// Initialize or reset products in Supabase with default PRODUCTS
+export async function initializeProducts(): Promise<Product[]> {
+  // Remove all existing products
+  const { error: deleteError } = await supabase.from("products").delete().neq("id", "");
+  if (deleteError) throw deleteError;
+
+  // Insert default products
+  const { data, error } = await supabase.from("products").insert(PRODUCTS).select("*");
+  if (error) throw error;
+  return data as Product[];
+}

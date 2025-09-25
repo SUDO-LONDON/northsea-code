@@ -7,7 +7,7 @@ import { Label } from "@/components/ui/label"
 import { Card } from "@/components/ui/card"
 import Cookies from 'js-cookie'
 import { Product } from "@/lib/products"
-import { getProducts, updateProduct } from "@/lib/productUtils"
+import { getProducts, updateProduct, initializeProducts } from "@/lib/productUtils"
 import { supabase } from "@/lib/supabaseClient"
 
 type PriceInputs = {
