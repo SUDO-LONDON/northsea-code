@@ -18,7 +18,10 @@ export async function updateProduct(id: string, updates: Partial<Product>): Prom
     .eq("id", id)
     .select()
     .single();
-  if (error) throw error;
+  if (error) {
+    console.error("Supabase update error:", error);
+    throw error;
+  }
   return data as Product;
 }
 
