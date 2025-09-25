@@ -29,7 +29,7 @@ async function fetchLatestFolioPrices(): Promise<Record<string, number>> {
 }
 
 export default function CSCProductsPanel() {
-  const [series, setSeries] = useState<Record<string, { x: string; y: number }>>({});
+  const [series, setSeries]: [Record<string, { x: string; y: number }[]>, React.Dispatch<React.SetStateAction<Record<string, { x: string; y: number }[]>>>] = useState({});
   const [latest, setLatest] = useState<Record<string, number>>({});
   const [previous, setPrevious] = useState<Record<string, number>>({});
   const [error, setError] = useState<string | null>(null);
@@ -108,7 +108,7 @@ export default function CSCProductsPanel() {
                 {value !== undefined ? value : <span className="text-muted">--</span>}
               </span>
               <div className="w-[100px] h-[40px]">
-                {series[id]?.length ? (
+                {Array.isArray(series[id]) && series[id].length ? (
                   <ResponsiveContainer width="100%" height="100%">
                     <AreaChart data={series[id]}>
                       <defs>
