@@ -59,10 +59,7 @@ CREATE TABLE products (
     // If no data exists, initialize with default products
     if (count === 0) {
       // Map products to use lowercase column name
-      const productsForDB = PRODUCTS.map(p => ({
-        ...p,
-        lastupdated: p.lastUpdated
-      }));
+      const productsForDB = PRODUCTS; // Already uses lastupdated
 
       const { error: insertError } = await supabase
         .from('products')
