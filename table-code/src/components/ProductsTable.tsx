@@ -87,10 +87,16 @@ const columns: ColumnDef<Product>[] = [
     accessorKey: "change",
     header: () => <div className="text-center">Change</div>,
     cell: ({ row }) => {
-      const value = parseFloat(row.getValue("change"))
+      let value = row.getValue("change");
+      // Fallback for missing/invalid values
+      let num = typeof value === 'number' && !isNaN(value)
+        ? value
+        : (typeof value === 'string' && !isNaN(parseFloat(value))
+          ? parseFloat(value)
+          : 0);
       return (
-        <div className={`text-center font-medium ${value >= 0 ? 'text-green-600' : 'text-red-600'}`}>
-          {value >= 0 ? '+' : ''}{value.toFixed(2)}%
+        <div className={`text-center font-medium ${num >= 0 ? 'text-green-600' : 'text-red-600'}`}>
+          {num >= 0 ? '+' : ''}{num.toFixed(2)}%
         </div>
       )
     }

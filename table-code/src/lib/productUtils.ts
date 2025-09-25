@@ -7,14 +7,18 @@ export async function getProducts(): Promise<Product[]> {
     .from("products")
     .select("*");
   if (error) throw error;
-  return data as Product[];
+  // Ensure 'change' is always a valid number
+  return (data as Product[]).map(product => ({
+    ...product,
+    change: !isNaN(product.change) ? product.change : 0
+  }));
 }
 
 // Update a product in Supabase
 export async function updateProduct(id: string, updates: Partial<Product>): Promise<Product> {
   // Only send fields that exist in the DB
   const allowedFields: (keyof Product)[] = [
-    "name", "hfo", "vlsfo", "mgo", "change", "lastUpdated"
+    "name", "hfo", "vlsfo", "mgo", "change", "lastupdated"
   ];
   const filteredUpdates: Record<string, unknown> = {};
   for (const key of allowedFields) {
