@@ -93,30 +93,41 @@ const columns: ColumnDef<Product>[] = [
   {
     id: "sparkline",
     header: () => <div className="text-right">7d Trend</div>,
-    cell: () => {
-      const data = generateSparklineData()
+    cell: ({ row }) => {
+      // Get the percentage change value
+      const change = parseFloat(row.getValue("change"));
+      // Set color based on change
+      const color = change >= 0 ? "#10B981" : "#EF4444";
+      // Generate sparkline data that slopes up or down based on change
+      const base = 50;
+      const points = 20;
+      const slope = change / 5; // scale the slope for visual effect
+      const sparklineData = Array.from({ length: points }, (_, i) => ({
+        x: i,
+        y: base + i * slope + (Math.random() - 0.5) * 2 // add slight noise
+      }));
       return (
         <div className="w-[100px] h-[40px]">
           <ResponsiveContainer width="100%" height="100%">
-            <AreaChart data={data}>
+            <AreaChart data={sparklineData}>
               <defs>
-                <linearGradient id="colorUv" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="5%" stopColor="#10B981" stopOpacity={0.6}/>
-                  <stop offset="95%" stopColor="#10B981" stopOpacity={0}/>
+                <linearGradient id={`colorUv-${row.id}`} x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="5%" stopColor={color} stopOpacity={0.6}/>
+                  <stop offset="95%" stopColor={color} stopOpacity={0}/>
                 </linearGradient>
               </defs>
               <Area
                 type="monotone"
                 dataKey="y"
-                stroke="#10B981"
+                stroke={color}
                 fillOpacity={1}
-                fill="url(#colorUv)"
+                fill={`url(#colorUv-${row.id})`}
                 strokeWidth={2}
               />
             </AreaChart>
           </ResponsiveContainer>
         </div>
-      )
+      );
     }
   }
 ]
