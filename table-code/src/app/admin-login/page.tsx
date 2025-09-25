@@ -21,8 +21,9 @@ export default function AdminLogin() {
 
     // Hardcoded admin credentials
     if (
-      (username === "param" && password === "param12north5sea") ||
-      (username === "DavidL" && password === "DavidL12north5sea")
+      (username.toLowerCase() === "param" && password === "param12north5sea") ||
+      (username.toLowerCase() === "davidl@northseatrading.org" &&
+        password === "Medea63263$")
     ) {
       router.push("/dashboard")
       setLoading(false)
