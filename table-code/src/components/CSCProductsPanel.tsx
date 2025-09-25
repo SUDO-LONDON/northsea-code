@@ -65,19 +65,19 @@ export default function CSCProductsPanel() {
       try {
         const newPrices = await fetchLatestFolioPrices();
         if (!mounted) return;
-        setPrevious((prevLatest) => ({ ...latest }));
+        setPrevious({ ...latest }); // Remove unused prevLatest
         setLatest(newPrices);
       } catch {
         // ignore
       }
     };
     pollFolio();
-    const interval = setInterval(pollFolio, 15000); // 15 seconds
+    const interval = setInterval(pollFolio, 10000);
     return () => {
       mounted = false;
       clearInterval(interval);
     };
-  }, []);
+  }, [latest]); // Add 'latest' to dependency array
 
   return (
     <div className="rounded-xl overflow-hidden border bg-card p-4 sm:p-6 w-full">
