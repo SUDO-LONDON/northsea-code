@@ -12,9 +12,20 @@ export async function getProducts(): Promise<Product[]> {
 
 // Update a product in Supabase
 export async function updateProduct(id: string, updates: Partial<Product>): Promise<Product> {
+  // Only send fields that exist in the DB
+  const allowedFields = [
+    "name", "hfo", "vlsfo", "mgo", "change", "lastUpdated"
+  ];
+  const filteredUpdates: Partial<Product> = {};
+  for (const key of allowedFields) {
+    if (key in updates) {
+      // @ts-ignore
+      filteredUpdates[key] = updates[key];
+    }
+  }
   const { data, error } = await supabase
     .from("products")
-    .update(updates)
+    .update(filteredUpdates)
     .eq("id", id)
     .select()
     .single();
