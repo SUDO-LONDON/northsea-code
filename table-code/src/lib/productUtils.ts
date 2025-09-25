@@ -1,115 +1,48 @@
-import { Product, PRODUCTS } from "./products";
-import { supabase } from "./supabaseClient";
+import { supabase } from "@/lib/supabaseClient";
+import { Product, PRODUCTS } from "@/lib/products";
 
-export async function initializeProducts(): Promise<Product[]> {
-  try {
-    // Call the backend API to reset products in Supabase
-    const response = await fetch("/api/force-init", {
-      method: "POST",
-    });
-    if (!response.ok) {
-      console.error("API /api/force-init failed:", await response.text());
-      return PRODUCTS;
-    }
-    // After reset, fetch the latest products from Supabase
-    const { data, error } = await supabase
-      .from("products")
-      .select("id, name, hfo, vlsfo, mgo, change, lastupdated")
-      .order("id");
-    if (error || !data) {
-      console.error("Error fetching products after reset:", error);
-      return PRODUCTS;
-    }
-    // Map DB result to Product type
-    return Array.isArray(data)
-      ? data.map((item: { id: string; name: string; hfo: number; vlsfo: number; mgo: number; change: number; lastupdated: string }) => ({
-          id: item.id,
-          name: item.name,
-          hfo: item.hfo,
-          vlsfo: item.vlsfo,
-          mgo: item.mgo,
-          change: item.change,
-          lastUpdated: item.lastupdated // map DB 'lastupdated' to Product 'lastUpdated'
-        }))
-      : PRODUCTS;
-  } catch (error) {
-    console.error("Error initializing products via API:", error);
-    return PRODUCTS;
-  }
-}
-
+// Fetch all products from Supabase
 export async function getProducts(): Promise<Product[]> {
-  try {
-    const { data, error } = await supabase
-      .from('products')
-      .select('id, name, hfo, vlsfo, mgo, change, lastupdated')
-      .order('id');
-
-    console.log("Supabase products fetch result:", { data, error });
-
-    if (error) {
-      console.error("Error fetching products from database (falling back to PRODUCTS):", error);
-      return await initializeProducts();
-    }
-
-    if (!data || data.length === 0) {
-      console.warn("No products found in database (falling back to PRODUCTS)");
-      return await initializeProducts();
-    }
-
-    // Map database results back to Product interface format
-    const products = data.map(item => ({
-      id: item.id,
-      name: item.name,
-      hfo: item.hfo,
-      vlsfo: item.vlsfo,
-      mgo: item.mgo,
-      change: item.change,
-      lastUpdated: item.lastupdated  // Map from lowercase to camelCase
-    })) as Product[];
-
-    // Validate data structure
-    if (products.length !== PRODUCTS.length || !products.every((p, i) => p.name === PRODUCTS[i].name)) {
-      console.warn("Product data is outdated or mismatched (falling back to PRODUCTS)");
-      return await initializeProducts();
-    }
-
-    console.log("Products loaded from database:", products);
-    return products;
-  } catch (error) {
-    console.error("Error loading products (exception, falling back to PRODUCTS):", error);
-    return await initializeProducts();
-  }
+  const { data, error } = await supabase
+    .from("products")
+    .select("*");
+  if (error) throw error;
+  return data as Product[];
 }
 
-export async function updateProduct(updatedProduct: Product): Promise<boolean> {
-  try {
-    console.log("Attempting to update product:", updatedProduct.id, updatedProduct.name);
-
-    const { data, error } = await supabase
-      .from('products')
-      .update({
-        hfo: updatedProduct.hfo,
-        vlsfo: updatedProduct.vlsfo,
-        mgo: updatedProduct.mgo,
-        change: updatedProduct.change,
-        lastupdated: updatedProduct.lastUpdated  // Use lowercase to match database
-      })
-      .eq('id', updatedProduct.id)
-      .select();
-
-    if (error) {
-      console.error("Error updating product in database:", error);
-      console.error("Error code:", error.code);
-      console.error("Error message:", error.message);
-      console.error("Error details:", error.details);
-      return false;
+// Update a product in Supabase
+export async function updateProduct(id: string, updates: Partial<Product>): Promise<Product> {
+  // Only send fields that exist in the DB
+  const allowedFields: (keyof Product)[] = [
+    "name", "hfo", "vlsfo", "mgo", "change", "lastupdated"
+  ];
+  const filteredUpdates: Record<string, unknown> = {};
+  for (const key of allowedFields) {
+    if (key in updates) {
+      filteredUpdates[key] = updates[key];
     }
-
-    console.log("Update successful, updated rows:", data?.length);
-    return true;
-  } catch (error) {
-    console.error("Error updating product:", error);
-    return false;
   }
+  const { data, error } = await supabase
+    .from("products")
+    .update(filteredUpdates)
+    .eq("id", id)
+    .select()
+    .single();
+  if (error) {
+    console.error("Supabase update error:", error);
+    throw error;
+  }
+  return data as Product;
+}
+
+// Initialize or reset products in Supabase with default PRODUCTS
+export async function initializeProducts(): Promise<Product[]> {
+  // Remove all existing products
+  const { error: deleteError } = await supabase.from("products").delete().neq("id", "");
+  if (deleteError) throw deleteError;
+
+  // Insert default products
+  const { data, error } = await supabase.from("products").insert(PRODUCTS).select("*");
+  if (error) throw error;
+  return data as Product[];
 }

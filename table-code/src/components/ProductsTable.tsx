@@ -14,16 +14,24 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table"
+import { Button } from "@/components/ui/button"
 import { Product } from "@/lib/products"
 import { AreaChart, Area, ResponsiveContainer } from "recharts"
+import { downloadCSV } from "@/lib/csvExport"
+import { Download } from "lucide-react"
 
-// Generate fake sparkline data for visualization
-const generateSparklineData = () => {
-  return Array.from({ length: 20 }, (_, i) => ({
+// Generate sparkline data that matches the direction and magnitude of percentage change
+const generateDirectionalSparklineData = (change: number) => {
+  const points = 20;
+  const base = 100;
+  // Calculate the end value based on percentage change
+  const end = base * (1 + change / 100);
+  // Linear interpolation from base to end
+  return Array.from({ length: points }, (_, i) => ({
     x: i,
-    y: 50 + Math.random() * 20
-  }))
-}
+    y: base + ((end - base) * i) / (points - 1) + (Math.random() - 0.5) * 2 // add slight noise
+  }));
+};
 
 const GASOIL_NAMES = [
   "M0 SG 10PPM FP",
@@ -93,24 +101,28 @@ const columns: ColumnDef<Product>[] = [
   {
     id: "sparkline",
     header: () => <div className="text-right">7d Trend</div>,
-    cell: () => {
-      const data = generateSparklineData()
+    cell: ({ row }) => {
+      const product = row.original as Product;
+      const data = product.history && product.history.length > 0
+        ? product.history.map((y, x) => ({ x, y }))
+        : generateDirectionalSparklineData(product.change);
+      const color = product.change >= 0 ? "#10B981" : "#EF4444";
       return (
         <div className="w-[100px] h-[40px]">
           <ResponsiveContainer width="100%" height="100%">
             <AreaChart data={data}>
               <defs>
-                <linearGradient id="colorUv" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="5%" stopColor="#10B981" stopOpacity={0.6}/>
-                  <stop offset="95%" stopColor="#10B981" stopOpacity={0}/>
+                <linearGradient id={`colorUv-${product.id}`} x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="5%" stopColor={color} stopOpacity={0.6}/>
+                  <stop offset="95%" stopColor={color} stopOpacity={0}/>
                 </linearGradient>
               </defs>
               <Area
                 type="monotone"
                 dataKey="y"
-                stroke="#10B981"
+                stroke={color}
                 fillOpacity={1}
-                fill="url(#colorUv)"
+                fill={`url(#colorUv-${product.id})`}
                 strokeWidth={2}
               />
             </AreaChart>
@@ -128,8 +140,26 @@ export function ProductsTable({ data }: { data: Product[] }) {
     getCoreRowModel: getCoreRowModel(),
   })
 
+  const handleDownload = () => {
+    downloadCSV(data, 'bunker_prices');
+  };
+
   return (
     <div className="rounded-xl overflow-hidden border">
+      {/* Download button header */}
+      <div className="flex justify-between items-center p-4 bg-muted border-b">
+        <h3 className="text-lg font-semibold text-foreground">Bunker Prices Data</h3>
+        <Button 
+          onClick={handleDownload}
+          variant="outline"
+          className="flex items-center gap-2 text-foreground border-foreground hover:bg-foreground hover:text-background"
+          disabled={data.length === 0}
+        >
+          <Download size={16} />
+          Download CSV
+        </Button>
+      </div>
+      
       <Table>
         <TableHeader className="bg-muted">
           {table.getHeaderGroups().map((headerGroup) => (

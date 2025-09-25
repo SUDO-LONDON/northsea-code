@@ -7,7 +7,7 @@ import { Label } from "@/components/ui/label"
 import { Card } from "@/components/ui/card"
 import Cookies from 'js-cookie'
 import { Product } from "@/lib/products"
-import { getProducts, initializeProducts, updateProduct } from "@/lib/productUtils"
+import { getProducts, updateProduct, initializeProducts } from "@/lib/productUtils"
 import { supabase } from "@/lib/supabaseClient"
 
 type PriceInputs = {
@@ -110,13 +110,8 @@ export default function Dashboard() {
             const product = products.find(p => p.id === id)
             if (!product) return
 
-            // You already have the `newPrices` inputs, so use them
-            const prices = newPrices[id];
-
-            // Use your existing, working function to compute the change
             const percentageChange = computePercentageChange(product, prices);
 
-            // Get the final values to update the database
             const newHfo = prices.hfo !== undefined && prices.hfo.trim() !== ''
                 ? parseFloat(prices.hfo)
                 : product.hfo
@@ -127,31 +122,21 @@ export default function Dashboard() {
                 ? parseFloat(prices.mgo)
                 : product.mgo
 
-            const updatedProduct = {
-                ...product,
+            // Update in Supabase
+            await updateProduct(id, {
                 hfo: newHfo,
                 vlsfo: newVlsfo,
                 mgo: newMgo,
-                change: percentageChange, // Use the result from the shared function
-                lastUpdated: new Date().toISOString()
-            }
+                change: percentageChange,
+                lastupdated: new Date().toISOString()
+            })
 
-            // Update in database
-            const success = await updateProduct(updatedProduct)
-
-            if (success) {
-                // Update local state
-                setProducts(prev => prev.map(p => p.id === id ? updatedProduct : p))
-
-                // Clear the form entry for this product
-                setNewPrices(prev => {
-                    const rest = { ...prev };
-                    delete rest[id];
-                    return rest;
-                })
-            } else {
-                alert('Failed to update product. Please try again.')
-            }
+            // Local state will be updated by the real-time subscription
+            setNewPrices(prev => {
+                const rest = { ...prev };
+                delete rest[id];
+                return rest;
+            })
         } catch (error) {
             console.error('Error updating product:', error)
             alert('Error updating product. Please try again.')
@@ -259,7 +244,7 @@ export default function Dashboard() {
                                             Product {product.id}: {product.name}
                                         </h3>
                                         <p className="text-sm text-muted-foreground mt-1">
-                                            Last updated: {new Date(product.lastUpdated).toLocaleString()}
+                                            Last updated: {new Date(product.lastupdated).toLocaleString()}
                                         </p>
                                     </div>
 
