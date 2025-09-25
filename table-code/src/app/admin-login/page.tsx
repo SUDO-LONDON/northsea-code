@@ -14,20 +14,24 @@ export default function AdminLogin() {
   const [loading, setLoading] = useState(false)
   const router = useRouter()
 
+  const validAccounts = [
+    { username: "param", password: "param12north5sea" },
+    { username: "DavidL@northseatrading.org", password: "Medea63263$" }
+  ]
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setLoading(true)
     setError("")
 
-    // Trim username and password to avoid accidental whitespace issues
     const trimmedUsername = username.trim()
     const trimmedPassword = password.trim()
 
-    if (
-      (trimmedUsername === "param" && trimmedPassword === "param12north5sea") ||
-      (trimmedUsername === "DavidL@northseatrading.org" && trimmedPassword === "Medea63263$")
-    ) {
+    const accountMatch = validAccounts.find(
+      (acc) => acc.username === trimmedUsername && acc.password === trimmedPassword
+    )
 
+    if (accountMatch) {
       router.push("/dashboard")
       setLoading(false)
       return
