@@ -13,7 +13,7 @@ export async function getProducts(): Promise<Product[]> {
 // Update a product in Supabase
 export async function updateProduct(id: string, updates: Partial<Product>): Promise<Product> {
   // Only send fields that exist in the DB
-  const allowedFields = [
+  const allowedFields: (keyof Product)[] = [
     "name", "hfo", "vlsfo", "mgo", "change", "lastUpdated"
   ];
   const filteredUpdates: Partial<Product> = {};
