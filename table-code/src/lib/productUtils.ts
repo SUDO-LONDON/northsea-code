@@ -1,5 +1,5 @@
 import { supabase } from "@/lib/supabaseClient";
-import { Product, PRODUCTS } from "@/lib/products";
+import { Product } from "@/lib/products";
 
 // Fetch all products from Supabase
 export async function getProducts(): Promise<Product[]> {
@@ -14,7 +14,7 @@ export async function getProducts(): Promise<Product[]> {
 export async function updateProduct(id: string, updates: Partial<Product>): Promise<Product> {
   // Only send fields that exist in the DB
   const allowedFields: (keyof Product)[] = [
-    "name", "hfo", "vlsfo", "mgo", "change", "lastUpdated"
+    "name", "hfo", "vlsfo", "mgo", "change", "lastupdated"
   ];
   const filteredUpdates: Record<string, unknown> = {};
   for (const key of allowedFields) {
@@ -37,12 +37,24 @@ export async function updateProduct(id: string, updates: Partial<Product>): Prom
 
 // Initialize or reset products in Supabase with default PRODUCTS
 export async function initializeProducts(): Promise<Product[]> {
-  // Remove all existing products
-  const { error: deleteError } = await supabase.from("products").delete().neq("id", "");
-  if (deleteError) throw deleteError;
+  const response = await fetch('/api/init-db', {
+    method: 'POST',
+  });
 
-  // Insert default products
-  const { data, error } = await supabase.from("products").insert(PRODUCTS).select("*");
-  if (error) throw error;
-  return data as Product[];
+  if (!response.ok) {
+    const errorData = await response.json();
+    throw new Error(errorData.error || 'Failed to initialize products');
+  }
+
+  const result = await response.json();
+
+  // The API returns a message and product count/created on success.
+  // To update the dashboard state, we need the actual product list.
+  // We can re-fetch the products after initialization.
+  if (result.message) {
+    return getProducts();
+  }
+
+  // Fallback for unexpected response format
+  return [];
 }

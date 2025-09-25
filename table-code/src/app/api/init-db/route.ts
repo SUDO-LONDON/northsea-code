@@ -61,7 +61,7 @@ CREATE TABLE products (
       // Map products to use lowercase column name
       const productsForDB = PRODUCTS.map(p => ({
         ...p,
-        lastupdated: p.lastUpdated
+        lastupdated: p.lastupdated
       }));
 
       const { error: insertError } = await supabase
@@ -81,9 +81,39 @@ CREATE TABLE products (
       });
     }
 
+    // Always delete existing products before inserting new ones for a reset.
+    const { error: deleteError } = await supabase
+      .from('products')
+      .delete()
+      .neq('id', '00000000-0000-0000-0000-000000000000'); // Deletes all rows
+
+    if (deleteError) {
+      return NextResponse.json({
+        error: 'Failed to delete existing products for reset',
+        details: deleteError,
+      }, { status: 500 });
+    }
+
+    // Initialize with default products
+    const productsForDB = PRODUCTS.map(p => ({
+      ...p,
+      lastupdated: p.lastupdated
+    }));
+
+    const { error: insertError } = await supabase
+      .from('products')
+      .insert(productsForDB);
+
+    if (insertError) {
+      return NextResponse.json({
+        error: 'Failed to initialize products',
+        details: insertError
+      }, { status: 500 });
+    }
+
     return NextResponse.json({
-      message: 'Database already contains data',
-      productCount: count
+      message: 'Database reset successfully',
+      productsCreated: PRODUCTS.length
     });
 
   } catch (error) {
