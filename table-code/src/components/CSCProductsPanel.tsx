@@ -29,7 +29,7 @@ async function fetchLatestFolioPrices(): Promise<Record<string, number>> {
 }
 
 export default function CSCProductsPanel() {
-  const [series, setSeries] = useState<Record<string, { x: string; y: number }[]>>({});
+  const [series, setSeries] = useState<Record<string, { x: string; y: number }>>({});
   const [latest, setLatest] = useState<Record<string, number>>({});
   const [previous, setPrevious] = useState<Record<string, number>>({});
   const [error, setError] = useState<string | null>(null);
@@ -60,27 +60,24 @@ export default function CSCProductsPanel() {
 
   // Poll folio API for latest prices and compare to previous
   useEffect(() => {
-    const interval = setInterval(async () => {
+    let mounted = true;
+    const pollFolio = async () => {
       try {
         const newPrices = await fetchLatestFolioPrices();
-        setPrevious(() => ({ ...latest }));
+        if (!mounted) return;
+        setPrevious((prevLatest) => ({ ...latest }));
         setLatest(newPrices);
       } catch {
         // ignore
       }
-    }, 15000); // 15 seconds
-    // Initial fetch
-    (async () => {
-      try {
-        const newPrices = await fetchLatestFolioPrices();
-        setPrevious(() => ({ ...latest }));
-        setLatest(newPrices);
-      } catch {}
-    })();
+    };
+    pollFolio();
+    const interval = setInterval(pollFolio, 15000); // 15 seconds
     return () => {
+      mounted = false;
       clearInterval(interval);
     };
-  }, [latest]);
+  }, []);
 
   return (
     <div className="rounded-xl overflow-hidden border bg-card p-4 sm:p-6 w-full">
