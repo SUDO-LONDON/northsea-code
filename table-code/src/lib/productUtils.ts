@@ -18,8 +18,8 @@ export async function updateProduct(id: string, updates: Partial<Product>): Prom
   ];
   const filteredUpdates: Partial<Product> = {};
   for (const key of allowedFields) {
+    // @ts-expect-error
     if (key in updates) {
-      // @ts-ignore
       filteredUpdates[key] = updates[key];
     }
   }
