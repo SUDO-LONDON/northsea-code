@@ -27,23 +27,45 @@ interface FolioApiResponse {
 // POST handler: fetch prices
 export async function POST() {
     try {
-        const token = await getToken();
+        let token: string;
+        try {
+            token = await getToken();
+        } catch (tokenError) {
+            const details = tokenError instanceof Error ? `${tokenError.message}\n${tokenError.stack}` : String(tokenError);
+            console.error('Error fetching FOLIO API token:', details);
+            return NextResponse.json({ error: 'Failed to fetch FOLIO API token', details }, { status: 500 });
+        }
 
-        const res = await fetch(FOLIO_PRICES_URL, {
-            method: 'POST',
-            headers: {
-                Authorization: `Bearer ${token}`,
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(IDS),
-        });
+        let res: Response;
+        try {
+            res = await fetch(FOLIO_PRICES_URL, {
+                method: 'POST',
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(IDS),
+            });
+        } catch (fetchError) {
+            const details = fetchError instanceof Error ? `${fetchError.message}\n${fetchError.stack}` : String(fetchError);
+            console.error('Network error calling FOLIO API:', details);
+            return NextResponse.json({ error: 'Network error calling FOLIO API', details }, { status: 503 });
+        }
 
         if (!res.ok) {
             const errorText = await res.text();
-            return NextResponse.json({ error: errorText }, { status: res.status });
+            console.error('FOLIO API returned error:', res.status, errorText);
+            return NextResponse.json({ error: 'FOLIO API returned error', status: res.status, details: errorText }, { status: res.status });
         }
 
-        const data: FolioApiResponse = await res.json();
+        let data: FolioApiResponse;
+        try {
+            data = await res.json();
+        } catch (jsonError) {
+            const details = jsonError instanceof Error ? `${jsonError.message}\n${jsonError.stack}` : String(jsonError);
+            console.error('Error parsing FOLIO API response as JSON:', details);
+            return NextResponse.json({ error: 'Error parsing FOLIO API response as JSON', details }, { status: 500 });
+        }
 
         // Log the full payload for debugging
         console.log('Folio API payload:', JSON.stringify(data.payload, null, 2));
@@ -51,7 +73,6 @@ export async function POST() {
         // Dynamically pick the first available Q key for each ID
         const prices: { id: string; value: number }[] = Object.entries(data.payload || {}).map(([id, entry]) => {
             let value = 0;
-
             if (entry?.data) {
                 const keys = Object.keys(entry.data);
                 if (keys.length > 0) {
@@ -59,7 +80,6 @@ export async function POST() {
                     value = entry.data[firstKey]?.value ?? 0;
                 }
             }
-
             return { id, value };
         });
 
@@ -69,20 +89,28 @@ export async function POST() {
             .select('id, hfo')
             .in('id', prices.map(p => p.id));
         if (fetchError) {
-            console.error('Error fetching previous prices:', fetchError);
+            const details = fetchError instanceof Error ? `${fetchError.message}\n${fetchError.stack}` : JSON.stringify(fetchError);
+            console.error('Error fetching previous prices from Supabase:', details);
+            // Return error to client as well
+            return NextResponse.json({ error: 'Error fetching previous prices from Supabase', details }, { status: 500 });
         }
 
         // Calculate percentage change and update Supabase
         for (const priceObj of prices) {
-            // previousProducts is typed as { id: string; hfo: number }[]
             const prev = previousProducts?.find(p => p.id === priceObj.id);
             const oldPrice = prev?.hfo ?? 0;
             const newPrice = priceObj.value;
             const change = oldPrice !== 0 ? ((newPrice - oldPrice) / oldPrice) * 100 : 0;
-            await supabase
+            const { error: updateError } = await supabase
                 .from('products')
                 .update({ hfo: newPrice, change })
                 .eq('id', priceObj.id);
+            if (updateError) {
+                const details = updateError instanceof Error ? `${updateError.message}\n${updateError.stack}` : JSON.stringify(updateError);
+                console.error(`Error updating price for id ${priceObj.id}:`, details);
+                // Return error to client as well
+                return NextResponse.json({ error: `Error updating price for id ${priceObj.id}`, details }, { status: 500 });
+            }
         }
 
         // Insert price snapshots for historical tracking
@@ -101,8 +129,9 @@ export async function POST() {
 
         return NextResponse.json(prices);
     } catch (error: unknown) {
-        const errorMessage = error instanceof Error ? error.message : 'Unknown error';
-        return NextResponse.json({ error: errorMessage }, { status: 500 });
+        const details = error instanceof Error ? `${error.message}\n${error.stack}` : String(error);
+        console.error('Unexpected error in /api/folio-prices:', details);
+        return NextResponse.json({ error: 'Unexpected error in /api/folio-prices', details }, { status: 500 });
     }
 }
 
