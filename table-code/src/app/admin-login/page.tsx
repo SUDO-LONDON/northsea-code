@@ -6,6 +6,7 @@ import { Label } from "@/components/ui/label"
 import { useState } from "react"
 import { useRouter } from "next/navigation"
 import { cn } from "@/lib/utils"
+import Cookies from "js-cookie"
 
 export default function AdminLogin() {
   const [username, setUsername] = useState("")
@@ -25,6 +26,7 @@ export default function AdminLogin() {
       (username.toLowerCase() === "davidl@northseatrading.org" &&
         password === "Medea63263$")
     ) {
+      Cookies.set('adminAuth', 'true', { expires: 1 })
       router.push("/dashboard")
       setLoading(false)
       return
