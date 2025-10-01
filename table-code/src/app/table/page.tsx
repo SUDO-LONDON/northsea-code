@@ -171,109 +171,122 @@ export default function TradingPage() {
                           </div>
                           <div className="space-y-2 sm:space-y-3 flex flex-col">
                             {CSC_COMMODITIES_IDS.map((id) => {
-                                const name = PRODUCT_ID_MAP[id];
-                                const priceObj = livePrices.find((p) => p.id === id);
-                                const sparklineData = priceObj && Array.isArray(priceObj.history)
-                                    ? priceObj.history.map((y, x) => ({ x, y }))
-                                    : generateSparklineData();
-                                let color = "#10B981";
-                                if (sparklineData.length > 1) {
-                                    const last = sparklineData[sparklineData.length - 1].y;
-                                    const prev = sparklineData[sparklineData.length - 2].y;
-                                    color = last >= prev ? "#10B981" : "#EF4444";
-                                }
-                                return (
-                                    <div
-                                        key={id}
-                                        className="flex items-center border-b pb-2 last:border-b-0 last:pb-0 w-full"
-                                    >
-                                        <span className="font-medium text-foreground text-sm sm:text-base w-1/3">
-                                            {name}
-                                        </span>
-                                        <div className="w-[80px] h-[32px] mx-2">
-                                            <ResponsiveContainer width="100%" height="100%">
-                                                <AreaChart data={sparklineData}>
-                                                    <defs>
-                                                        <linearGradient id={`colorUv-${id}`} x1="0" y1="0" x2="0" y2="1">
-                                                            <stop offset="5%" stopColor={color} stopOpacity={0.6}/>
-                                                            <stop offset="95%" stopColor={color} stopOpacity={0}/>
-                                                        </linearGradient>
-                                                    </defs>
-                                                    <Area
-                                                        type="monotone"
-                                                        dataKey="y"
-                                                        stroke={color}
-                                                        fillOpacity={1}
-                                                        fill={`url(#colorUv-${id})`}
-                                                        strokeWidth={2}
-                                                    />
-                                                </AreaChart>
-                                            </ResponsiveContainer>
-                                        </div>
-                                        <span className="text-sm sm:text-base font-bold w-1/3 text-right" style={{ color }}>
-                                            {priceObj && priceObj.value !== undefined
-                                                ? `$${priceObj.value.toLocaleString(undefined, {
-                                                    minimumFractionDigits: 2,
-                                                    maximumFractionDigits: 2,
-                                                })}${getUnit(name)}`
-                                                : "--"}
-                                        </span>
-                                    </div>
-                                );
+                              const name = PRODUCT_ID_MAP[id];
+                              const priceObj = livePrices.find((p) => p.id === id);
+                              const sparklineData = priceObj && Array.isArray(priceObj.history)
+                                ? priceObj.history.map((y, x) => ({ x, y }))
+                                : generateSparklineData();
+                              let color = "#10B981";
+                              let percentChange = null;
+                              if (sparklineData.length > 1) {
+                                const last = sparklineData[sparklineData.length - 1].y;
+                                const prev = sparklineData[sparklineData.length - 2].y;
+                                color = last >= prev ? "#10B981" : "#EF4444";
+                                percentChange = prev !== 0 ? ((last - prev) / prev) * 100 : null;
+                              }
+                              return (
+                                <div
+                                  key={id}
+                                  className="flex items-center border-b pb-2 last:border-b-0 last:pb-0 w-full"
+                                >
+                                  <span className="font-medium text-foreground text-sm sm:text-base w-1/3">
+                                    {name}
+                                  </span>
+                                  <div className="w-[80px] h-[32px] mx-2">
+                                    <ResponsiveContainer width="100%" height="100%">
+                                      <AreaChart data={sparklineData}>
+                                        <defs>
+                                          <linearGradient id={`colorUv-${id}`} x1="0" y1="0" x2="0" y2="1">
+                                            <stop offset="5%" stopColor={color} stopOpacity={0.6}/>
+                                            <stop offset="95%" stopColor={color} stopOpacity={0}/>
+                                          </linearGradient>
+                                        </defs>
+                                        <Area
+                                          type="monotone"
+                                          dataKey="y"
+                                          stroke={color}
+                                          fillOpacity={1}
+                                          fill={`url(#colorUv-${id})`}
+                                          strokeWidth={2}
+                                        />
+                                      </AreaChart>
+                                    </ResponsiveContainer>
+                                  </div>
+                                  <span className="text-sm sm:text-base font-bold w-1/3 text-right" style={{ color }}>
+                                    {priceObj && priceObj.value !== undefined
+                                      ? `$${priceObj.value.toLocaleString(undefined, {
+                                          minimumFractionDigits: 2,
+                                          maximumFractionDigits: 2,
+                                        })}${getUnit(name)}`
+                                      : "--"}
+                                    {percentChange !== null && (
+                                      <span className="ml-2" style={{ color }}>
+                                        {percentChange >= 0 ? "▲" : "▼"} {Math.abs(percentChange).toFixed(2)}%
+                                      </span>
+                                    )}
+                                  </span>
+                                </div>
+                              );
                             })}
                             {/* Gasoils Section */}
                             <h3 className="font-semibold text-base sm:text-lg mt-4 mb-2">Gasoil:</h3>
                             {GASOIL_IDS.map((id) => {
-                                const name = PRODUCT_ID_MAP[id];
-                                const priceObj = livePrices.find((p) => p.id === id);
-                                // Assume priceObj.history is an array of price values for the sparkline
-                                const sparklineData = priceObj && Array.isArray(priceObj.history)
-                                    ? priceObj.history.map((y, x) => ({ x, y }))
-                                    : generateSparklineData();
-                                let color = "#10B981"; // green default
-                                if (sparklineData.length > 1) {
-                                    const last = sparklineData[sparklineData.length - 1].y;
-                                    const prev = sparklineData[sparklineData.length - 2].y;
-                                    color = last >= prev ? "#10B981" : "#EF4444"; // red if down
-                                }
-                                return (
-                                    <div
-                                        key={id}
-                                        className="flex items-center border-b pb-2 last:border-b-0 last:pb-0"
-                                    >
-                                        <span className="font-medium text-foreground text-sm sm:text-base w-1/3">
-                                            {name}
-                                        </span>
-                                        <div className="w-[80px] h-[32px] mx-2">
-                                            <ResponsiveContainer width="100%" height="100%">
-                                                <AreaChart data={sparklineData}>
-                                                    <defs>
-                                                        <linearGradient id={`colorUv-${id}`} x1="0" y1="0" x2="0" y2="1">
-                                                            <stop offset="5%" stopColor={color} stopOpacity={0.6}/>
-                                                            <stop offset="95%" stopColor={color} stopOpacity={0}/>
-                                                        </linearGradient>
-                                                    </defs>
-                                                    <Area
-                                                        type="monotone"
-                                                        dataKey="y"
-                                                        stroke={color}
-                                                        fillOpacity={1}
-                                                        fill={`url(#colorUv-${id})`}
-                                                        strokeWidth={2}
-                                                    />
-                                                </AreaChart>
-                                            </ResponsiveContainer>
-                                        </div>
-                                        <span className="text-xs sm:text-sm font-bold w-1/3 text-right" style={{ color }}>
-                                            {priceObj && priceObj.value !== undefined
-                                                ? `$${priceObj.value.toLocaleString(undefined, {
-                                                    minimumFractionDigits: 2,
-                                                    maximumFractionDigits: 2,
-                                                })}${getUnit(name)}`
-                                                : "--"}
-                                        </span>
-                                    </div>
-                                );
+                              const name = PRODUCT_ID_MAP[id];
+                              const priceObj = livePrices.find((p) => p.id === id);
+                              const sparklineData = priceObj && Array.isArray(priceObj.history)
+                                ? priceObj.history.map((y, x) => ({ x, y }))
+                                : generateSparklineData();
+                              let color = "#10B981";
+                              let percentChange = null;
+                              if (sparklineData.length > 1) {
+                                const last = sparklineData[sparklineData.length - 1].y;
+                                const prev = sparklineData[sparklineData.length - 2].y;
+                                color = last >= prev ? "#10B981" : "#EF4444";
+                                percentChange = prev !== 0 ? ((last - prev) / prev) * 100 : null;
+                              }
+                              return (
+                                <div
+                                  key={id}
+                                  className="flex items-center border-b pb-2 last:border-b-0 last:pb-0 w-full"
+                                >
+                                  <span className="font-medium text-foreground text-sm sm:text-base w-1/3">
+                                    {name}
+                                  </span>
+                                  <div className="w-[80px] h-[32px] mx-2">
+                                    <ResponsiveContainer width="100%" height="100%">
+                                      <AreaChart data={sparklineData}>
+                                        <defs>
+                                          <linearGradient id={`colorUv-${id}`} x1="0" y1="0" x2="0" y2="1">
+                                            <stop offset="5%" stopColor={color} stopOpacity={0.6}/>
+                                            <stop offset="95%" stopColor={color} stopOpacity={0}/>
+                                          </linearGradient>
+                                        </defs>
+                                        <Area
+                                          type="monotone"
+                                          dataKey="y"
+                                          stroke={color}
+                                          fillOpacity={1}
+                                          fill={`url(#colorUv-${id})`}
+                                          strokeWidth={2}
+                                        />
+                                      </AreaChart>
+                                    </ResponsiveContainer>
+                                  </div>
+                                  <span className="text-xs sm:text-sm font-bold w-1/3 text-right" style={{ color }}>
+                                    {priceObj && priceObj.value !== undefined
+                                      ? `$${priceObj.value.toLocaleString(undefined, {
+                                          minimumFractionDigits: 2,
+                                          maximumFractionDigits: 2,
+                                        })}${getUnit(name)}`
+                                      : "--"}
+                                    {percentChange !== null && (
+                                      <span className="ml-2" style={{ color }}>
+                                        {percentChange >= 0 ? "▲" : "▼"} {Math.abs(percentChange).toFixed(2)}%
+                                      </span>
+                                    )}
+                                  </span>
+                                </div>
+                              );
                             })}
 
                           </div>
