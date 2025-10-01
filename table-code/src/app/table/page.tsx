@@ -185,6 +185,7 @@ export default function TradingPage() {
                                         return (
                                             <div
                                                 key={id}
+                                                className="flex items-center border-b pb-2 last:border-b-0 last:pb-0 w-full"
                                             >
                                                 <span className="font-medium text-foreground text-sm sm:text-base w-1/3">
                                                     {name}
