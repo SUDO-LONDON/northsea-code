@@ -62,10 +62,10 @@ function extractNumericValue(val: unknown): number | null {
   }
   if (val && typeof val === 'object') {
     // Try common keys
-    if ('value' in val && typeof (val as any).value === 'number') return (val as any).value;
-    if ('amount' in val && typeof (val as any).amount === 'number') return (val as any).amount;
+    if ('value' in val && typeof (val as Record<string, unknown>).value === 'number') return (val as Record<string, unknown>).value as number;
+    if ('amount' in val && typeof (val as Record<string, unknown>).amount === 'number') return (val as Record<string, unknown>).amount as number;
     // Fallback: first numeric property
-    for (const v of Object.values(val as any)) {
+    for (const v of Object.values(val as Record<string, unknown>)) {
       if (typeof v === 'number') return v;
       if (typeof v === 'string' && !isNaN(Number(v))) return Number(v);
     }
