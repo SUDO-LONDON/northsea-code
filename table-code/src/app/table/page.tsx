@@ -169,24 +169,23 @@ export default function TradingPage() {
                                         style={{ filter: 'invert(1)' }}
                                     />
                                 </div>
-                                <div className="space-y-2 sm:space-y-3">
+                                <div className="space-y-2 sm:space-y-3 flex flex-col">
                                     {CSC_COMMODITIES_IDS.map((id) => {
                                         const name = PRODUCT_ID_MAP[id];
                                         const priceObj = livePrices.find((p) => p.id === id);
-                                        // Assume priceObj.history is an array of price values for the sparkline
                                         const sparklineData = priceObj && Array.isArray(priceObj.history)
                                             ? priceObj.history.map((y, x) => ({ x, y }))
                                             : generateSparklineData();
-                                        let color = "#10B981"; // green default
+                                        let color = "#10B981";
                                         if (sparklineData.length > 1) {
                                             const last = sparklineData[sparklineData.length - 1].y;
                                             const prev = sparklineData[sparklineData.length - 2].y;
-                                            color = last >= prev ? "#10B981" : "#EF4444"; // red if down
+                                            color = last >= prev ? "#10B981" : "#EF4444";
                                         }
                                         return (
                                             <div
                                                 key={id}
-                                                className="flex items-center border-b pb-2 last:border-b-0 last:pb-0"
+                                                className="flex items-center border-b pb-2 last:border-b-0 last:pb-0 w-full"
                                             >
                                                 <span className="font-medium text-foreground text-sm sm:text-base w-1/3">
                                                     {name}
