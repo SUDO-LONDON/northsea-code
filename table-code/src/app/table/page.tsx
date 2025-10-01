@@ -53,6 +53,26 @@ const getUnit = (name: string) => {
   return GASOIL_IDS.map(id => PRODUCT_ID_MAP[id]).includes(name) ? " / BBLS" : " / MT";
 };
 
+// Helper to robustly extract a numeric value from any input
+function extractNumericValue(val: unknown): number | null {
+  if (typeof val === 'number') return val;
+  if (typeof val === 'string') {
+    const num = Number(val);
+    return isNaN(num) ? null : num;
+  }
+  if (val && typeof val === 'object') {
+    // Try common keys
+    if ('value' in val && typeof (val as any).value === 'number') return (val as any).value;
+    if ('amount' in val && typeof (val as any).amount === 'number') return (val as any).amount;
+    // Fallback: first numeric property
+    for (const v of Object.values(val as any)) {
+      if (typeof v === 'number') return v;
+      if (typeof v === 'string' && !isNaN(Number(v))) return Number(v);
+    }
+  }
+  return null;
+}
+
 export default function TradingPage() {
     const [products, setProducts] = useState<Product[]>([]);
     const [livePrices, setLivePrices] = useState<LivePrice[]>([]);
@@ -184,11 +204,7 @@ export default function TradingPage() {
                                 color = last >= prev ? "#10B981" : "#EF4444";
                                 percentChange = prev !== 0 ? ((last - prev) / prev) * 100 : null;
                               }
-                              // Fix for [object Object] bug
-                              let value = priceObj?.value;
-                              if (value && typeof value === 'object') {
-                                value = value.value ?? value.amount ?? Object.values(value)[0];
-                              }
+                              const value = extractNumericValue(priceObj?.value);
                               return (
                                 <div
                                   key={id}
@@ -218,8 +234,8 @@ export default function TradingPage() {
                                     </ResponsiveContainer>
                                   </div>
                                   <span className="text-sm sm:text-base font-bold w-1/3 text-right" style={{ color }}>
-                                    {value !== undefined && value !== null && !isNaN(Number(value))
-                                      ? `$${Number(value).toLocaleString(undefined, {
+                                    {value !== null
+                                      ? `$${value.toLocaleString(undefined, {
                                           minimumFractionDigits: 2,
                                           maximumFractionDigits: 2,
                                         })}${getUnit(name)}`
@@ -249,11 +265,7 @@ export default function TradingPage() {
                                 color = last >= prev ? "#10B981" : "#EF4444";
                                 percentChange = prev !== 0 ? ((last - prev) / prev) * 100 : null;
                               }
-                              // Fix for [object Object] bug
-                              let value = priceObj?.value;
-                              if (value && typeof value === 'object') {
-                                value = value.value ?? value.amount ?? Object.values(value)[0];
-                              }
+                              const value = extractNumericValue(priceObj?.value);
                               return (
                                 <div
                                   key={id}
@@ -283,8 +295,8 @@ export default function TradingPage() {
                                     </ResponsiveContainer>
                                   </div>
                                   <span className="text-xs sm:text-sm font-bold w-1/3 text-right" style={{ color }}>
-                                    {value !== undefined && value !== null && !isNaN(Number(value))
-                                      ? `$${Number(value).toLocaleString(undefined, {
+                                    {value !== null
+                                      ? `$${value.toLocaleString(undefined, {
                                           minimumFractionDigits: 2,
                                           maximumFractionDigits: 2,
                                         })}${getUnit(name)}`
