@@ -3,7 +3,7 @@ import { Card } from "@/components/ui/card";
 
 interface Commodity {
   name: string;
-  price: string | { value: string };
+  price: string;
   prevClose: string;
 }
 
@@ -55,10 +55,9 @@ export default function CommodityTickerPanel() {
         ) : (
           <div className="flex flex-wrap gap-6">
             {commodities.map((item) => {
-              const priceValue = typeof item.price === 'object' ? item.price.value : item.price;
-              const price = parseFloat(priceValue);
+              const price = parseFloat(item.price);
               const prevClose = parseFloat(item.prevClose);
-              if (isNaN(price) || isNaN(prevClose)) return null;
+              if (!price || !prevClose) return null;
               const isUp = price > prevClose;
               const unit = units[item.name] || "";
               return (
