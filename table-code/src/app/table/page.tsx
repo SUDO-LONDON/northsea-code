@@ -60,14 +60,21 @@ function extractNumericValue(val: unknown): number | null {
     const num = Number(val);
     return isNaN(num) ? null : num;
   }
+  if (Array.isArray(val)) {
+    // Try to find a number in the array
+    for (const v of val) {
+      const num = extractNumericValue(v);
+      if (num !== null) return num;
+    }
+  }
   if (val && typeof val === 'object') {
     // Try common keys
     if ('value' in val && typeof (val as Record<string, unknown>).value === 'number') return (val as Record<string, unknown>).value as number;
     if ('amount' in val && typeof (val as Record<string, unknown>).amount === 'number') return (val as Record<string, unknown>).amount as number;
     // Fallback: first numeric property
     for (const v of Object.values(val as Record<string, unknown>)) {
-      if (typeof v === 'number') return v;
-      if (typeof v === 'string' && !isNaN(Number(v))) return Number(v);
+      const num = extractNumericValue(v);
+      if (num !== null) return num;
     }
   }
   return null;
