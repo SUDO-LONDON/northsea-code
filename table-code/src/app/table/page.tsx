@@ -184,6 +184,11 @@ export default function TradingPage() {
                                 color = last >= prev ? "#10B981" : "#EF4444";
                                 percentChange = prev !== 0 ? ((last - prev) / prev) * 100 : null;
                               }
+                              // Fix for [object Object] bug
+                              let value = priceObj?.value;
+                              if (value && typeof value === 'object') {
+                                value = value.value ?? value.amount ?? Object.values(value)[0];
+                              }
                               return (
                                 <div
                                   key={id}
@@ -213,8 +218,8 @@ export default function TradingPage() {
                                     </ResponsiveContainer>
                                   </div>
                                   <span className="text-sm sm:text-base font-bold w-1/3 text-right" style={{ color }}>
-                                    {priceObj && priceObj.value !== undefined
-                                      ? `$${priceObj.value.toLocaleString(undefined, {
+                                    {value !== undefined && value !== null && !isNaN(Number(value))
+                                      ? `$${Number(value).toLocaleString(undefined, {
                                           minimumFractionDigits: 2,
                                           maximumFractionDigits: 2,
                                         })}${getUnit(name)}`
@@ -243,6 +248,11 @@ export default function TradingPage() {
                                 const prev = sparklineData[sparklineData.length - 2].y;
                                 color = last >= prev ? "#10B981" : "#EF4444";
                                 percentChange = prev !== 0 ? ((last - prev) / prev) * 100 : null;
+                              }
+                              // Fix for [object Object] bug
+                              let value = priceObj?.value;
+                              if (value && typeof value === 'object') {
+                                value = value.value ?? value.amount ?? Object.values(value)[0];
                               }
                               return (
                                 <div
@@ -273,8 +283,8 @@ export default function TradingPage() {
                                     </ResponsiveContainer>
                                   </div>
                                   <span className="text-xs sm:text-sm font-bold w-1/3 text-right" style={{ color }}>
-                                    {priceObj && priceObj.value !== undefined
-                                      ? `$${priceObj.value.toLocaleString(undefined, {
+                                    {value !== undefined && value !== null && !isNaN(Number(value))
+                                      ? `$${Number(value).toLocaleString(undefined, {
                                           minimumFractionDigits: 2,
                                           maximumFractionDigits: 2,
                                         })}${getUnit(name)}`
