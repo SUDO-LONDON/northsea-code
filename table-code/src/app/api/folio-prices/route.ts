@@ -21,8 +21,10 @@ const FOLIO_PRICES_URL = 'https://folio-api.artis.works/prices/v2/liveprices';
 const PRODUCTS_MAP: Record<string, string> = {
     'd71f82b9-21e2-49f0-9974-4a11a9e5b09f': 'MO 0.1% BGS- Rotterdam 0.1%', // M0 0.1% BGS
     '9c68de75-aed7-417b-abab-eaf576d0d6fe': 'MO SG 10ppm FP-Singapore 10ppm', // M0 SG 10PPM FP
-    '99d27f4d-0a7e-44fe-b9de-9c27d27f08d2': 'MO 0.5% GC FP- USGC 0.5%', // M0 0.5% GC FP
-    'e506264b-1bcd-429f-b018-f50e3f517133': 'MO 3% GC FP-USGC 3%', // M0 3% GC FP
+    // USGC 0.5% renamed to USGC M
+    '4044847b-45b1-4e05-8fb9-deeb55321b2a': 'MO 0.5% GC FP- USGC 0.5%', // USGC M
+    // USGC 3% renamed to USGC A
+    'bce42590-21ba-4f5b-bd14-085b30330003': 'MO 3% GC FP-USGC 3%', // USGC A
     '662e5a2f-f028-4d18-81dc-89be3ba01f3a': 'MO 0.5% SG FP-Singapore 0.5%', // M0 0.5% SG FP
     '6ccbf93e-d43d-46ab-ba50-c26659add883': 'MO Sing 380 FP- Singapore Singapore CST 380', // M0 SING 380 FP
     'b0738070-229c-4aa7-b5d0-45b4119dd0e0': 'MO 0.1% FOB FP- NWE 0.1% FOB', // M0 1% FOB FP
