@@ -115,6 +115,30 @@ export async function POST() {
             console.error('Error inserting price snapshots:', snapshotError);
         }
 
+        // Diagnostics for USGC 3% and USGC 0.5%
+        const usgc3Id = 'bce42590-21ba-4f5b-bd14-085b30330003';
+        const usgc05Id = '4044847b-45b1-4e05-8fb9-deeb55321b2a';
+        const usgc3Payload = data.payload?.[usgc3Id];
+        const usgc05Payload = data.payload?.[usgc05Id];
+        if (!usgc3Payload || !usgc3Payload.data || Object.keys(usgc3Payload.data).length === 0) {
+            console.warn('USGC 3% (MO 3% GC FP-USGC 3%) is missing or empty in payload:', usgc3Payload);
+        } else {
+            const firstKey = Object.keys(usgc3Payload.data)[0];
+            const val = usgc3Payload.data[firstKey]?.value;
+            if (val && typeof val === 'object' && val.error) {
+                console.warn('USGC 3% (MO 3% GC FP-USGC 3%) returned error:', val.error);
+            }
+        }
+        if (!usgc05Payload || !usgc05Payload.data || Object.keys(usgc05Payload.data).length === 0) {
+            console.warn('USGC 0.5% (MO 0.5% GC FP- USGC 0.5%) is missing or empty in payload:', usgc05Payload);
+        } else {
+            const firstKey = Object.keys(usgc05Payload.data)[0];
+            const val = usgc05Payload.data[firstKey]?.value;
+            if (val && typeof val === 'object' && val.error) {
+                console.warn('USGC 0.5% (MO 0.5% GC FP- USGC 0.5%) returned error:', val.error);
+            }
+        }
+
         return NextResponse.json(prices);
     } catch (error: unknown) {
         const errorMessage = error instanceof Error ? error.message : 'Unknown error';
