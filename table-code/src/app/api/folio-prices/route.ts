@@ -120,12 +120,15 @@ export async function POST() {
         const usgc05Id = '4044847b-45b1-4e05-8fb9-deeb55321b2a';
         const usgc3Payload = data.payload?.[usgc3Id];
         const usgc05Payload = data.payload?.[usgc05Id];
+        function hasError(val: unknown): val is { error: unknown } {
+            return typeof val === 'object' && val !== null && 'error' in val;
+        }
         if (!usgc3Payload || !usgc3Payload.data || Object.keys(usgc3Payload.data).length === 0) {
             console.warn('USGC 3% (MO 3% GC FP-USGC 3%) is missing or empty in payload:', usgc3Payload);
         } else {
             const firstKey = Object.keys(usgc3Payload.data)[0];
             const val = usgc3Payload.data[firstKey]?.value;
-            if (val && typeof val === 'object' && val.error) {
+            if (hasError(val)) {
                 console.warn('USGC 3% (MO 3% GC FP-USGC 3%) returned error:', val.error);
             }
         }
@@ -134,7 +137,7 @@ export async function POST() {
         } else {
             const firstKey = Object.keys(usgc05Payload.data)[0];
             const val = usgc05Payload.data[firstKey]?.value;
-            if (val && typeof val === 'object' && val.error) {
+            if (hasError(val)) {
                 console.warn('USGC 0.5% (MO 0.5% GC FP- USGC 0.5%) returned error:', val.error);
             }
         }
