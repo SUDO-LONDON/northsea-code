@@ -232,7 +232,11 @@ export default function TradingPage() {
                                 color = last >= prev ? "#10B981" : "#EF4444";
                                 percentChange = prev !== 0 ? ((last - prev) / prev) * 100 : null;
                               }
-                              const value = extractStringValue(priceObj?.value);
+                              let value = extractStringValue(priceObj?.value);
+                              // If value is missing, invalid, or contains 'missing-dependency', show '--'
+                              if (!value || value === 'missing-dependency') {
+                                value = null;
+                              }
                               return (
                                 <div
                                   key={id}
@@ -290,7 +294,10 @@ export default function TradingPage() {
                                 color = last >= prev ? "#10B981" : "#EF4444";
                                 percentChange = prev !== 0 ? ((last - prev) / prev) * 100 : null;
                               }
-                              const value = extractStringValue(priceObj?.value);
+                              let value = extractStringValue(priceObj?.value);
+                              if (!value || value === 'missing-dependency') {
+                                value = null;
+                              }
                               return (
                                 <div
                                   key={id}
