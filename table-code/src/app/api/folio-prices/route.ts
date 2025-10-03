@@ -67,16 +67,23 @@ export async function POST() {
         console.log('Folio API payload:', JSON.stringify(data.payload, null, 2));
 
         // Dynamically pick the first available Q key for each ID
-        const prices: { id: string; name: string; value: number }[] = Object.entries(data.payload || {}).map(([id, entry]) => {
-            let value = 0;
+        const prices: { id: string; name: string; value: number | null; status?: string }[] = Object.entries(data.payload || {}).map(([id, entry]) => {
+            let value: number | null = 0;
+            let status: string | undefined = undefined;
             if (entry?.data) {
                 const keys = Object.keys(entry.data);
                 if (keys.length > 0) {
                     const firstKey = keys[0];
-                    value = entry.data[firstKey]?.value ?? 0;
+                    const v = entry.data[firstKey]?.value;
+                    if (typeof v === 'number') {
+                        value = v;
+                    } else if (typeof v === 'object' && v !== null && 'error' in v) {
+                        value = null;
+                        status = v.error?.cause || 'unavailable';
+                    }
                 }
             }
-            return { id, name: PRODUCTS_MAP[id] || id, value };
+            return { id, name: PRODUCTS_MAP[id] || id, value, status };
         });
 
         // Fetch previous prices from Supabase
