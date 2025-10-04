@@ -34,10 +34,10 @@ async function fetchToken(): Promise<string> {
 }
 
 async function getToken(): Promise<string> {
-  if (!token || !tokenExpiry || Date.now() > tokenExpiry) {
-    return fetchToken();
-  }
-  return token;
+    if (!token || !tokenExpiry || Date.now() > tokenExpiry) {
+        return fetchToken();
+    }
+    return token;
 }
 
 // Refresh token every 24h
@@ -49,3 +49,10 @@ setInterval(() => {
 fetchToken().catch(() => {/* ignore errors, will retry on next getToken */});
 
 export { getToken };
+
+// async function getToken(): Promise<string> {
+//   if (!token || !tokenExpiry || Date.now() > tokenExpiry) {
+//     return fetchToken();
+//   }
+//   return token;
+// }
