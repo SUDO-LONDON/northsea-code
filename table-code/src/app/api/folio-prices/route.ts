@@ -77,9 +77,9 @@ export async function POST() {
                     const v = entry.data[firstKey]?.value;
                     if (typeof v === 'number') {
                         value = v;
-                    } else if (typeof v === 'object' && v !== null && 'error' in v) {
+                    } else if (typeof v === 'object' && v !== null && 'error' in v && typeof (v as any).error === 'object') {
                         value = null;
-                        status = v.error?.cause || 'unavailable';
+                        status = (v as any).error?.cause || 'unavailable';
                     }
                 }
             }
@@ -100,7 +100,7 @@ export async function POST() {
             // previousProducts is typed as { id: string; hfo: number }[]
             const prev = previousProducts?.find(p => p.id === priceObj.id);
             const oldPrice = prev?.hfo ?? 0;
-            const newPrice = priceObj.value;
+            const newPrice = priceObj.value ?? 0;
             const change = oldPrice !== 0 ? ((newPrice - oldPrice) / oldPrice) * 100 : 0;
             await supabase
                 .from('products')
