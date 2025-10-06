@@ -84,7 +84,7 @@ export async function POST() {
                     const firstKey = keys[0];
                     const v = entry.data[firstKey]?.value;
                     if (typeof v === 'number') {
-                        value = v;
+                        value = Math.trunc(v * 100) / 100;
                     } else if (typeof v === 'object' && v !== null && 'error' in v) {
                         // Use FolioError type
                         const errObj = v as FolioError;
