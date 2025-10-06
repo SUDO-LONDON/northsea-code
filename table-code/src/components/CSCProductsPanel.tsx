@@ -110,7 +110,7 @@ export default function CSCProductsPanel() {
               <span className="font-medium text-foreground text-base">{name}</span>
               <span className={`ml-2 text-sm font-mono ${colorClass}`}>
                 {value !== undefined
-                  ? (Math.floor(value * 100) / 100).toFixed(2)
+                  ? (Math.trunc(value * 100) / 100).toFixed(2)
                   : <span className="text-muted">--</span>}
               </span>
               <div className="w-[100px] h-[40px]">
