@@ -21,15 +21,17 @@ export async function initializeProducts(): Promise<Product[]> {
       return PRODUCTS;
     }
     // Map DB result to Product type
-    return (data as any[]).map(item => ({
-      id: item.id,
-      name: item.name,
-      hfo: item.hfo,
-      vlsfo: item.vlsfo,
-      mgo: item.mgo,
-      change: item.change,
-      lastUpdated: item.lastupdated
-    }));
+    return Array.isArray(data)
+      ? data.map((item: { id: string; name: string; hfo: number; vlsfo: number; mgo: number; change: number; lastupdated: string }) => ({
+          id: item.id,
+          name: item.name,
+          hfo: item.hfo,
+          vlsfo: item.vlsfo,
+          mgo: item.mgo,
+          change: item.change,
+          lastUpdated: item.lastupdated // map DB 'lastupdated' to Product 'lastUpdated'
+        }))
+      : PRODUCTS;
   } catch (error) {
     console.error("Error initializing products via API:", error);
     return PRODUCTS;

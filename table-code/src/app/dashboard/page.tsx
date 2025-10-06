@@ -1,5 +1,4 @@
 "use client"
-
 import React, { useEffect, useState } from "react"
 import { useRouter } from "next/navigation"
 import { Button } from "@/components/ui/button"
@@ -9,6 +8,7 @@ import { Card } from "@/components/ui/card"
 import Cookies from 'js-cookie'
 import { Product } from "@/lib/products"
 import { getProducts, initializeProducts, updateProduct } from "@/lib/productUtils"
+import { supabase } from "@/lib/supabaseClient"
 
 type PriceInputs = {
     hfo: string;
@@ -45,6 +45,23 @@ export default function Dashboard() {
         }
 
         loadProducts()
+
+        // Subscribe to real-time changes in products table
+        const subscription = supabase
+            .channel('products-changes')
+            .on('postgres_changes', {
+                event: '*',
+                schema: 'public',
+                table: 'products',
+            }, () => {
+                // Re-fetch products on any change
+                loadProducts()
+            })
+            .subscribe()
+
+        return () => {
+            subscription.unsubscribe()
+        }
     }, [router])
 
     const handleValueChange = (id: string, field: keyof PriceInputs, value: string) => {
@@ -93,7 +110,13 @@ export default function Dashboard() {
             const product = products.find(p => p.id === id)
             if (!product) return
 
-            // Calculate new values
+            // You already have the `newPrices` inputs, so use them
+            const prices = newPrices[id];
+
+            // Use your existing, working function to compute the change
+            const percentageChange = computePercentageChange(product, prices);
+
+            // Get the final values to update the database
             const newHfo = prices.hfo !== undefined && prices.hfo.trim() !== ''
                 ? parseFloat(prices.hfo)
                 : product.hfo
@@ -104,16 +127,12 @@ export default function Dashboard() {
                 ? parseFloat(prices.mgo)
                 : product.mgo
 
-            const oldAvg = (product.hfo + product.vlsfo + product.mgo) / 3
-            const newAvg = (newHfo + newVlsfo + newMgo) / 3
-            const percentageChange = oldAvg > 0 ? ((newAvg - oldAvg) / oldAvg) * 100 : 0
-
             const updatedProduct = {
                 ...product,
                 hfo: newHfo,
                 vlsfo: newVlsfo,
                 mgo: newMgo,
-                change: Number(percentageChange.toFixed(2)),
+                change: percentageChange, // Use the result from the shared function
                 lastUpdated: new Date().toISOString()
             }
 
@@ -126,8 +145,9 @@ export default function Dashboard() {
 
                 // Clear the form entry for this product
                 setNewPrices(prev => {
-                    const { [id]: _, ...rest } = prev
-                    return rest
+                    const rest = { ...prev };
+                    delete rest[id];
+                    return rest;
                 })
             } else {
                 alert('Failed to update product. Please try again.')
@@ -146,17 +166,25 @@ export default function Dashboard() {
     }
 
     const handleResetProducts = async () => {
-        setIsLoading(true)
+        setIsLoading(true);
         try {
-            const resetProducts = await initializeProducts()
-            setProducts(resetProducts)
+            // The initializeProducts function already handles the database logic
+            // (deleting existing rows and inserting new ones) via the API endpoint.
+            const resetProducts = await initializeProducts();
+
+            // Update the local state with the products returned from the API call.
+            setProducts(resetProducts);
+
+            // Clear any lingering input values from the user.
+            setNewPrices({});
+
         } catch (error) {
-            console.error('Error resetting products:', error)
-            alert('Error resetting products. Please try again.')
+            console.error('Error resetting products:', error);
+            alert('Error resetting products. Please try again.');
         } finally {
-            setIsLoading(false)
+            setIsLoading(false);
         }
-    }
+    };
 
     if (isLoading) {
         return (
@@ -167,7 +195,7 @@ export default function Dashboard() {
     }
 
     return (
-        <div className="bg-gray-900 min-h-screen text-white">
+        <div className="bg-background min-h-screen text-white">
             <div className="container mx-auto p-6">
                 <div className="mb-8">
                     <div className="flex justify-between items-center">

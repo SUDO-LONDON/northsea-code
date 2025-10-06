@@ -1,9 +1,14 @@
 {
   "version": 2,
-  "builds": [
+  "framework": "nextjs",
+  "crons": [
     {
-      "src": "package.json",
-      "use": "@vercel/next"
+      "path": "/api/record-csc-history",
+      "schedule": "*/15 * * * *"
+    },
+    {
+      "path": "/api/folio-prices",
+      "schedule": "*/15 * * * *"
     }
   ]
 }

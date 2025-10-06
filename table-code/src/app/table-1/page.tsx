@@ -7,7 +7,7 @@ export default function TablePage() {
   const data = useMemo(() => generateFakeData(12), [])
 
   return (
-    <div className="p-6 space-y-6">
+    <div className="bg-background min-h-screen p-6 space-y-6">
       <TradeTable data={data} />
     </div>
   )

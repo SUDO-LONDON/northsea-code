@@ -42,10 +42,11 @@ export default function SignUpPage() {
             return;
         }
 
-        const { error } = await supabase.auth.signUp({
+        const { error, data } = await supabase.auth.signUp({
             email,
             password,
             options: {
+                emailRedirectTo: 'https://northseatrading.vercel.app',
                 data: {
                     company_name: companyName,
                     position,
@@ -58,6 +59,65 @@ export default function SignUpPage() {
         if (error) {
             setError(error.message);
         } else {
+            const user = data?.user;
+            if (user) {
+                // Ensure profile exists
+                const { data: profile, error: profileError } = await supabase
+                  .from('profiles')
+                  .select('id')
+                  .eq('id', user.id)
+                  .single();
+                if (!profile && !profileError) {
+                  await supabase.from('profiles').insert({
+                    id: user.id,
+                    email: user.email,
+                    company_name: companyName,
+                    position,
+                    country_of_incorporation: country,
+                    phone,
+                    created_at: new Date().toISOString(),
+                  });
+                }
+                // Fallback: call edge function directly to dispatch email
+                try {
+                  await fetch('https://qsqihdpfhfzcrwhkxgxu.supabase.co/functions/v1/send-user-data', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                      record: {
+                        id: user.id,
+                        email: user.email,
+                        created_at: user.created_at,
+                        raw_user_meta_data: {
+                          company_name: companyName,
+                          position,
+                          country_of_incorporation: country,
+                          phone,
+                        }
+                      }
+                    })
+                  });
+                } catch (e) {
+                  console.warn('Edge function email fallback failed', e);
+                }
+            }
+            // Send all signup data to /api/signup for audit/history
+            try {
+                await fetch('/api/signup', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        companyName,
+                        position,
+                        country,
+                        phone,
+                        email,
+                        password
+                    })
+                });
+            } catch (e) {
+                console.warn('Failed to send signup data to /api/signup', e);
+            }
             setSuccess("Check your email for a confirmation link.");
         }
         setLoading(false);
@@ -68,7 +128,7 @@ export default function SignUpPage() {
     };
 
     return (
-        <div className="bg-background flex min-h-svh flex-col items-center justify-center gap-6 p-6 md:p-10">
+        <div className="bg-background min-h-screen flex flex-col items-center justify-center p-6">
             <div className="flex flex-col items-center space-y-4 mb-4">
                 <h1 className="text-4xl font-bold text-center">Create your Northsea account</h1>
                 <p className="text-gray-500 text-center">Register below to get started</p>

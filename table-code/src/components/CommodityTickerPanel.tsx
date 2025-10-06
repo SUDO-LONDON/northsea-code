@@ -31,7 +31,7 @@ export default function CommodityTickerPanel() {
         if (!res.ok) throw new Error("API error");
         const data = await res.json();
         setCommodities(data);
-      } catch (err) {
+      } catch {
         setError("Error loading prices");
       } finally {
         setLoading(false);
@@ -43,9 +43,9 @@ export default function CommodityTickerPanel() {
   }, []);
 
   return (
-    <Card className="bg-gray-800 border border-black shadow-sm">
-      <div className="p-6">
-        <h2 className="text-xl font-semibold text-foreground mb-4">
+    <Card className="bg-background border-black shadow-sm">
+      <div className="p-4">
+        <h2 className="text-lg font-semibold text-foreground mb-3">
           Commodity Ticker
         </h2>
         {loading ? (
@@ -53,7 +53,7 @@ export default function CommodityTickerPanel() {
         ) : error ? (
           <div className="text-red-500">{error}</div>
         ) : (
-          <div className="flex flex-wrap gap-6">
+          <div className="flex flex-wrap gap-4">
             {commodities.map((item) => {
               const price = parseFloat(item.price);
               const prevClose = parseFloat(item.prevClose);
@@ -75,7 +75,7 @@ export default function CommodityTickerPanel() {
               return (
                 <div
                   key={item.name}
-                  className="flex flex-col items-start bg-gray-900 rounded-lg px-4 py-2 min-w-[180px] shadow"
+                  className="flex flex-col items-start bg-background rounded-lg p-2 min-w-[150px] shadow"
                 >
                   <span className="text-sm text-gray-400 mb-1">{item.name}</span>
                   <span className="text-lg font-bold text-foreground">
@@ -85,6 +85,7 @@ export default function CommodityTickerPanel() {
                         {isUp ? "▲" : "▼"} {Math.abs(pctChange).toFixed(2)}%
                       </span>
                     )}
+
                   </span>
                 </div>
               );

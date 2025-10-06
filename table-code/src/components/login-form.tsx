@@ -30,6 +30,26 @@ export function LoginForm({
     })
     if (error) setError(error.message)
     else {
+      // --- Profile safety net (DISCONNECTED, re-enable if needed) ---
+      /*
+      const user = data?.user;
+      if (user) {
+        const { data: profile, error: profileError } = await supabase
+          .from('profiles')
+          .select('id')
+          .eq('id', user.id)
+          .single();
+        if (!profile && !profileError) {
+          // Insert profile with available info
+          await supabase.from('profiles').insert({
+            id: user.id,
+            email: user.email,
+            created_at: new Date().toISOString(),
+          });
+        }
+      }
+      */
+      // --- End profile safety net ---
       Cookies.set("adminAuth", "true", { expires: 1 }) // Set cookie for 1 day
       router.push("/table")
     }

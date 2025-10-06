@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
+import { getToken } from '@/lib/folioToken';
+import { supabase } from '@/lib/supabaseClient';
 
-const FOLIO_TOKEN_URL = 'https://folio-api.artis.works/oauth/token';
 const FOLIO_PRICES_URL = 'https://folio-api.artis.works/prices/v2/liveprices';
 
 const IDS = [
@@ -15,18 +16,6 @@ const IDS = [
     '6ccbf93e-d43d-46ab-ba50-c26659add883',
 ];
 
-let cachedToken: string | null = null;
-let tokenExpiry: number | null = null;
-
-const FOLIO_CLIENT_ID = "iNuJKp1LRk3VBzeaDucHgGSZzGvSoQ8q";
-const FOLIO_CLIENT_SECRET = "Zy-Ip_GgAT1japzy-Fpwv80hNo9Y4WUGLugYI3V6ZtqcH_2kCznQrM7aWVGSgrFm";
-
-interface TokenResponse {
-    access_token: string;
-    expires_in: number;
-    token_type: string;
-}
-
 interface PayloadEntry {
     data?: Record<string, { value?: number }>;
 }
@@ -35,44 +24,10 @@ interface FolioApiResponse {
     payload?: Record<string, PayloadEntry>;
 }
 
-// Fetch a fresh token if needed
-async function getFolioToken(): Promise<string> {
-    if (cachedToken && tokenExpiry && Date.now() < tokenExpiry - 60000) {
-        return cachedToken; // return cached if still valid
-    }
-
-    const res = await fetch(FOLIO_TOKEN_URL, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-        body: new URLSearchParams({
-            grant_type: 'client_credentials',
-            audience: 'folio-api',
-            client_id: FOLIO_CLIENT_ID,
-            client_secret: FOLIO_CLIENT_SECRET,
-        }).toString(),
-    });
-
-    if (!res.ok) {
-        const text = await res.text();
-        throw new Error(`Failed to fetch token: ${res.status} ${text}`);
-    }
-
-    const data: TokenResponse = await res.json();
-
-    if (!data.access_token) {
-        throw new Error('No access_token returned from Folio API');
-    }
-
-    cachedToken = data.access_token;
-    tokenExpiry = Date.now() + (data.expires_in ? data.expires_in * 1000 : 3600000);
-
-    return cachedToken;
-}
-
 // POST handler: fetch prices
 export async function POST() {
     try {
-        const token = await getFolioToken();
+        const token = await getToken();
 
         const res = await fetch(FOLIO_PRICES_URL, {
             method: 'POST',
@@ -94,7 +49,7 @@ export async function POST() {
         console.log('Folio API payload:', JSON.stringify(data.payload, null, 2));
 
         // Dynamically pick the first available Q key for each ID
-        const prices = Object.entries(data.payload || {}).map(([id, entry]) => {
+        const prices: { id: string; value: number }[] = Object.entries(data.payload || {}).map(([id, entry]) => {
             let value = 0;
 
             if (entry?.data) {
@@ -108,11 +63,46 @@ export async function POST() {
             return { id, value };
         });
 
+        // Fetch previous prices from Supabase
+        const { data: previousProducts, error: fetchError } = await supabase
+            .from('products')
+            .select('id, hfo')
+            .in('id', prices.map(p => p.id));
+        if (fetchError) {
+            console.error('Error fetching previous prices:', fetchError);
+        }
+
+        // Calculate percentage change and update Supabase
+        for (const priceObj of prices) {
+            // previousProducts is typed as { id: string; hfo: number }[]
+            const prev = previousProducts?.find(p => p.id === priceObj.id);
+            const oldPrice = prev?.hfo ?? 0;
+            const newPrice = priceObj.value;
+            const change = oldPrice !== 0 ? ((newPrice - oldPrice) / oldPrice) * 100 : 0;
+            await supabase
+                .from('products')
+                .update({ hfo: newPrice, change })
+                .eq('id', priceObj.id);
+        }
+
+        // Insert price snapshots for historical tracking
+        const now = new Date().toISOString();
+        const snapshotRows = prices.map((p) => ({
+            product_id: p.id,
+            value: p.value,
+            recorded_at: now,
+        }));
+        const { error: snapshotError } = await supabase
+            .from('product_price_snapshots')
+            .insert(snapshotRows);
+        if (snapshotError) {
+            console.error('Error inserting price snapshots:', snapshotError);
+        }
 
         return NextResponse.json(prices);
     } catch (error: unknown) {
-        const message = error instanceof Error ? error.message : 'Unknown error';
-        return NextResponse.json({ error: message }, { status: 500 });
+        const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+        return NextResponse.json({ error: errorMessage }, { status: 500 });
     }
 }
 
@@ -120,4 +110,3 @@ export async function POST() {
 export async function GET() {
     return POST();
 }
-

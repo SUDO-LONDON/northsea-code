@@ -5,8 +5,8 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { useState } from "react"
 import { useRouter } from "next/navigation"
-import Cookies from 'js-cookie'
 import { cn } from "@/lib/utils"
+import Cookies from "js-cookie"
 
 export default function AdminLogin() {
   const [username, setUsername] = useState("")
@@ -20,32 +20,24 @@ export default function AdminLogin() {
     setLoading(true)
     setError("")
 
-    // For demo purposes, using hardcoded credentials
-    // In production, use proper authentication
-    if (username === "param" && password === "param12north5sea") {
-      // Set admin authentication cookie with 24h expiry
+    // Hardcoded admin credentials
+    if (
+      (username.toLowerCase() === "param" && password === "param12north5sea") ||
+      (username.toLowerCase() === "davidl@northseatrading.org" &&
+        password === "Medea63263$")
+    ) {
       Cookies.set('adminAuth', 'true', { expires: 1 })
       router.push("/dashboard")
-    } else {
-      setError("Invalid credentials")
+      setLoading(false)
+      return
     }
+
+    setError("Invalid credentials")
     setLoading(false)
   }
 
   return (
-    <div
-      className="bg-background flex min-h-svh flex-col items-center justify-center gap-6 p-6 md:p-10"
-      style={{
-        backgroundColor: '#0f0d21',
-        minHeight: '100vh',
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        justifyContent: 'center',
-        gap: '1.5rem',
-        padding: '1.5rem'
-      }}
-    >
+    <div className="bg-background flex min-h-screen flex-col items-center justify-center gap-6 p-6 md:p-10">
       <div className="flex flex-col items-center space-y-4 mb-4">
         <h1
           className="text-4xl font-bold text-center"
