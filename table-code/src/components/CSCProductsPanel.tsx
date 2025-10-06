@@ -29,7 +29,7 @@ async function fetchLatestFolioPrices(): Promise<Record<string, number>> {
 }
 
 export default function CSCProductsPanel() {
-  const [series, setSeries] = useState<Record<string, { x: string; y: number }[]>>({});
+  const [series, setSeries] = useState<Record<string, { x: string; y: number }>>({});
   const [latest, setLatest] = useState<Record<string, number>>({});
   const [previous, setPrevious] = useState<Record<string, number>>({});
   const [error, setError] = useState<string | null>(null);
@@ -108,7 +108,9 @@ export default function CSCProductsPanel() {
             <div key={id} className="flex items-center justify-between border-b pb-2 last:border-b-0 last:pb-0">
               <span className="font-medium text-foreground text-base">{name}</span>
               <span className={`ml-2 text-sm font-mono ${colorClass}`}>
-                {value !== undefined ? value : <span className="text-muted">--</span>}
+                {value !== undefined
+                  ? (Math.floor(value * 100) / 100).toFixed(2)
+                  : <span className="text-muted">--</span>}
               </span>
               <div className="w-[100px] h-[40px]">
                 {series[id]?.length ? (
