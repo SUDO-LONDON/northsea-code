@@ -40,6 +40,14 @@ interface FolioApiResponse {
     payload?: Record<string, PayloadEntry>;
 }
 
+// Helper type for Folio error object
+interface FolioError {
+  error: {
+    cause?: string;
+    [key: string]: unknown;
+  };
+}
+
 // POST handler: fetch prices
 export async function POST() {
     try {
@@ -77,9 +85,11 @@ export async function POST() {
                     const v = entry.data[firstKey]?.value;
                     if (typeof v === 'number') {
                         value = v;
-                    } else if (typeof v === 'object' && v !== null && 'error' in v && typeof (v as any).error === 'object') {
+                    } else if (typeof v === 'object' && v !== null && 'error' in v) {
+                        // Use FolioError type
+                        const errObj = v as FolioError;
                         value = null;
-                        status = (v as any).error?.cause || 'unavailable';
+                        status = errObj.error.cause || 'unavailable';
                     }
                 }
             }

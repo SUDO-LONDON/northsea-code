@@ -17,14 +17,6 @@ import {
 import { Product } from "@/lib/products"
 import { AreaChart, Area, ResponsiveContainer } from "recharts"
 
-// Generate fake sparkline data for visualization
-const generateSparklineData = () => {
-  return Array.from({ length: 20 }, (_, i) => ({
-    x: i,
-    y: 50 + Math.random() * 20
-  }))
-}
-
 const GASOIL_NAMES = [
   "M0 SG 10PPM FP",
   "M0 0.1% BGS"
