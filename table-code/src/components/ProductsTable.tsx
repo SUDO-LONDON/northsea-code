@@ -47,7 +47,7 @@ const columns: ColumnDef<Product>[] = [
     accessorKey: "hfo",
     header: () => <div className="text-center">HFO</div>,
     cell: ({ row }) => {
-      const value = parseFloat(row.getValue("hfo"));
+      const value = Math.floor(parseFloat(row.getValue("hfo")) * 100) / 100;
       const name = row.getValue("name") as string;
       return <div className="text-center font-medium text-foreground">${value.toFixed(2)}{getUnit(name)}</div>;
     }
@@ -56,7 +56,7 @@ const columns: ColumnDef<Product>[] = [
     accessorKey: "vlsfo",
     header: () => <div className="text-center">VLSFO</div>,
     cell: ({ row }) => {
-      const value = parseFloat(row.getValue("vlsfo"));
+      const value = Math.floor(parseFloat(row.getValue("vlsfo")) * 100) / 100;
       const name = row.getValue("name") as string;
       return <div className="text-center font-medium text-foreground">${value.toFixed(2)}{getUnit(name)}</div>;
     }
@@ -65,7 +65,7 @@ const columns: ColumnDef<Product>[] = [
     accessorKey: "mgo",
     header: () => <div className="text-center">MGO</div>,
     cell: ({ row }) => {
-      const value = parseFloat(row.getValue("mgo"));
+      const value = Math.floor(parseFloat(row.getValue("mgo")) * 100) / 100;
       const name = row.getValue("name") as string;
       return <div className="text-center font-medium text-foreground">${value.toFixed(2)}{getUnit(name)}</div>;
     }
