@@ -221,19 +221,19 @@ export default function TradingPage() {
                             {CSC_COMMODITIES_IDS.map((id) => {
                               const name = PRODUCT_ID_MAP[id];
                               const priceObj = livePrices.find((p) => p.id === id);
-                              const sparklineData = priceObj && Array.isArray(priceObj.history)
+                              const sparklineData = priceObj && Array.isArray(priceObj?.history)
                                 ? priceObj.history.map((y, x) => ({ x, y }))
                                 : generateSparklineData();
                               let color = "#10B981";
-                              let percentChange = null;
-                              if (sparklineData.length > 1) {
-                                const last = sparklineData[sparklineData.length - 1].y;
-                                const prev = sparklineData[sparklineData.length - 2].y;
+                              let percentChange: number | null = null;
+                              // Use actual price history for percent change
+                              if (priceObj && Array.isArray(priceObj.history) && priceObj.history.length > 1) {
+                                const last = priceObj.history[priceObj.history.length - 1];
+                                const prev = priceObj.history[priceObj.history.length - 2];
                                 color = last >= prev ? "#10B981" : "#EF4444";
                                 percentChange = prev !== 0 ? ((last - prev) / prev) * 100 : null;
                               }
                               let value = extractStringValue(priceObj?.value);
-                              // If value is missing, invalid, or contains 'missing-dependency', show '--'
                               if (!value || value === 'missing-dependency') {
                                 value = null;
                               }
@@ -283,14 +283,15 @@ export default function TradingPage() {
                             {GASOIL_IDS.map((id) => {
                               const name = PRODUCT_ID_MAP[id];
                               const priceObj = livePrices.find((p) => p.id === id);
-                              const sparklineData = priceObj && Array.isArray(priceObj.history)
+                              const sparklineData = priceObj && Array.isArray(priceObj?.history)
                                 ? priceObj.history.map((y, x) => ({ x, y }))
                                 : generateSparklineData();
                               let color = "#10B981";
-                              let percentChange = null;
-                              if (sparklineData.length > 1) {
-                                const last = sparklineData[sparklineData.length - 1].y;
-                                const prev = sparklineData[sparklineData.length - 2].y;
+                              let percentChange: number | null = null;
+                              // Use actual price history for percent change
+                              if (priceObj && Array.isArray(priceObj.history) && priceObj.history.length > 1) {
+                                const last = priceObj.history[priceObj.history.length - 1];
+                                const prev = priceObj.history[priceObj.history.length - 2];
                                 color = last >= prev ? "#10B981" : "#EF4444";
                                 percentChange = prev !== 0 ? ((last - prev) / prev) * 100 : null;
                               }
