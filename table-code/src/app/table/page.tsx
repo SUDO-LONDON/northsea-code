@@ -158,6 +158,15 @@ export default function TradingPage() {
         return () => clearInterval(interval);
     }, []);
 
+    // Merge price history from livePrices into each Product
+    const productsWithHistory: Product[] = products.map(product => {
+      const live = livePrices.find(lp => lp.id === product.id);
+      return {
+        ...product,
+        history: live?.history ?? [],
+      };
+    });
+
     return (
         <div className="bg-background min-h-screen text-white">
             <div className="container mx-auto p-4 sm:p-6">
@@ -197,7 +206,7 @@ export default function TradingPage() {
                             {/* Make table horizontally scrollable */}
                             <div className="overflow-x-auto">
                                 <div className="min-w-full">
-                                    <ProductsTable data={products} />
+                                    <ProductsTable data={productsWithHistory} />
                                 </div>
                             </div>
                         </div>

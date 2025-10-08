@@ -6,6 +6,7 @@ export interface Product {
   mgo: number;
   change: number;
   lastUpdated: string;
+  history?: number[]; // Added for price history
 }
 
 export const PRODUCTS: Product[] = [

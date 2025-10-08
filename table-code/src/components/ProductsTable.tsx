@@ -105,6 +105,28 @@ const columns: ColumnDef<Product>[] = [
         </div>
       );
     }
+  },
+  {
+    id: "percentChange",
+    header: () => <div className="text-center">% Change</div>,
+    cell: ({ row }) => {
+      const history = row.original.history;
+      let percentChange: number | null = null;
+      let color = "#10B981";
+      if (history && history.length > 1) {
+        const last = history[history.length - 1];
+        const prev = history[history.length - 2];
+        percentChange = prev !== 0 ? ((last - prev) / prev) * 100 : null;
+        color = last >= prev ? "#10B981" : "#EF4444";
+      }
+      return percentChange !== null ? (
+        <div className="text-center font-bold" style={{ color }}>
+          {percentChange >= 0 ? "▲" : "▼"} {Math.abs(percentChange).toFixed(2)}%
+        </div>
+      ) : (
+        <div className="text-center text-muted-foreground">--</div>
+      );
+    }
   }
 ]
 
