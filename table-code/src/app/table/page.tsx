@@ -148,7 +148,7 @@ export default function TradingPage() {
                             </div>
                             {/* Make table horizontally scrollable */}
                             <div className="overflow-x-auto">
-                                <div className="min-w-full">
+                                <div style={{ minWidth: 'calc(100% - 30px)' }}>
                                     <ProductsTable data={products} />
                                 </div>
                             </div>
@@ -169,84 +169,83 @@ export default function TradingPage() {
                                 style={{ filter: 'invert(1)' }}
                               />
                             </div>
-                            <div className="overflow-x-auto">
-                              <div className="min-w-[520px]">
-                                {/* Table header for CSC commodities */}
+                            <div>
+                              <div>
+                                 {/* Table header for CSC commodities */}
                                 <div className="flex items-center font-bold border-b border-[#333] pb-3 text-foreground text-base rounded-t-xl" style={{letterSpacing: '0.01em'}}>
-                                  <span className="w-1/3 pl-2">Name</span>
-                                  <span className="w-[80px] mx-2 text-center">Graph</span>
-                                  <span className="w-1/3 text-right pr-2">Price</span>
-                                  <span className="w-1/4 text-right pr-2">Daily % Change</span>
+                                  <span className="pl-2" style={{width: '40%'}}>Name</span>
+                                  <span className="mx-2 text-center" style={{width: '110px'}}>Graph</span>
+                                  <span className="text-right pr-2" style={{width: '28%'}}>Price</span>
+                                  <span className="text-right pr-2" style={{width: '22%'}}>1hr % Change</span>
                                 </div>
                                 {CSC_COMMODITIES_IDS.map((id, idx) => {
-                                  const name = PRODUCT_ID_MAP[id];
-                                  const priceObj = livePrices.find((p) => p.id === id);
-                                  // Use sparklineData for both the graph and percentage change
-                                  const sparklineData = priceObj && Array.isArray(priceObj.history)
-                                    ? priceObj.history.map((y, x) => ({ x, y }))
-                                    : generateSparklineData();
-                                  let color = "#10B981"; // green default
-                                  if (sparklineData.length > 1) {
-                                    const last = sparklineData[sparklineData.length - 1].y;
-                                    const prev = sparklineData[sparklineData.length - 2].y;
-                                    color = last >= prev ? "#10B981" : "#EF4444"; // red if down
-                                  }
-                                  // Calculate daily percentage change from sparklineData
+                                   const name = PRODUCT_ID_MAP[id];
+                                   const priceObj = livePrices.find((p) => p.id === id);
+                                   // Use sparklineData for both the graph and percentage change
+                                   const sparklineData = priceObj && Array.isArray(priceObj.history)
+                                     ? priceObj.history.map((y, x) => ({ x, y }))
+                                     : generateSparklineData();
+                                   let color = "#10B981"; // green default
+                                   if (sparklineData.length > 1) {
+                                     const last = sparklineData[sparklineData.length - 1].y;
+                                     const prev = sparklineData[sparklineData.length - 2].y;
+                                     color = last >= prev ? "#10B981" : "#EF4444"; // red if down
+                                   }
+                                  // Calculate 1hr percentage change from sparklineData (first -> last)
+                                  // sparklineData is expected to be ordered oldest -> newest
                                   let percentChange: number | null = null;
                                   if (sparklineData.length > 1) {
                                     const first = sparklineData[0].y;
                                     const last = sparklineData[sparklineData.length - 1].y;
-                                    if (first !== 0) {
+                                    if (typeof first === 'number' && first !== 0) {
                                       percentChange = ((last - first) / first) * 100;
                                     }
                                   }
-                                  const percentColor = percentChange !== null ? (percentChange >= 0 ? "#10B981" : "#EF4444") : "#aaa";
-                                  const percentArrow = percentChange !== null ? (percentChange > 0 ? "▲" : percentChange < 0 ? "▼" : "") : "";
-                                  return (
-                                    <div
-                                      key={id}
-                                      className={
-                                        `flex items-center border-b border-[#23272f] last:border-b-0 py-3 transition-colors duration-150 hover:bg-muted rounded-xl`
-                                      }
+                                   const percentColor = percentChange !== null ? (percentChange >= 0 ? "#10B981" : "#EF4444") : "#aaa";
+                                   const percentArrow = percentChange !== null ? (percentChange > 0 ? "▲" : percentChange < 0 ? "▼" : "") : "";
+                                   return (
+                                     <div
+                                       key={id}
+                                      className={`flex items-center border-b border-[#23272f] last:border-b-0 py-3 transition-colors duration-150 hover:bg-muted rounded-xl`}
                                       style={{marginBottom: 2}}
-                                    >
-                                      <span className="font-medium text-foreground text-sm sm:text-base w-1/3 pl-2" style={{color: '#e5e7eb'}}>
+                                     >
+                                      <span className="font-medium text-foreground text-sm sm:text-base pl-2" style={{color: '#e5e7eb', width: '40%'}}>
                                         {name}
                                       </span>
-                                      <div className="w-[80px] h-[32px] mx-2 flex items-center justify-center">
-                                        <ResponsiveContainer width="100%" height="100%">
-                                          <AreaChart data={sparklineData}>
-                                            <defs>
-                                              <linearGradient id={`colorUv-${id}`} x1="0" y1="0" x2="0" y2="1">
-                                                <stop offset="5%" stopColor={color} stopOpacity={0.6}/>
-                                                <stop offset="95%" stopColor={color} stopOpacity={0}/>
-                                              </linearGradient>
-                                            </defs>
-                                            <Area
-                                              type="monotone"
-                                              dataKey="y"
-                                              stroke={color}
-                                              fillOpacity={1}
-                                              fill={`url(#colorUv-${id})`}
-                                              strokeWidth={2}
-                                            />
-                                          </AreaChart>
-                                        </ResponsiveContainer>
-                                      </div>
-                                      <span className="text-sm sm:text-base font-bold w-1/3 text-right pr-2" style={{ color: '#d1d5db', fontVariantNumeric: 'tabular-nums' }}>
-                                        {priceObj && priceObj.value !== undefined
-                                          ? `$${priceObj.value.toLocaleString(undefined, {
-                                              minimumFractionDigits: 2,
-                                              maximumFractionDigits: 2,
-                                            })}${getUnit(name)}`
-                                          : "--"}
-                                      </span>
-                                      <span className="w-1/4 text-right pr-2 font-bold" style={{ color: percentColor, fontSize: '0.98em', fontVariantNumeric: 'tabular-nums' }}>
+                                      <div className="h-[32px] mx-2 flex items-center justify-center" style={{width: 110}}>
+                                         <ResponsiveContainer width="100%" height="100%">
+                                           <AreaChart data={sparklineData}>
+                                             <defs>
+                                               <linearGradient id={`colorUv-${id}`} x1="0" y1="0" x2="0" y2="1">
+                                                 <stop offset="5%" stopColor={color} stopOpacity={0.6}/>
+                                                 <stop offset="95%" stopColor={color} stopOpacity={0}/>
+                                               </linearGradient>
+                                             </defs>
+                                             <Area
+                                               type="monotone"
+                                               dataKey="y"
+                                               stroke={color}
+                                               fillOpacity={1}
+                                               fill={`url(#colorUv-${id})`}
+                                               strokeWidth={2}
+                                             />
+                                           </AreaChart>
+                                         </ResponsiveContainer>
+                                       </div>
+                                      <span className="text-sm sm:text-base font-bold text-right pr-2" style={{ color: '#d1d5db', fontVariantNumeric: 'tabular-nums', width: '28%' }}>
+                                         {priceObj && priceObj.value !== undefined
+                                           ? `$${priceObj.value.toLocaleString(undefined, {
+                                               minimumFractionDigits: 2,
+                                               maximumFractionDigits: 2,
+                                             })}${getUnit(name)}`
+                                           : "--"}
+                                       </span>
+                                      <span className="text-right pr-2 font-bold" style={{ color: percentColor, fontSize: '0.98em', fontVariantNumeric: 'tabular-nums', width: '22%' }}>
                                         {percentArrow} {percentChange !== null ? `${percentChange.toFixed(2)}%` : "--"}
                                       </span>
-                                    </div>
-                                  );
-                                })}
+                                     </div>
+                                   );
+                                 })}
                                 {/* Gasoils Section (unchanged) */}
                                 <h3 className="font-semibold text-base sm:text-lg mt-4 mb-2 pl-2">Gasoil:</h3>
                                 {GASOIL_IDS.map((id, idx) => {
@@ -254,67 +253,67 @@ export default function TradingPage() {
                                   const priceObj = livePrices.find((p) => p.id === id);
                                   // Assume priceObj.history is an array of price values for the sparkline
                                   const sparklineData = priceObj && Array.isArray(priceObj.history)
-                                    ? priceObj.history.map((y, x) => ({ x, y }))
-                                    : generateSparklineData();
-                                  let color = "#10B981"; // green default
-                                  if (sparklineData.length > 1) {
-                                    const last = sparklineData[sparklineData.length - 1].y;
-                                    const prev = sparklineData[sparklineData.length - 2].y;
-                                    color = last >= prev ? "#10B981" : "#EF4444"; // red if down
-                                  }
-                                  return (
-                                    <div
-                                      key={id}
-                                      className={`flex items-center border-b border-[#23272f] last:border-b-0 py-3 transition-colors duration-150 hover:bg-muted rounded-xl`}
-                                      style={{marginBottom: 2}}
-                                    >
-                                      <span className="font-medium text-foreground text-sm sm:text-base w-1/3 pl-2" style={{color: '#e5e7eb'}}>
+                                     ? priceObj.history.map((y, x) => ({ x, y }))
+                                     : generateSparklineData();
+                                   let color = "#10B981"; // green default
+                                   if (sparklineData.length > 1) {
+                                     const last = sparklineData[sparklineData.length - 1].y;
+                                     const prev = sparklineData[sparklineData.length - 2].y;
+                                     color = last >= prev ? "#10B981" : "#EF4444"; // red if down
+                                   }
+                                   return (
+                                     <div
+                                       key={id}
+                                       className={`flex items-center border-b border-[#23272f] last:border-b-0 py-3 transition-colors duration-150 hover:bg-muted rounded-xl`}
+                                       style={{marginBottom: 2}}
+                                     >
+                                      <span className="font-medium text-foreground text-sm sm:text-base pl-2" style={{color: '#e5e7eb', width: '40%'}}>
                                         {name}
                                       </span>
-                                      <div className="w-[80px] h-[32px] mx-2 flex items-center justify-center">
-                                        <ResponsiveContainer width="100%" height="100%">
-                                          <AreaChart data={sparklineData}>
-                                            <defs>
-                                              <linearGradient id={`colorUv-${id}`} x1="0" y1="0" x2="0" y2="1">
-                                                <stop offset="5%" stopColor={color} stopOpacity={0.6}/>
-                                                <stop offset="95%" stopColor={color} stopOpacity={0}/>
-                                              </linearGradient>
-                                            </defs>
-                                            <Area
-                                              type="monotone"
-                                              dataKey="y"
-                                              stroke={color}
-                                              fillOpacity={1}
-                                              fill={`url(#colorUv-${id})`}
-                                              strokeWidth={2}
-                                            />
-                                          </AreaChart>
-                                        </ResponsiveContainer>
-                                      </div>
-                                      <span className="text-xs sm:text-sm font-bold w-1/3 text-right pr-2" style={{ color: '#d1d5db', fontVariantNumeric: 'tabular-nums' }}>
+                                      <div className="h-[32px] mx-2 flex items-center justify-center" style={{width: 110}}>
+                                         <ResponsiveContainer width="100%" height="100%">
+                                           <AreaChart data={sparklineData}>
+                                             <defs>
+                                               <linearGradient id={`colorUv-${id}`} x1="0" y1="0" x2="0" y2="1">
+                                                 <stop offset="5%" stopColor={color} stopOpacity={0.6}/>
+                                                 <stop offset="95%" stopColor={color} stopOpacity={0}/>
+                                               </linearGradient>
+                                             </defs>
+                                             <Area
+                                               type="monotone"
+                                               dataKey="y"
+                                               stroke={color}
+                                               fillOpacity={1}
+                                               fill={`url(#colorUv-${id})`}
+                                               strokeWidth={2}
+                                             />
+                                           </AreaChart>
+                                         </ResponsiveContainer>
+                                       </div>
+                                      <span className="text-xs sm:text-sm font-bold text-right pr-2" style={{ color: '#d1d5db', fontVariantNumeric: 'tabular-nums', width: '28%' }}>
                                         {priceObj && priceObj.value !== undefined
-                                          ? `$${priceObj.value.toLocaleString(undefined, {
-                                              minimumFractionDigits: 2,
-                                              maximumFractionDigits: 2,
-                                            })}${getUnit(name)}`
-                                          : "--"}
+                                           ? `$${priceObj.value.toLocaleString(undefined, {
+                                               minimumFractionDigits: 2,
+                                               maximumFractionDigits: 2,
+                                             })}${getUnit(name)}`
+                                           : "--"}
                                       </span>
-                                      {/* No daily % change for Gasoil rows, so leave the last column empty for alignment */}
-                                      <span className="w-1/4 text-right pr-2 font-bold"> </span>
-                                    </div>
-                                  );
-                                })}
+                                      {/* No 1hr % change for Gasoil rows (if desired we can enable), so leave the last column empty for alignment */}
+                                      <span style={{width: '22%'}} className="text-right pr-2 font-bold"> </span>
+                                     </div>
+                                   );
+                                 })}
                               </div>
                             </div>
-                            {/* Commodity Ticker Panel */}
+                             {/* Commodity Ticker Panel */}
                             <div className="border-t border-gray-700">
-                              <CommodityTickerPanel />
-                            </div>
-                          </div>
+                               <CommodityTickerPanel />
+                             </div>
+                           </div>
                         </Card>
-                    </ClientOnly>
-                </div>
-            </div>
-        </div>
-    );
-}
+                     </ClientOnly>
+                 </div>
+             </div>
+         </div>
+     );
+ }
