@@ -133,9 +133,9 @@ export default function TradingPage() {
 
                 </div>
 
-                <div className="grid gap-4 sm:gap-6 sm:grid-cols-3">
+                <div className="grid gap-4 sm:gap-6 sm:grid-cols-5">
                     {/* Main table card */}
-                    <Card className="bg-background border border-white shadow-sm sm:col-span-2">
+                    <Card className="bg-background border border-white shadow-sm sm:col-span-3">
                         <div className="p-4 sm:p-6">
                             <div className="mb-4 sm:mb-6">
                                 <h2 className="text-lg sm:text-xl font-semibold text-foreground">
@@ -156,9 +156,10 @@ export default function TradingPage() {
                     </Card>
 
                     {/* CSC Card - restored with Gasoils and CommodityTickerPanel */}
+                    <div className="sm:col-span-2">
                     <ClientOnly>
                         <Card className="border shadow-sm mb-4 sm:mb-0 bg-background rounded-xl">
-                          <div className="p-4 sm:p-6 pb-3">
+                           <div className="p-4 sm:p-6 pb-3">
                             <div className="flex items-center justify-center mb-4 sm:mb-6">
                               <Image
                                 src="/csc.png"
@@ -173,12 +174,12 @@ export default function TradingPage() {
                               <div>
                                  {/* Table header for CSC commodities */}
                                 <div className="flex items-center font-bold border-b border-[#333] pb-3 text-foreground text-base rounded-t-xl" style={{letterSpacing: '0.01em'}}>
-                                  <span className="pl-2" style={{width: '40%'}}>Name</span>
-                                  <span className="mx-2 text-center" style={{width: '110px'}}>Graph</span>
-                                  <span className="text-right pr-2" style={{width: '28%'}}>Price</span>
+                                  <span className="pl-2" style={{width: '38%'}}>Name</span>
+                                  <span className="mx-2 text-center" style={{width: '140px'}}>Graph</span>
+                                  <span className="text-right pr-2" style={{width: '30%'}}>Price</span>
                                   <span className="text-right pr-2" style={{width: '22%'}}>1hr % Change</span>
                                 </div>
-                                {CSC_COMMODITIES_IDS.map((id, idx) => {
+                                {CSC_COMMODITIES_IDS.map((id, _idx) => {
                                    const name = PRODUCT_ID_MAP[id];
                                    const priceObj = livePrices.find((p) => p.id === id);
                                    // Use sparklineData for both the graph and percentage change
@@ -197,7 +198,7 @@ export default function TradingPage() {
                                   if (sparklineData.length > 1) {
                                     const first = sparklineData[0].y;
                                     const last = sparklineData[sparklineData.length - 1].y;
-                                    if (typeof first === 'number' && first !== 0) {
+                                    if (first !== 0) {
                                       percentChange = ((last - first) / first) * 100;
                                     }
                                   }
@@ -209,10 +210,10 @@ export default function TradingPage() {
                                       className={`flex items-center border-b border-[#23272f] last:border-b-0 py-3 transition-colors duration-150 hover:bg-muted rounded-xl`}
                                       style={{marginBottom: 2}}
                                      >
-                                      <span className="font-medium text-foreground text-sm sm:text-base pl-2" style={{color: '#e5e7eb', width: '40%'}}>
+                                      <span className="font-medium text-foreground text-sm sm:text-base pl-2" style={{color: '#e5e7eb', width: '38%'}}>
                                         {name}
                                       </span>
-                                      <div className="h-[32px] mx-2 flex items-center justify-center" style={{width: 110}}>
+                                      <div className="h-[32px] mx-2 flex items-center justify-center" style={{width: 140}}>
                                          <ResponsiveContainer width="100%" height="100%">
                                            <AreaChart data={sparklineData}>
                                              <defs>
@@ -232,7 +233,7 @@ export default function TradingPage() {
                                            </AreaChart>
                                          </ResponsiveContainer>
                                        </div>
-                                      <span className="text-sm sm:text-base font-bold text-right pr-2" style={{ color: '#d1d5db', fontVariantNumeric: 'tabular-nums', width: '28%' }}>
+                                      <span className="text-sm sm:text-base font-bold text-right pr-2" style={{ color: '#d1d5db', fontVariantNumeric: 'tabular-nums', width: '30%' }}>
                                          {priceObj && priceObj.value !== undefined
                                            ? `$${priceObj.value.toLocaleString(undefined, {
                                                minimumFractionDigits: 2,
@@ -248,7 +249,7 @@ export default function TradingPage() {
                                  })}
                                 {/* Gasoils Section (unchanged) */}
                                 <h3 className="font-semibold text-base sm:text-lg mt-4 mb-2 pl-2">Gasoil:</h3>
-                                {GASOIL_IDS.map((id, idx) => {
+                                {GASOIL_IDS.map((id, _idx) => {
                                   const name = PRODUCT_ID_MAP[id];
                                   const priceObj = livePrices.find((p) => p.id === id);
                                   // Assume priceObj.history is an array of price values for the sparkline
@@ -267,10 +268,10 @@ export default function TradingPage() {
                                        className={`flex items-center border-b border-[#23272f] last:border-b-0 py-3 transition-colors duration-150 hover:bg-muted rounded-xl`}
                                        style={{marginBottom: 2}}
                                      >
-                                      <span className="font-medium text-foreground text-sm sm:text-base pl-2" style={{color: '#e5e7eb', width: '40%'}}>
+                                      <span className="font-medium text-foreground text-sm sm:text-base pl-2" style={{color: '#e5e7eb', width: '38%'}}>
                                         {name}
                                       </span>
-                                      <div className="h-[32px] mx-2 flex items-center justify-center" style={{width: 110}}>
+                                      <div className="h-[32px] mx-2 flex items-center justify-center" style={{width: 140}}>
                                          <ResponsiveContainer width="100%" height="100%">
                                            <AreaChart data={sparklineData}>
                                              <defs>
@@ -290,7 +291,7 @@ export default function TradingPage() {
                                            </AreaChart>
                                          </ResponsiveContainer>
                                        </div>
-                                      <span className="text-xs sm:text-sm font-bold text-right pr-2" style={{ color: '#d1d5db', fontVariantNumeric: 'tabular-nums', width: '28%' }}>
+                                      <span className="text-xs sm:text-sm font-bold text-right pr-2" style={{ color: '#d1d5db', fontVariantNumeric: 'tabular-nums', width: '30%' }}>
                                         {priceObj && priceObj.value !== undefined
                                            ? `$${priceObj.value.toLocaleString(undefined, {
                                                minimumFractionDigits: 2,
@@ -312,6 +313,7 @@ export default function TradingPage() {
                            </div>
                         </Card>
                      </ClientOnly>
+                    </div>
                  </div>
              </div>
          </div>
