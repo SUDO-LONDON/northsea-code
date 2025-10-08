@@ -1,0 +1,3341 @@
+[
+  {
+    "id": "d71f82b9-21e2-49f0-9974-4a11a9e5b09f",
+    "name": "M0 0.1% BGS",
+    "description": "M0 0.1% BGS",
+    "package": "NSE",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "9c68de75-aed7-417b-abab-eaf576d0d6fe",
+    "name": "M0 SG 10PPM FP",
+    "description": "M0 SG 10PPM FP",
+    "package": "NSE",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "99d27f4d-0a7e-44fe-b9de-9c27d27f08d2",
+    "name": "M0 0.5% GC FP",
+    "description": "M0 0.5% GC FP",
+    "package": "NSE",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "e506264b-1bcd-429f-b018-f50e3f517133",
+    "name": "M0 3% GC FP",
+    "description": "M0 3% GC FP",
+    "package": "NSE",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "662e5a2f-f028-4d18-81dc-89be3ba01f3a",
+    "name": "M0 0.5% SG FP",
+    "description": "M0 0.5% SG FP",
+    "package": "NSE",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "6ccbf93e-d43d-46ab-ba50-c26659add883",
+    "name": "M0 SING 380 FP",
+    "description": "M0 SING 380 FP",
+    "package": "NSE",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "b0738070-229c-4aa7-b5d0-45b4119dd0e0",
+    "name": "M0 1% FOB FP",
+    "description": "M0 1% FOB FP",
+    "package": "NSE",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "29d3a405-cb03-45b4-9ebf-f0176b7ba06a",
+    "name": "M0 0.5% BGS FP",
+    "description": "M0 0.5% BGS FP",
+    "package": "NSE",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "e9e305ee-8605-4503-b3e2-8f5763870cd2",
+    "name": "M0 3.5% BGS FP",
+    "description": "M0 3.5% BGS FP",
+    "package": "NSE",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "69993417-5bb5-4532-b3d8-424f2e7ccba2",
+    "name": "GO SW",
+    "description": "GO SW",
+    "package": "EU Oil Futures",
+    "source": "ARTIS"
+  },
+  {
+    "id": "d66746e5-8e18-402b-9e78-3be5831854d0",
+    "name": "BRT SW",
+    "description": "BR SW",
+    "package": "EU Oil Futures",
+    "source": "ARTIS"
+  },
+  {
+    "id": "cdc2ee85-7fa0-40a7-90bd-17b610aa4309",
+    "name": "BRT FT",
+    "description": "BRENT CRUDE FUT",
+    "package": "EU Oil Futures",
+    "source": "ARTIS"
+  },
+  {
+    "id": "a79b77a0-2267-4f86-8c75-c9248ac9d4b3",
+    "name": "GO FT",
+    "description": "LOW SULPHUR GASOIL FUT",
+    "package": "EU Oil Futures",
+    "source": "ARTIS"
+  },
+  {
+    "id": "65c0741c-7ed5-47d3-9987-2fa3b6b39b86",
+    "name": "GO TS",
+    "description": "LOW SULPHUR GASOIL FUT TS",
+    "package": "EU Oil Futures",
+    "source": "ARTIS"
+  },
+  {
+    "id": "92801246-4587-46e5-825e-5b2a93c61bbf",
+    "name": "BRT TS",
+    "description": "BRENT CRUDE FUT TS",
+    "package": "EU Oil Futures",
+    "source": "ARTIS"
+  },
+  {
+    "id": "410f1a70-e117-4aaa-a2e0-556d1a15f4a4",
+    "name": "PLATTS BRT SW",
+    "description": "PLATTS BRENT CRUDE 1ST LINE S2F",
+    "package": "EU Oil Futures",
+    "source": "ARTIS"
+  },
+  {
+    "id": "750827dc-8e32-42d0-a298-7803a3b8db82",
+    "name": "Ag FP",
+    "description": "AG 10ppm FP",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "f18f68bf-e3dd-43bb-ae20-8ae5f274d414",
+    "name": "GO EW manual ",
+    "description": "GO EW manual ",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "deebd6af-4cdc-4183-acaf-de37b557c92f",
+    "name": "Weighted Average PDB",
+    "description": "Weighted Average PDB",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "bc0aff3b-6de2-4bcd-928f-4ae837026637",
+    "name": "Weight Average Part 1",
+    "description": "Weight Average Part 1",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "c5986414-f8e7-4cca-a804-94af463c267f",
+    "name": "Total Weight",
+    "description": "Total Weight",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "1c03d2a6-67f9-424c-9e4f-3553133b2f0b",
+    "name": "SELL Dated Brent (bbls)",
+    "description": "SELL Dated Brent (bbls)",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "58096bbb-b67a-45cf-840a-33b689048f08",
+    "name": "0.1% FOB MED",
+    "description": "0.1% FOB MED",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "b7af2e13-1e44-4295-b51c-1cddf1e86f92",
+    "name": "0.1 FOB MED DIFF",
+    "description": "0.1% FOB MED DIFF",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "04373115-cd78-4443-914b-3d2d2de5430b",
+    "name": "AG Diff",
+    "description": "AG Diff",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "6aaa2c4f-9846-4966-80c9-f9ea4fbbff77",
+    "name": "PDB TS",
+    "description": "PDB TS",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "3027d7d2-648d-4947-b886-ac3fc1496b91",
+    "name": "PDB/BRT SW",
+    "description": "DFL",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "429fb0d8-3644-4dc6-8186-d570bcf8c132",
+    "name": "380 EW",
+    "description": "380 EW",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "b9b725d4-e6d2-4ac3-aa48-794ea0404d14",
+    "name": "SING 380 CK",
+    "description": "SING 380 CK",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "8ca26e18-1a6c-422e-b485-bebb355081eb",
+    "name": "SING 380 FP",
+    "description": "SING 380 FP",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "73c66351-f232-42f5-a4d1-140ded17e81f",
+    "name": "SING 180 FP",
+    "description": "SING 180 FP",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "73072031-a1be-46c2-b7f4-470c327b9797",
+    "name": "3.5% BGS FP",
+    "description": "3.5% BGS FP",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "536edad4-d03c-415e-bf99-ed4ef94abf9b",
+    "name": "SG 10PPM TS",
+    "description": "SG 10PPM TS",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "83524071-0ceb-4251-8969-8a9d7646dd2a",
+    "name": "EBOB vs dated",
+    "description": "EBOB vs dated",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "c4823895-71b2-4c37-9b93-f7c61081ac15",
+    "name": "Bal+1 HOGO SW",
+    "description": "Bal+1 HOGO SW",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "c2faa43a-2b2e-4b5c-b367-d7214620d2f1",
+    "name": "Blank",
+    "description": "Blank",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "5e9e4214-4249-4ed5-95ce-09e499c28f13",
+    "name": "SOS - SG 10PPM CK",
+    "description": "SOS - SG 10PPM CK",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "12b8e082-e71c-41a3-ad88-98105927352e",
+    "name": "VISCO",
+    "description": "VISCO",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "3194e3e4-63ca-439e-9b27-2046679ccd7a",
+    "name": "3.5% BGS TS",
+    "description": "3.5% BGS TS",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "b75eafa2-da5e-484e-8d20-c6697dd46543",
+    "name": "Bal+1 10PPM FP",
+    "description": "Bal+1 10PPM FP",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "d714d644-36b0-4df8-8bed-e69d8607f748",
+    "name": "SOS - GO EW",
+    "description": "SOS - GO EW",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "b7ce275f-d41a-42b5-8e9a-9cea5af2b467",
+    "name": "0.5% BGS CK",
+    "description": "0.5% BGS CK",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "330960db-2d5b-4883-9ac5-263957e835c5",
+    "name": "0.5% SG CK",
+    "description": "0.5% SG CK",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "4b0b69a0-05b9-488a-8330-862471de451e",
+    "name": "SOS - Sing/Dub Ck",
+    "description": "SOS - Sing/Dub Ck",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "98d71540-0814-4228-adc6-f75eafb36dbe",
+    "name": "SOS - Sing 10ppm",
+    "description": "SOS - Sing 10ppm",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "185ec499-4dca-4bb0-8f20-eb253f25bd2a",
+    "name": "SOS - DUB SW",
+    "description": "SOS - DUB SW",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "e5591545-5290-4d28-9889-c40f17eaad74",
+    "name": "SOS - BRT/DUB SW",
+    "description": "SOS - BRT/DUB SW",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "25e35a0f-4caf-43d7-9b17-86834f2ae112",
+    "name": "10cif nwe vs brent",
+    "description": "10cif nwe vs brent",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "7e6d8fb3-c90c-4b63-be12-b1e75a893170",
+    "name": "10PPM FOB MED",
+    "description": "10PPM FOB MED",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "ce1ca25b-db4a-4439-b019-cb75008632e5",
+    "name": "10PPM fob med diff",
+    "description": "10PPM fob med diff",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "bc4af2ac-43ca-4843-a32e-b3a4e426f4cc",
+    "name": "0.5% SG TS",
+    "description": "0.5% SG TS",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "1bc4bada-1cab-4a7c-8da9-0ad3f3fef826",
+    "name": "WTI v Brent",
+    "description": "WTI v Brent",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "dc6686d7-2677-4285-a2a5-68b204ea4bbd",
+    "name": "SG 10ppm CK Full Month",
+    "description": "Plts SG 10ppm CK Full Month",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "912e9d4b-264a-4ab4-8548-6c73abfdd0fb",
+    "name": "SG 10ppm Full Month",
+    "description": "Plts SG 10ppm Full Month",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "c5f6ce92-e259-4ef1-b2fb-d8c403431a2a",
+    "name": "GO SW CK Full Month",
+    "description": "Plts EU GO SW CK Full Month",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "50535749-fed2-46cf-bef8-eba6ff4dfcc4",
+    "name": "Bal+1 GO SW CK",
+    "description": "Bal+1 GO SW CK",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "807ba26c-a550-4288-b88c-aacb3f989ff4",
+    "name": "Bal+1 GO SW",
+    "description": "Bal+1 GO SW",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "68ee7527-36f7-4846-a270-98f58f68e269",
+    "name": "Blank Curve",
+    "description": "Blank Curve",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "0500e9b8-a09e-4491-b3ca-df55a6535986",
+    "name": "10cif crack vs ebob crack ",
+    "description": "10cif crack vs ebob crack ",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "24e8746e-b119-42a7-9029-462a85784b88",
+    "name": "jet crack vs 10cif nwe",
+    "description": "jet crack vs 10cif nwe",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "cec2d30a-e186-4f57-9b4a-4f4a7e73ad02",
+    "name": "Jet NWE vs brent",
+    "description": "Jet NWE vs brent",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "824b5e55-abe2-4dd8-862a-fa37daa1956b",
+    "name": "Ethanol FP",
+    "description": "Ethanol FP",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "70fc83ae-b171-48b0-bf30-4a4d3f20419d",
+    "name": "Ethanol vs RBOB",
+    "description": "Ethanol vs RBOB",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "89164217-eabd-4451-bcca-cd49dfe131f7",
+    "name": "Nap Med",
+    "description": "Nap Med",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "92e7485f-a4cc-4da7-b813-a9883d381bd1",
+    "name": "NAP MN",
+    "description": "NAP MN",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "9f5eff45-70cf-4585-8565-05a99b1069c6",
+    "name": "0.5% GC BRT CK",
+    "description": "0.5% GC BRT CK",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "e5d0059c-5ca2-4d3b-ac67-959587a692f8",
+    "name": "10cif Med vs dated",
+    "description": "10cif Med vs dated",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "5cfde59c-509d-4a6c-8ebf-a03da80f1239",
+    "name": "SG 10PPM FP $ton",
+    "description": "SG 10PPM FP $ton",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "7d2401a3-2813-4c21-8ecb-6d3b1f7472cc",
+    "name": "SG 10PPM Offer",
+    "description": "SG 10PPM Offer",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "f89b9e98-2ac3-4920-bfb8-4c63c030ed9d",
+    "name": "0.1% BGS Offer",
+    "description": "0.1% BGS Offer",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "73b9405e-2b56-4f41-a98e-b14a0eed38e1",
+    "name": "0.5% SG Offer",
+    "description": "0.5% SG Offer",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "2c30dd84-0832-4e86-bb37-4cdcccc3d613",
+    "name": "0.5% BGS Offer",
+    "description": "0.5% BGS Offer",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "0c121ee6-001b-4d48-b48d-eb7f1fb631c4",
+    "name": "SG 380 Offer",
+    "description": "SG 380 Offer",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "6210b0d8-c151-4222-b865-814f83ae4173",
+    "name": "3.5% BGS Offer",
+    "description": "3.5% BGS Offer",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "cebd948b-005c-453e-acdc-c736f038a1f7",
+    "name": "SG 10PPM Bid",
+    "description": "SG 10PPM Bid",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "d517521a-0042-4e92-9646-f02aada3dfeb",
+    "name": "0.1% BGS Bid",
+    "description": "0.1% BGS Bid",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "d4caa29d-e716-486e-9b2f-adc9a55a6999",
+    "name": "0.5% SG Bid",
+    "description": "0.5% SG Bid",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "34f632bf-cd13-4bf8-8b1a-1055e631bb9c",
+    "name": "0.5% BGS Bid",
+    "description": "0.5% BGS Bid",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "16bcb08e-a2f3-4bd3-97ec-4e5b03e4fae7",
+    "name": "SG 380 Bid",
+    "description": "SG 380 Bid",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "d9b07a6d-7e9b-4ad6-b2b1-ab0ff0c49aff",
+    "name": "3.5% BGS Bid",
+    "description": "3.5% BGS Bid",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "4c33ad12-3485-48ee-87d2-96ad2b8c7bee",
+    "name": "SG KERO dated CK man 1",
+    "description": "SG KERO dated CK man 1",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "b3d4a201-f2a8-45f4-957d-cb85a0a77e0b",
+    "name": "JET NWE/BGS",
+    "description": "JET NWE/BGS",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "7c44fee4-508a-49ed-be16-7f4cc5da0dba",
+    "name": "SG KERO datedCK man",
+    "description": "SG KERO dated CK man",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "2507b65c-64fa-4b0e-a186-7f1ba7d41127",
+    "name": "SG 10PPM dated CK man",
+    "description": "SG 10PPM dated CK man",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "c74db19b-e8ef-43f3-98be-0fcdfda909b6",
+    "name": "HVO FP VS 10 CIF NWE",
+    "description": "HVO FP VS 10 CIF NWE",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "72422e7b-7797-4c36-92c0-924f69c135e9",
+    "name": "HVO FP",
+    "description": "HVO FP",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "97119eec-9dd3-45ad-ad56-983df149697e",
+    "name": "HVO Diff",
+    "description": "HVO Diff",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "0967008e-a7f2-4cbb-94dd-4a26fefd7662",
+    "name": "0.5% MED DIFF",
+    "description": "0.5% MED DIFF",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "867f290b-e2b3-4422-8251-724cfb30cd14",
+    "name": "0.5% MED FP",
+    "description": "0.5% MED FP",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "4dad72f8-c322-4638-af88-33c53dbde8c9",
+    "name": "JET CIF NWE CK",
+    "description": "JET CIF NWE CK",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "c27fee67-1b79-4f52-bdf9-08a084ebceea",
+    "name": "Plts HiLo Print",
+    "description": "Plts HiLo Print",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "92aca0d7-2a94-490a-98f2-0d57399452da",
+    "name": "Plts HiLo Full Month",
+    "description": "Plts HiLo Full Month",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "ffe3508f-c2bf-4b5c-b6eb-a98d3ca8c1fd",
+    "name": "Plts 380 EW Full Month",
+    "description": "Plts 380 EW Full Month",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "732a42d2-cbd4-4273-aba4-3920e5ef4e42",
+    "name": "Plts 180 EW Full Month",
+    "description": "Plts 180 EW Full Month",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "d6ad42cc-8df4-4efc-93c6-ac118dbe704d",
+    "name": "Plts 380 Sing Full Month",
+    "description": "Plts 380 Sing Full Month",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "109b57e4-6430-4017-9177-37f244774e5f",
+    "name": "Plts 180 Sing Full Month",
+    "description": "Plts 180 Sing Full Month",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "31a5cfd9-0221-48bf-b29b-0aa8af09b4d3",
+    "name": "Plts 0.5% Rot Full Month",
+    "description": "Plts 0.5% Rot Full Month",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "df47e936-6392-45dc-8e5b-3682ef2fcbf9",
+    "name": "Plts 0.5% Sing Full Month",
+    "description": "Plts 0.5% Sing Full Month",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "a2c2c3e8-c969-426b-b6bc-a714cad800d8",
+    "name": "Plts 0.5% Rot Print",
+    "description": "Plts 0.5% Rot Print",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "dd392339-fc29-4d11-aa2a-a2fa1978cff3",
+    "name": "Plts 380 EW Print",
+    "description": "Plts 380 EW Print",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "fd95ecfb-91f2-413b-8447-109f4fd944ca",
+    "name": "Plts 180 EW Print",
+    "description": "Plts 180 EW Print",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "9438b5bb-5103-4c1f-9cb4-a8dadc68feb2",
+    "name": "Plts 0.5% Sing Print",
+    "description": "Plts 0.5% Sing Print",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "74127a7f-54a0-417b-ac15-8f417f986ede",
+    "name": "Plts 380 Sing Print",
+    "description": "Plts 380 Sing Print",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "61c1d93b-38e6-48ce-a32c-7ea59f3acf18",
+    "name": "Plts 180 Sing Print",
+    "description": "Plts 180 Sing Print",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "4191efaf-df81-4f39-80f4-f241e3372651",
+    "name": "HOGO SW MID",
+    "description": "HOGO SW MID",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "88d4f30a-4136-499d-80a1-af2e89ad0a50",
+    "name": "HOGO MID",
+    "description": "HOGO MID",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "8a22fdad-b683-43a8-8d7f-6211d7d8f8c2",
+    "name": "HO+2/GO SW",
+    "description": "HO+2/GO SW",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "1f99c82a-18cc-40dc-b3fd-3d30dfbc63e8",
+    "name": "EBOB / GO SW",
+    "description": "EBOB / GO SW",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "67c6a36b-11c3-4adb-a09f-ddf4b7b2d0d6",
+    "name": "GO/WTI SW CK",
+    "description": "GO/WTI SW CK",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "584ad8b9-538d-4c88-a8dd-860f07e30fbf",
+    "name": "GO/WTI CK",
+    "description": "GO/WTI CK",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "fa6da46e-cacc-41eb-b6ac-cb462f8d6a18",
+    "name": "HO/WTI FT",
+    "description": "HO/WTI FT",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "8405f3d2-7856-4b96-b733-e302a2ae3285",
+    "name": "HOGO SW",
+    "description": "HOGO SW",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "29c12ef4-ceee-48a3-8b44-28cba0225261",
+    "name": "EBOB FP - MOG arb v2",
+    "description": "EBOB FP - MOG arb v2",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "d4091f10-bdf2-45b5-b13b-03df278d0b6a",
+    "name": "EBOB CK auto v2",
+    "description": "EBOB CK auto v2",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "4439ab88-63e7-4a9d-8e4c-db6064474d7f",
+    "name": "MOG ARB Manual v2 ",
+    "description": "MOG ARB Manual v2 ",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "728e8f16-171c-4d16-adaf-bb4d17a6bf9a",
+    "name": "C3 CP FP",
+    "description": "C3 CP FP",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "fc25a43c-3755-42b0-b132-1dee55083e2f",
+    "name": "C3 FEI FP",
+    "description": "C3 FEI FP",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "85c7c5e2-683b-4129-ad68-08cb456d6e52",
+    "name": "FEI FP",
+    "description": "FEI FP",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "c55af6af-0027-41f2-988a-9c0c0dbf815d",
+    "name": "SING 380 PDB CK",
+    "description": "SING 380 PDB CK",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "8726f5c4-8a45-4577-8720-abfcdd57be9e",
+    "name": "SG 10PPM PDB CK",
+    "description": "SG 10PPM PDB CK",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "6dc710f5-2be6-4efc-979e-d52a0e072acd",
+    "name": "ΔPRO NAP",
+    "description": "ΔPRO NAP",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "55ddce20-5fbd-4d5f-8e37-3db6cc3ff685",
+    "name": "Propane NWE TS",
+    "description": "Propane NWE TS",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "e6c9c381-5530-4521-9358-eece24f957f3",
+    "name": "Propane NWE",
+    "description": "Propane NWE",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "970d8a24-121c-4e7d-9237-6ca95db872be",
+    "name": "RME diff",
+    "description": "RME diff",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "917bbeb4-997a-4f89-80f3-95ef6d73d596",
+    "name": "C3 LST FP",
+    "description": "C3 LST FP",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "fb23f0cb-73ea-4101-9598-d8af8d8303ce",
+    "name": "C3/C4 FEI",
+    "description": "C3/C4 FEI",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "0debf726-8511-4d48-9706-63591500b794",
+    "name": "C4 FEI TS",
+    "description": "C4 FEI TS",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "8a419798-b9e3-4418-83b7-d7f0926c8523",
+    "name": "C4 FEI/CP",
+    "description": "C4 FEI/CP",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "efc494d3-f981-4d58-8a94-6aaa4d68e511",
+    "name": "C4 FEI FP",
+    "description": "C4 FEI FP",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "e038124a-1cff-445e-bb59-8e3859d00253",
+    "name": "C5 ENT CK",
+    "description": "C5 ENT CK",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "68c007b8-161f-41bf-8c13-83d0be7c7247",
+    "name": "C5/MOPJ",
+    "description": "C5/MOPJ",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "a407224a-b90c-47f0-bcfb-04619027aa44",
+    "name": "C5 ENT FP",
+    "description": "C5 ENT FP",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "a50715cd-c987-4cd3-87ee-4336fe2bda16",
+    "name": "C5 ENT TS",
+    "description": "C5 ENT TS",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "33175217-1285-4a3c-9904-a86ec4ac60fd",
+    "name": "ENT/FEI BX",
+    "description": "ENT/FEI BX",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "3ff6bb98-8da1-4684-b314-d3b10d34ffbf",
+    "name": "LST/FEI BX",
+    "description": "LST/FEI BX",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "038bd417-7d9b-47ed-b5d9-8234a7bec2c3",
+    "name": "ENT/FEI",
+    "description": "ENT/FEI",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "301e9a30-a142-4670-9ea1-0dce7c63e51c",
+    "name": "ENT/LST",
+    "description": "ENT/LST",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "647674c8-8f63-4b1f-b5b2-2faf165f939e",
+    "name": "LST/NWE BX",
+    "description": "LST/NWE BX",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "c465b935-e744-4fbe-b27d-e7df218d1e60",
+    "name": "C3 NWE TS",
+    "description": "C3 NWE TS",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "8d93c559-8142-410a-a75f-32c29ea1c665",
+    "name": "C3 NWE FP",
+    "description": "C3 NWE FP",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "fcb752ad-ab02-4af1-98f6-2fa6b448f0f6",
+    "name": "C3 EW",
+    "description": "C3 EW",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "3c4e8433-b4d4-4028-b62a-f4aee542b56b",
+    "name": "C3 Conway FP",
+    "description": "C3 Conway FP",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "20841347-b3de-42b2-b03d-abf643713dda",
+    "name": "C3 Conway TS",
+    "description": "C3 Conway TS",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "98aba386-9dd3-413c-8b57-7e5a936d4bce",
+    "name": "C3 N/S BX",
+    "description": "C3 N/S BX",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "76429907-b717-419a-a73b-75628ae9390b",
+    "name": "C3 N/S",
+    "description": "C3 N/S",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "74c6a780-8275-4ed2-8c79-5acf09b7f92a",
+    "name": "ENT C4/LST C3",
+    "description": "ENT C4/LST C3",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "3bfdefe4-ec64-4622-9575-2bddbf8a387f",
+    "name": "C4 ENT TS",
+    "description": "C4 ENT TS",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "294ff2ee-b974-44d9-a432-79a8a6d1adf4",
+    "name": "C4 ENT FP",
+    "description": "C4 ENT FP",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "f2aee873-d68d-48d4-95c1-606ac0eb1850",
+    "name": "C3 ENT/CP",
+    "description": "C3 ENT/CP",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "15578c41-9cf1-487c-bad9-41cd12aede2d",
+    "name": "C3 ENT TS",
+    "description": "C3 ENT TS",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "49874025-c699-4ae0-beb8-278db25297cb",
+    "name": "C3 ENT FP",
+    "description": "C3 ENT FP",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "87ee787e-f16c-4b4c-96c0-a01eeafc1cbc",
+    "name": "C3 LST TS",
+    "description": "C3 LST TS",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "ffa63e00-90b3-4c8d-9b5c-5848cde6b515",
+    "name": "Prem & % WTI",
+    "description": "Prem & % WTI",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "79c503c7-74a3-4d8f-83e9-e97573161fc7",
+    "name": "Lo5",
+    "description": "Lo5",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "3e5fb2b8-e451-4140-8454-96929575cf80",
+    "name": "Rott 0.5% vs dated",
+    "description": "Rott 0.5% vs dated",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "bc31f97f-16bb-4eaa-9f2c-dbc748ccd97f",
+    "name": "Jet NWE vs dated",
+    "description": "Jet NWE vs dated",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "0a007682-d692-4c71-b0cb-e39cf114f980",
+    "name": "10cif nwe vs dated",
+    "description": "10cif nwe vs dated",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "b8078bc1-8b3c-46c4-9a5e-6e30bd6675bd",
+    "name": "Copy of SG KERO FP",
+    "description": "SG KERO FP man",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "aa40adb5-f26c-4313-b832-e8ffe80f7311",
+    "name": "SG KERO DUB CK man",
+    "description": "SG KERO DUB CK man",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "bd0bae4d-d4d5-416d-9051-70dd69c75eb5",
+    "name": "Man REGRADE",
+    "description": "Man REGRADE",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "be098654-c835-46b4-8512-4d2499f02968",
+    "name": "SG 10PPM DUB CK man",
+    "description": "SG 10PPM DUB CK man",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "e9be1052-8820-4b9c-9048-d49c032c10bf",
+    "name": "SG 10PPM FP man",
+    "description": "SG 10PPM FP man",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "fee9a64c-59d2-4679-8d56-308771585fd6",
+    "name": "RME FP",
+    "description": "RME FP",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "e804fcef-d9de-42ad-8d40-8b2de950df0b",
+    "name": "FAME FP",
+    "description": "FAME FP",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "44b55d1a-602a-4632-9c64-3b382e9aa69a",
+    "name": "FAME Diff",
+    "description": "FAME Diff",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "7b06cb85-7c59-481c-8969-e154c850c7d3",
+    "name": "UCOME FP",
+    "description": "UCOME FP",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "3fa9dfe6-eb0e-46cd-96e1-8cfdd55eea6d",
+    "name": "Ucome Diff",
+    "description": "Ucome Diff",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "d7c6010f-a3a8-4082-b9df-bdffcce1bec8",
+    "name": "92 vs Rbob",
+    "description": "92 vs Rbob",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "35b9fe7c-28e0-440a-8de0-d3495cd328e1",
+    "name": "95 vs 92 ron",
+    "description": "95 vs 92 ron",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "4e96d8b4-9387-4dc7-b468-e4cd716c8315",
+    "name": "92R FP auto arb",
+    "description": "92R FP auto arb",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "ff10ec5e-2073-4b9a-9f24-139aa61d0005",
+    "name": "EBOB FP - MOG arb",
+    "description": "EBOB FP - MOG arb",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "9a4cb5a4-5a97-4734-84df-249e219906f3",
+    "name": "EBOB CK auto",
+    "description": "EBOB CK auto",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "e801b248-ca2f-4a90-9cee-2a4567c92cb8",
+    "name": "MOG ARB Manual ",
+    "description": "MOG ARB Manual ",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "cfefff9f-3fa4-47c0-bf4b-110e53d93696",
+    "name": "EBOB WEIGTED FP",
+    "description": "EBOB WEIGTED FP",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "20ad7ba1-fb60-4459-b36e-9dc90b1ecf73",
+    "name": "EBOB WEIGHT",
+    "description": "EBOB WEIGHT",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "52b2df88-16b6-4f42-bc1b-3925b3ff3e41",
+    "name": "EBOB ASK",
+    "description": "EBOB ASK",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "c63ada4e-8b3f-49d7-a78c-b7c69a90dffc",
+    "name": "EBOB BID",
+    "description": "EBOB BID",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "5083ce79-b497-4758-b99b-4629176349e8",
+    "name": "EBOB ASK DIFF",
+    "description": "EBOB ASK DIFF",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "c4133d04-4345-4854-8822-71107d382ba3",
+    "name": "EBOB BID DIFF",
+    "description": "EBOB BID DIFF",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "5af46c17-2297-41c5-a23e-4aadab6d8f93",
+    "name": "0.1% Med Diff",
+    "description": "0.1% Med Diff",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "9a8fd09a-38b4-42e0-95d8-e5b565e08677",
+    "name": "1% FOB CK",
+    "description": "1% FOB CK",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "b5b64201-a67c-44a6-9ab8-f820672d0863",
+    "name": "MOPJ 8.9 vs DUB CK",
+    "description": "MOPJ 8.9 vs DUB CK",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "096314cd-136e-4fee-94ab-badeb218401d",
+    "name": "DUB SW",
+    "description": "DUB SW",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "6d571646-be0b-4942-b7aa-9b284085f6bd",
+    "name": "SG KERO DUB CK",
+    "description": "SG KERO DUB CK",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "535f52b7-131b-40c1-9474-6721148ff234",
+    "name": "SG 500 DUB CK",
+    "description": "SG 500 DUB CK",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "d778ce64-6637-4662-8a81-04591e15bb75",
+    "name": "SG 10PPM DIFF",
+    "description": "SG 10PPM DIFF",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "38d6a173-afd4-49fa-8aa9-b6a989f31a4b",
+    "name": "SG 500 FP",
+    "description": "SG 500 FP",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "d5426faf-507b-48ba-8bc0-26ab15e62498",
+    "name": "SG 500 TS",
+    "description": "SG 500 TS",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "edb690ad-7925-4d13-b9f5-78fbfab175c0",
+    "name": "BRT/DUB SW",
+    "description": "BRT/DUB SW",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "08986350-c6eb-4b60-a562-8be08225f50a",
+    "name": "BRT/DUB EFS",
+    "description": "BRT/DUB EFS",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "5e8eb472-4fd1-4d7a-ac44-b8923639a8d0",
+    "name": "GO EW",
+    "description": "GO EW",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "eada983e-4c4a-4720-915a-dec8d1b4a827",
+    "name": "GC JET",
+    "description": "GC JET",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "4f60f754-05ff-4557-a719-81a8b2939e31",
+    "name": "GC JET DIFF",
+    "description": "GC JET DIFF",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "83e26371-4169-4473-b0e4-3e664962d3b0",
+    "name": "GC ULSD/BRT SW",
+    "description": "GC ULSD/BRT SW",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "cde7fdbd-f8bd-4f87-b0f2-901d3375579f",
+    "name": "GC ULSD/WTI SW",
+    "description": "GC ULSD/WTI SW",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "0cc1b5a9-8ecd-480d-8b7a-e6536f59a61d",
+    "name": "GC ULSD",
+    "description": "GC ULSD",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "c5775065-8e45-48f3-a01c-28fec80acd60",
+    "name": "GC ULSD DIFF",
+    "description": "GC ULSD DIFF",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "cd27f271-e1bb-4fc7-897a-cf85fff79f60",
+    "name": "HO/WTI SW",
+    "description": "HO/WTI SW",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "5df8222b-d9a0-46e9-9917-75335c1869c4",
+    "name": "PDB/DUB SW",
+    "description": "PDB/DUB SW",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "a4d63734-6a2b-48c7-865b-154acfa6a223",
+    "name": "PDB",
+    "description": "PDB",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "5030adba-11dd-4180-bd31-f827477481c1",
+    "name": "92R BRT CK",
+    "description": "92R BRT CK",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "9694988d-67da-4186-80ea-908cd0ba1aec",
+    "name": "92R DUB CK",
+    "description": "92R DUB CK",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "193243bf-01e5-491e-bc64-edd6c71ed9ea",
+    "name": "JET MED/NTH",
+    "description": "JET MED/NTH",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "984339d7-133d-4b60-b43e-e8e86d651046",
+    "name": "0.1% CIF MED",
+    "description": "0.1% CIF MED",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "e0767c41-fd92-4f21-a54a-2aad0c5e96fd",
+    "name": "10PPM MED/NTH",
+    "description": "10PPM MED/NTH",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "febb7a69-3254-4cc1-87cb-31c8b1a6b55e",
+    "name": "0.1% CIF NWE",
+    "description": "0.1% CIF NWE",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "97c325ac-be3e-49df-bc59-30e4b094d318",
+    "name": "0.1% CIF DIFF",
+    "description": "0.1% CIF DIFF",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "98cd2f27-d616-4fbd-8866-21b7fc561c0f",
+    "name": "0.1% BGS",
+    "description": "0.1% BGS",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "7dda3f37-66f3-41eb-81a5-06baa59a5972",
+    "name": "0.1% BGS DIFF",
+    "description": "0.1% BGS DIFF",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "43be689e-fa0b-42aa-94a0-4dc53e9e88e5",
+    "name": "1% CIF MED",
+    "description": "1% CIF MED",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "1aa11cad-5ede-4c6b-a0e2-1f8396f5bc2b",
+    "name": "1% CIF/FOB MED",
+    "description": "1% CIF/FOB MED",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "564cb13b-c948-4542-bda5-d5fb4dd94b81",
+    "name": "1% FOB MED",
+    "description": "1% FOB MED",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "6d1dff8f-8aca-45d1-a2fe-f7634f5c83a4",
+    "name": "1% MED/NTH",
+    "description": "1% MED/NTH",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "c22ae004-f672-4b81-b781-7e9d5af31350",
+    "name": "US HiLo",
+    "description": "US HiLo",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "296c18ef-761e-4cb6-b819-bb4649c913bb",
+    "name": "3.5% MED CIF CGO",
+    "description": "3.5% MED CIF CGO",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "8e4af73d-0d93-4d45-89b5-0993f8b4cd53",
+    "name": "3.5% FOB NWE CGO FP",
+    "description": "3.5% FOB NWE CGO FP",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "b80fae8a-8d12-4f71-8f8a-ba30e7dc53d8",
+    "name": "WTI/BRT SW",
+    "description": "WTI/BRT SW",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "93c04099-64a2-48eb-86c8-b4d24ae7eea8",
+    "name": "3.5% MED/NTH BX",
+    "description": "3.5% MED/NTH BX",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "c5e39dad-09d7-4761-a65f-f283a441116f",
+    "name": "WTI SW TS",
+    "description": "WTI SW TS",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "9eb85457-cb42-4c00-99f8-82fee59e292e",
+    "name": "ΔLST/FEI",
+    "description": "ΔLST/FEI",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "04bd4d03-3898-48e8-bb72-549a4356cc93",
+    "name": "3.5% MED FOB CGO",
+    "description": "3.5% MED FOB CGO",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "5c8332d3-5012-45cb-bfaa-eb525e905212",
+    "name": "EU Low5",
+    "description": "EU Low5",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "98975354-c227-49ce-b4f3-4b4d30d75b8e",
+    "name": "0.5% BGS CKR",
+    "description": "0.5% BGS CKR",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "8c040804-afda-455c-a7c6-2d0947ad1788",
+    "name": "0.5% SG CKR",
+    "description": "0.5% SG CKR",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "b8acdc70-faa7-421f-8327-076563b82de5",
+    "name": "3.5% BGS CKR",
+    "description": "3.5% BGS CKR",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "ca19f554-a8e2-445b-a81e-69e7155e3287",
+    "name": "0.5% BGS FOGO Roll",
+    "description": "0.5% BGS FOGO Roll",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "9065db12-2697-4759-b013-b4a417b063cc",
+    "name": "0.5% SG FOGO RL",
+    "description": "0.5% SG FOGO RL",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "f13430c7-8e28-489d-930a-88030b3ba6a7",
+    "name": "SING 180 CKR",
+    "description": "SING 180 CKR",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "577d74a8-bb0e-4471-ba7c-36d1571e88e4",
+    "name": "3.5% MED CIF/FOB",
+    "description": "3.5% MED CIF/FOB",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "5990ccf1-84d5-4590-938f-16759d51e1cb",
+    "name": "0.5% EW BX",
+    "description": "0.5% EW BX",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "cd3b2c64-b451-402c-b5ee-1a44471b9e70",
+    "name": "180 EW BX",
+    "description": "180 EW BX",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "cf972fe8-ccca-4665-a9c4-8338e8badabb",
+    "name": "3.5% MED CIF/FOB BX",
+    "description": "3.5% MED CIF/FOB BX",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "a5b0ac0e-7d88-4202-9d52-78a625c6231a",
+    "name": "1% CIF FP",
+    "description": "1% CIF FP",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "8d256edb-3cbd-4db0-b4a7-98af86e77fe6",
+    "name": "1% FOB/CIF",
+    "description": "1% FOB/CIF",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "bf19ff36-ad12-48e3-8ec7-95b889d98795",
+    "name": "GO SW CK",
+    "description": "GO SW CK",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "33bd07ec-8bf9-48e8-a165-15b334c1e588",
+    "name": "0.5% EW",
+    "description": "0.5% EW",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "32ea6314-62cc-4efa-9bba-97f6fae8ff42",
+    "name": "1% NYH FP",
+    "description": "1% NYH FP",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "55d9059a-f8b9-4333-869c-d9b5b264ff02",
+    "name": "SG KERO FP",
+    "description": "SG KERO FP",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "c58bf00a-2ed3-4af4-a697-47965027b6ac",
+    "name": "3.5% BGS/CGO BX",
+    "description": "3.5% BGS/CGO BX",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "799c65d0-1f14-49cc-8dee-0763ae68e614",
+    "name": "3.5% BGS/CGO",
+    "description": "3.5% BGS/CGO",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "f8d7c442-b64c-4ce7-af9d-58c58376d8c4",
+    "name": "0.5% GC/SG",
+    "description": "0.5% GC/SG",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "6b626b45-8ae5-4ff1-978f-d2a47de49cd4",
+    "name": "180 EW",
+    "description": "180 EW",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "8106f744-3f54-4017-8079-d062c1722943",
+    "name": "3.5% MED/NTH",
+    "description": "3.5% MED/NTH",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "93d53746-3665-4bc9-8a7c-31b0d80df9e9",
+    "name": "3.5% BGS CIF/FOB",
+    "description": "3.5% BGS CIF/FOB",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "ff29d433-dda5-444d-a928-be5bcb1fc30e",
+    "name": "3.5%  BGS CIF/FOB BX",
+    "description": "3.5%  BGS CIF/FOB BX",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "9786ef1d-e12d-4515-b878-25c4dc9da45b",
+    "name": "3% GC BRT CKR",
+    "description": "3% GC BRT CKR",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "74959abf-29fd-457d-a31a-2daf079d8fac",
+    "name": "3% GC WTI(ICE) CKR",
+    "description": "3% GC WTI(ICE) CKR",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "b851b447-16f1-4e21-9a81-4e009c310350",
+    "name": "EBOB CKR",
+    "description": "EBOB CKR",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "37c7ad10-f163-4f3e-abab-b4d2c9134296",
+    "name": "3% GC WTI(ICE) CK",
+    "description": "3% GC WTI(ICE) CK",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "59736c6f-4efb-4250-b219-e44926744381",
+    "name": "3% GC WTI CK",
+    "description": "3% GC WTI CK",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "9b5616e7-16e6-4510-827f-c7accf88cab0",
+    "name": "92R FP",
+    "description": "92R FP",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "07370254-6457-4db4-9f09-d176fc520eb7",
+    "name": "92R TS",
+    "description": "92R TS",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "6cf60862-9e3e-431c-ad69-2139382c6a2b",
+    "name": "95R/92R",
+    "description": "95R/92R",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "1896ef02-8204-4e6a-be11-feac45ab9971",
+    "name": "95R FP",
+    "description": "95R FP",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "87c28886-7425-423d-bd6c-370773db10b6",
+    "name": "SG 10PPM CK",
+    "description": "SG 10PPM CK",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "661004af-4dd0-4767-abdd-f95945d3480b",
+    "name": "EW Hi5",
+    "description": "EW Hi5",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "fe24c8a0-94eb-4628-9aa8-96301693766b",
+    "name": "GC Hi5/EU Hi5",
+    "description": "GC Hi5/EU Hi5",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "8349f0e7-1842-4f34-9f6d-6e0e452e9fb4",
+    "name": "GC Hi5/SG Hi5",
+    "description": "GC Hi5/SG Hi5",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "8953b14d-0ab6-4881-82ae-59913c7ebe48",
+    "name": "GO EW RL",
+    "description": "GO EW RL",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "849d0dcf-34fe-49c2-829b-4fe556b133a3",
+    "name": "SG KERO CK",
+    "description": "SG KERO CK",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "3475f632-285c-4ba4-9487-0d5c4a1a2d4a",
+    "name": "MOG EW",
+    "description": "MOG EW",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "8dab29b0-53b5-45db-9f41-6b44a25fcd49",
+    "name": "GAS NAP",
+    "description": "GAS NAP",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "365f8ef4-300f-4819-bd8e-fe155a3c7ca3",
+    "name": "MOG MN",
+    "description": "MOG MN",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "0ab6f2f8-4dc2-4d9c-a172-ccaa0ccba24b",
+    "name": "GAS NAP BX",
+    "description": "GAS NAP BX",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "dfe1be09-79de-4676-9c56-f35319b6898a",
+    "name": "NAP EW",
+    "description": "NAP EW",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "ba1bbfbf-b979-4bb0-97cc-65c6d8b616c2",
+    "name": "GAS NAP CKCK",
+    "description": "GAS NAP CKCK",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "df0150f2-7011-474a-85be-f93a365ff525",
+    "name": "C3 NWE/CP",
+    "description": "C3 NWE/CP",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "359a9fea-10ca-40b3-b21c-7ec9ce8d37e7",
+    "name": "RVO",
+    "description": "RVO",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "2a337e4f-7a5f-484e-9ec5-828a699ea9a8",
+    "name": "SULF CIF MED",
+    "description": "SULF CIF MED",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "41a2babc-4e00-450f-87d0-f66abc01a501",
+    "name": "SULF CIF NEW",
+    "description": "SULF CIF NEW",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "68ddbdaa-affd-4e73-82e2-ed4ae10c90d3",
+    "name": "ULSD CIF MED DIFF",
+    "description": "ULSD CIF MED DIFF",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "e001da15-c48d-4cc6-a7bc-0e13014b64e2",
+    "name": "JET CIF NWE TS",
+    "description": "JET CIF NWE TS",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "af2831bc-a6b3-451c-84d8-0b2be2a86b10",
+    "name": "ULSD CIF NWE DIFF",
+    "description": "ULSD CIF NWE DIFF",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "af48cc12-98dc-4574-9a29-5b2bb787b621",
+    "name": "∆92R CK",
+    "description": "∆92R CK",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "65abff6c-efeb-4807-b3ba-7f1e7c05009e",
+    "name": "MOG EW BX",
+    "description": "MOG EW BX",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "1e321f61-753a-4caf-8202-847fc9d9925f",
+    "name": "MOG MN BX",
+    "description": "MOG MN BX",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "19246bb7-b935-458c-a518-720c96ccc147",
+    "name": "NAP EW BX",
+    "description": "NAP EW BX",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "6b3e1150-e3be-48ec-8029-12be65fa810b",
+    "name": "3% GC BRT CK",
+    "description": "3% GC BRT CK",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "6aaf69ea-0e60-4c20-ba13-f736dba74fff",
+    "name": "C3 CP/MOPJ",
+    "description": "C3 CP/MOPJ",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "90844519-de8c-4707-98e2-e124e3a5d048",
+    "name": "NAP CKR",
+    "description": "NAP CKR",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "a42e20e2-8c31-4a36-922e-f45107e2a156",
+    "name": "C3 FEI/CP",
+    "description": "C3 FEI/CP",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "c37051ef-81b0-40fa-929d-f7f2b13b6c52",
+    "name": "C3 CP TS",
+    "description": "C3 CP TS",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "0582ea54-f2f4-4d8a-a2be-e8599f61d0af",
+    "name": "∆92R FP",
+    "description": "∆92R FP",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "2383fa2a-e47f-49c6-819c-09397abb5ade",
+    "name": "∆92R TS",
+    "description": "∆92R TS",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "65deefff-16c3-49c7-9f31-344c371e1abe",
+    "name": "∆95R/92R",
+    "description": "∆95R/92R",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "cc11dfec-fc8b-43b4-9a29-d4b8b727bd1e",
+    "name": "∆MOG MN",
+    "description": "∆MOG MN",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "d9f6b25b-d34c-4eec-a883-f91da81fe4ad",
+    "name": "HiLo BX",
+    "description": "HiLo BX",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "d5b8c768-2792-4430-9e79-a28ba7e5ff8f",
+    "name": "RBHO SW",
+    "description": "RBHO SW",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "4c7e821b-5876-4f20-8780-f6fa53af71e7",
+    "name": "∆GAS NAP",
+    "description": "∆GAS NAP",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "3d1c510d-e104-40f2-8fee-eb4259aa0fbf",
+    "name": "HO/BRT FT",
+    "description": "HO/BRT FT",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "aef10efa-8f73-43db-9dab-aff4d39ac1e6",
+    "name": "TC14",
+    "description": "TC14",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "a2237fbc-7ce1-40f7-8afc-ecb01d5f8740",
+    "name": "TC12",
+    "description": "TC12",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "34de4284-56eb-44c6-9be9-4c0039398854",
+    "name": "TD3",
+    "description": "TD3",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "69f3b1e0-3931-44d2-a8f0-e586ec00495f",
+    "name": "TD7",
+    "description": "TD7",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "dc62ed7d-c2ac-40db-ba50-02fc2fddb992",
+    "name": "GO YIELD",
+    "description": "GO YIELD",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "4ad75223-906b-4bab-9b00-37f588686ca3",
+    "name": "EBOB YIELD",
+    "description": "EBOB YIELD",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "0ca3b7e3-0ff0-4947-b8b5-7281b229872f",
+    "name": "NAP YIELD",
+    "description": "NAP YIELD",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "f0eaeba2-023b-4fcd-b75b-f565bbf93465",
+    "name": "3.5% BGS YIELD",
+    "description": "3.5% BGS YIELD",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "d7011d2b-f31e-4b4a-a7c2-00fddf8499ae",
+    "name": "EU REF MGN",
+    "description": "EU REF MGN",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "325db421-7b33-475e-9848-826de64118b7",
+    "name": "UTIL RATE",
+    "description": "UTIL RATE",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "e865bd5e-1133-406b-8a3d-ffd3e8b64f4d",
+    "name": "REF OUT",
+    "description": "REF OUT",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "b71add03-2d2e-49db-83dc-9af588b2dfc0",
+    "name": "REF CAP",
+    "description": "REF CAP",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "b1e3b985-cac0-4ee8-ab7e-f0733d4b3e7b",
+    "name": "GO PROD",
+    "description": "GO PROD",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "1acdf973-9a94-4503-9032-489326cb1ad5",
+    "name": "EBOB PROD",
+    "description": "EBOB PROD",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "eeaedcbb-744c-47ef-9079-44a593d35c04",
+    "name": "NAP PROD",
+    "description": "NAP PROD",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "00075862-5c7a-438b-a8c8-c48c357da20e",
+    "name": "3.5% PROD",
+    "description": "3.5% PROD",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "6433938d-c4da-4151-a0ca-09bf86096d77",
+    "name": "USGC A DIFF",
+    "description": "USGC A DIFF",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "fcea82e5-e17a-4660-8b67-acc58b8afcaf",
+    "name": "USGC M DIFF",
+    "description": "USGC M DIFF",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "bce42590-21ba-4f5b-bd14-085b30330003",
+    "name": "USGC A",
+    "description": "USGC A",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "4044847b-45b1-4e05-8fb9-deeb55321b2a",
+    "name": "USGC M",
+    "description": "USGC M",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "f9af623a-ec69-45a1-bbe1-f95a216bc2a4",
+    "name": "380 EW BX",
+    "description": "380 EW BX",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "88a0a585-e537-4146-9999-fc5d1d5fff7a",
+    "name": "HO/BRT SW",
+    "description": "HO/BRT SW",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "2342d3d5-00b0-41bb-a2a9-a94db8024f14",
+    "name": "RBHO FT CLS",
+    "description": "RBHO FT CLS",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "8c915ca3-0439-4078-8d5b-e67de6526525",
+    "name": "C3/C4 CP",
+    "description": "C3/C4 CP",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "6c3539e6-1be8-4eb1-82c6-7e247aba0a89",
+    "name": "ΔPRO EW",
+    "description": "ΔPRO EW",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "5eebc4d0-666f-42d1-8317-b37fb2bf86ef",
+    "name": "ΔC3 FEI FP",
+    "description": "ΔC3 FEI FP",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "46816155-5b0c-4984-8b66-0c59b972d008",
+    "name": "ΔC3 FEI TS",
+    "description": "ΔC3 FEI TS",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "385ca513-7f10-418c-b56a-e68d8459a8cf",
+    "name": "C3 FEI TS",
+    "description": "C3 FEI TS",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "fed6634e-c006-4473-902e-c5bb591dce66",
+    "name": "ΔC3 CP FP",
+    "description": "ΔC3 CP FP",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "05c175a7-fd7e-43e6-a3b4-b1f8016f4af5",
+    "name": "ΔC3 CP TS",
+    "description": "ΔC3 CP TS",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "8e13e379-7902-4b21-8a19-3b57426e2dbc",
+    "name": "ΔC3 FEI/CP",
+    "description": "ΔC3 FEI/CP",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "9d0a4eb5-245e-4c83-a886-4d377b1f6733",
+    "name": "ΔC3 FEI/MOPJ",
+    "description": "ΔC3 FEI/MOPJ",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "9cfcc0c3-0fb5-4cdb-8688-96c782a28cea",
+    "name": "ΔLST FP",
+    "description": "ΔLST FP",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "b27efaa3-1555-426c-9d28-c5956952d8b4",
+    "name": "C4 CP FP",
+    "description": "C4 CP FP",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "a81052b6-7238-4500-870b-7bed970f105c",
+    "name": "C4 CP TS",
+    "description": "C4 CP TS",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "f45a83dc-5278-4a69-bd04-5a23c64d4cfc",
+    "name": "LST/CP",
+    "description": "LST/CP",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "e874d215-c5ab-4eeb-922c-4d6becb039d8",
+    "name": "ΔPRO NWE FP",
+    "description": "ΔPRO NWE FP",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "6d95f25a-c203-48ea-aa17-2ad9569ba618",
+    "name": "ΔPRO NWE TS",
+    "description": "ΔPRO NWE TS",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "26dc8576-4328-4e47-8a8d-455c1dd1d712",
+    "name": "ΔC3 FEI / NAP",
+    "description": "ΔC3 FEI / NAP",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "e2db7184-9633-4c8b-8fb6-88c515644b72",
+    "name": "C3 FEI / NAP",
+    "description": "C3 FEI / NAP",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "cb17d5db-ee38-4901-93b0-29756e9d65cb",
+    "name": "LST / CP",
+    "description": "LST / CP",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "87ebb057-fb46-4990-83ff-d1da54ccccd7",
+    "name": "LST/FEI",
+    "description": "LST/FEI",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "2985c702-9746-4288-85df-f7e8629543cc",
+    "name": "SING 380 CKR",
+    "description": "SING 380 CKR",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "e33f3156-0700-4639-8bcd-1698d5d48c26",
+    "name": "SING 380 DUB CK",
+    "description": "SING 380 DUB CK",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "4ae0a7ab-09ac-4aa4-8d1c-317f53a9b49c",
+    "name": "SING 180 DUB CK",
+    "description": "SING 180 DUB CK",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "39c2dc8f-c4a8-43c7-b8ed-a2ccea2a8058",
+    "name": "SG 10PPM DUB CK",
+    "description": "SG 10PPM DUB CK",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "3539114c-5170-4ab6-9d40-9d4cfc13dcc4",
+    "name": "RBBR FT CLS",
+    "description": "RBBR FT CLS",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "f4fb9738-78d2-44c2-8402-9b93fc359544",
+    "name": "RBBR FT",
+    "description": "RBBR FT",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "0a65026b-4efd-40ec-b1b3-8d33c9b7c5b6",
+    "name": "RBBR SW",
+    "description": "RBBR SW",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "5cce7101-b257-4a29-8c16-4672ddcf0463",
+    "name": "δRBBR FT",
+    "description": "δRBBR FT",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "66a51b9d-8643-4725-b5da-a16fa634ac8f",
+    "name": "ANY BID",
+    "description": "ANY BID",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "96dba6a8-f322-4a92-8a75-f2b4ec990832",
+    "name": "ANY ASK",
+    "description": "ANY ASK",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "e3900eda-ec1a-4324-b591-0be9dde895c0",
+    "name": "MOPJ CK8.9",
+    "description": "MOPJ CK8.9",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "1fbfa859-68db-4268-8802-1083771e62ea",
+    "name": "MOPJ CK9",
+    "description": "MOPJ CK9",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "a3e036cd-7f64-45c2-9b61-c6027ab7e964",
+    "name": "MOPJ TS",
+    "description": "MOPJ TS",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "45b651ce-7be4-44c1-93b3-abe150ce084e",
+    "name": "ΔEBOB FP",
+    "description": "ΔEBOB FP",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "4b13d165-b991-4486-b8c3-a21eb6401557",
+    "name": "NWE C3/C4",
+    "description": "NWE C3/C4",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "df031f7b-36f9-420c-a84e-d4f43306df96",
+    "name": "BALTIC LPG TS",
+    "description": "BALTIC LPG TS",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "d47188c6-5202-4cba-9a1e-1c29f3b92fa7",
+    "name": "D5",
+    "description": "D5",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "134cb915-7156-44cb-bab6-a4622361764b",
+    "name": "DUB TS",
+    "description": "DUB TS",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "035cc725-e440-42c1-863a-b8178b68c7ee",
+    "name": "P&L TOTAL",
+    "description": "P&L TOTAL",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "3c3de0ef-1ab9-45f3-90a9-0dd4653733a8",
+    "name": "ΔEBOB CK",
+    "description": "ΔEBOB CK",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "ffb80c10-396e-461d-ae96-a67e2f7cf87e",
+    "name": "ΔNAP CK",
+    "description": "ΔNAP CK",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "84742d35-f1ff-4c4e-8208-04805b88493a",
+    "name": "MOG MED TS",
+    "description": "MOG MED TS",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "644acea4-1bab-44a7-abcd-891d972df4c9",
+    "name": "ΔMOG MED TS",
+    "description": "ΔMOG MED TS",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "63a244e4-0bda-4d7b-ae98-869f9202ffe8",
+    "name": "BALTIC LPG",
+    "description": "BALTIC LPG",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "2916f29a-3040-4b72-ac1a-791f31df6c1c",
+    "name": "ΔNAP EW",
+    "description": "ΔNAP EW",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "7a581084-140f-4c99-a84f-a93cdc823a85",
+    "name": "0.5% BGS FP",
+    "description": "0.5% BGS FP",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "f9c85478-9b29-48aa-ab5c-b2665e472a03",
+    "name": "0.5% BGS TS",
+    "description": "0.5% BGS TS",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "78aa1c11-08dc-42d0-8eeb-5f7474eeb2f5",
+    "name": "LST/NAP",
+    "description": "LST/NAP",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "a1f4f161-8ea1-4ac1-906e-7ab4ffb00cc4",
+    "name": "LST/NWE",
+    "description": "LST/NWE",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "0ff8708c-d6bd-47d1-8fea-bea5ba03acfe",
+    "name": "HiLo",
+    "description": "HiLo",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "27c1a703-f86f-4855-a956-66cce51e54e0",
+    "name": "0.5% SG FP",
+    "description": "0.5% SG FP",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "26ddc30e-c956-4c11-8df6-de29f741b222",
+    "name": "ΔNAP FP",
+    "description": "ΔNAP FP",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "7f14c8e4-24f6-4af7-8d80-a715bc377267",
+    "name": "PRO NAP",
+    "description": "PRO NAP",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "58f47d62-3093-40ae-997b-976e0863b537",
+    "name": "NAP FP",
+    "description": "NAP FP",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "1a2eb34a-a12f-4243-b7db-67425f3ce80a",
+    "name": "RB/NAP",
+    "description": "RB/NAP",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "1a7411ea-b7b7-4f7f-84b2-4c1693b1797f",
+    "name": "TC6",
+    "description": "TC6",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "abc2ddd3-901d-40b2-a120-2090f47224f4",
+    "name": "MOPJ FP",
+    "description": "MOPJ FP",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "f584a504-730a-47bf-9db3-5c2848150cb0",
+    "name": "ΔEBOB TS",
+    "description": "ΔEBOB TS",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "4e247b92-4abc-41fc-8856-9214b80c5c89",
+    "name": "POS EBOB",
+    "description": "POS EBOB",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "968721e5-c19b-4f9c-8f9a-01c4c4ec090a",
+    "name": "ΔMOG EW",
+    "description": "ΔMOG EW",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "ca51651e-d258-4741-85f9-d7f49a43ec8e",
+    "name": "P&L EBOB",
+    "description": "P&L EBOB",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "624d9a8f-25ea-4d69-b1a6-ad42c7b9551e",
+    "name": "NAP CK",
+    "description": "NAP CK",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "10dab3e7-dfee-4c26-854a-b556d79ef517",
+    "name": "NAP TS",
+    "description": "NAP TS",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "ccf50641-5543-4b96-892a-10d3e2dd975f",
+    "name": "EBOB TS",
+    "description": "EBOB TS",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "7943980d-89d2-46c0-9c26-035bf98c9c61",
+    "name": "MOG MED FP",
+    "description": "MOG MED FP",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "fceb5598-2708-4d8f-851c-b250b63d36e3",
+    "name": "ΔMOG MED FP",
+    "description": "ΔMOG MED FP",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "17a76a92-ecab-4037-bec9-476ad7710ce8",
+    "name": "TC2",
+    "description": "TC2",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "395f77eb-e0c8-4565-8b45-f3ab1ad4a9a8",
+    "name": "POS MED",
+    "description": "POS MED",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "c818aa2d-c347-4bba-8c56-a5034a5ef836",
+    "name": "ΔLST TS",
+    "description": "ΔLST TS",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "0ea76cb5-c416-4024-bc77-816a95364e16",
+    "name": "ΔNAP TS",
+    "description": "ΔNAP TS",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "890ade40-9b43-431e-a441-373c7b1ff134",
+    "name": "EBOB CK",
+    "description": "EBOB CK",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "b9045ee8-0529-4926-a20b-39b2d40da2e3",
+    "name": "P&L MED",
+    "description": "P&L MED",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "90799d7d-cd98-4d34-98d3-2fa3974b822d",
+    "name": "SG Hi5 BX",
+    "description": "SG Hi5 BX",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "ec9df886-0e03-4a7d-9167-8c76ac569e0b",
+    "name": "EU Hi5",
+    "description": "EU Hi5",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "b3ba55ac-97ec-4c6b-913f-0286101d489b",
+    "name": "NWE MOG EXP",
+    "description": "NWE MOG EXP",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "e03703f8-c5ad-43d3-9677-2334dff38817",
+    "name": "US MOG IMP",
+    "description": "US MOG IMP",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "fbca3362-0cde-475c-8271-94cadf0a651b",
+    "name": "ULSD CIF NWE",
+    "description": "ULSD CIF NWE",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "0356c360-e805-4a3b-8598-ad67f7467070",
+    "name": "ULSD CIF MED",
+    "description": "ULSD CIF MED",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "d27d0091-77ee-4965-8970-5cea4aad14a8",
+    "name": "SG Hi5",
+    "description": "SG Hi5",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "adb27b63-67d3-45e4-9f6a-02b8e6820e2d",
+    "name": "0.5% xARB",
+    "description": "0.5% xARB",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "438e4caf-45e4-4f62-8da4-8acab85c4472",
+    "name": "VISCO BX",
+    "description": "VISCO BX",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "32c2db13-e566-4630-b628-956e5d5d77c1",
+    "name": "SING 180 TS",
+    "description": "SING 180 TS",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "e269f4ee-b09a-453c-8271-2b72c8091603",
+    "name": "SING 380 TS",
+    "description": "SING 380 TS",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "51da40b5-6967-4802-a29e-8e9f4c6797c5",
+    "name": "δRBHO FT",
+    "description": "δRBHO FT",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "21c8acb2-4c74-4b81-b8e1-90ebf40bf888",
+    "name": "SING 180 CK",
+    "description": "SING 180 CK",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "311d2c34-5e41-4758-a75f-df15a2d65a3b",
+    "name": "LST/WTI %",
+    "description": "LST/WTI %",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "491bdd5a-d74a-43a6-9b21-6f5f4f4ef235",
+    "name": "10PPM CIF NWE",
+    "description": "10PPM CIF NWE",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "59810d21-bf4f-41c5-8c19-5bc4cc49152c",
+    "name": "10PPM CIF MED",
+    "description": "10PPM CIF MED",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "238e7970-286c-4b47-bade-a1cb3cd8fbd5",
+    "name": "JET CIF NWE FP",
+    "description": "JET CIF NWE FP",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "da09fc66-8b9d-47c7-a73b-4d51c53731f1",
+    "name": "EBOB FP",
+    "description": "EBOB FP",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "2b67cdfb-29d7-47cc-9cc7-e04de782c08e",
+    "name": "0.5% GC ARB",
+    "description": "0.5% GC ARB",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "3de78aae-45d1-4236-a61a-a30f09a0f086",
+    "name": "GC HSFO ARB",
+    "description": "GC HSFO ARB",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "01c61671-2e6f-4d31-80d3-77430df0ca45",
+    "name": "3% GC FP",
+    "description": "3% GC FP",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "f38415d1-c16e-458f-9110-6612c5534926",
+    "name": "GC Hi5",
+    "description": "GC Hi5",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "24427b88-05bb-46ac-a031-d53c6e25cf56",
+    "name": "ΔMOPJ FP",
+    "description": "ΔMOPJ FP",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "f657615e-2904-41e5-a3f9-527afca32223",
+    "name": "ΔMOPJ TS",
+    "description": "ΔMOPJ TS",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "8e2bf192-4d1b-4482-b6f3-fcc5ecfe36c5",
+    "name": "JET FOB MED",
+    "description": "JET FOB MED",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "0ed143d2-2eb6-4f07-abb4-026a0345747d",
+    "name": "SG 10PPM FP",
+    "description": "SG 10PPM FP",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "2ff4281e-ce93-421c-b43f-868bfe293d10",
+    "name": "HOGO",
+    "description": "HOGO",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "a646c1ae-fe56-4597-a774-88dbf98604af",
+    "name": "D3",
+    "description": "D3",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "30f8bb9b-f6ce-4acd-a43d-38d7ad629dc8",
+    "name": "D4",
+    "description": "D4",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "1a4e0a2c-110a-4bbd-a246-fc5f75ae87ae",
+    "name": "3% GC TS",
+    "description": "3% GC TS",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "5411e9c3-9d5a-4feb-bcef-b968768e4993",
+    "name": "0.5% BGS FOGO",
+    "description": "0.5% BGS FOGO",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "cbdc3419-5260-4c76-b506-63e32f58c0fa",
+    "name": "0.5% GC TS",
+    "description": "0.5% GC TS",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "31145876-f620-4248-a5bf-8592caf3ec8b",
+    "name": "0.5% GC WTI CK",
+    "description": "0.5% GC WTI CK",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "31cfc44d-bd7a-4b46-b6b3-bf923f3c8524",
+    "name": "3.5% BGS GOFO",
+    "description": "3.5% BGS GOFO",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "2b00c4f7-b0b3-4365-b149-0f21daf209aa",
+    "name": "D3 RVO %",
+    "description": "D3 RVO %",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "4dba6516-8ade-43f9-9e17-57b893cf1fe3",
+    "name": "D4 RVO %",
+    "description": "D4 RVO %",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "a9d0681b-4624-40ac-bec1-80d41be7cffc",
+    "name": "D5 RVO %",
+    "description": "D5 RVO %",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "4be28a5e-02df-4e40-8381-163646bb50a4",
+    "name": "D6 RVO %",
+    "description": "D6 RVO %",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "11590fa1-2b6a-4162-9370-1738b0ef6c06",
+    "name": "GO CK",
+    "description": "GO CK",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "88469443-2d26-4fa6-8400-c8e6e299e4fc",
+    "name": "MOPAG TS",
+    "description": "MOPAG TS",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "9f2f823f-b3ea-4d26-acf3-98ce5c9d6c81",
+    "name": "MOPJ/92",
+    "description": "MOPJ/92",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "7aa87cb2-b02b-475b-9b07-61262c5ec1a4",
+    "name": "AUG-ROT FRT",
+    "description": "AUG-ROT FRT",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "1ba904bb-d333-4054-94a9-e4b0d2a3cfeb",
+    "name": "0.5% GC FP",
+    "description": "0.5% GC FP",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "a5c73529-9ebc-48d0-9b10-77ef3ef74021",
+    "name": "SG GOFO",
+    "description": "SG GOFO",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "b22a5345-e284-4c50-8a6e-b0cb69ba37d2",
+    "name": "REGRADE",
+    "description": "REGRADE",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "24e20e0c-8b38-4398-a693-9b5980efeb12",
+    "name": "JET BGS DIFF",
+    "description": "JET BGS DIFF",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "38df8742-903c-4867-ab06-d911ebe6f83b",
+    "name": "GC HSFO ARB RL",
+    "description": "GC HSFO ARB RL",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "745d6c84-15c0-4d20-b547-e351e16f4fd2",
+    "name": "0.5% SG FOGO",
+    "description": "0.5% SG FOGO",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "a6869bca-fa0e-49e8-b80d-3601080cffea",
+    "name": "AG-JPN $T",
+    "description": "AG-JPN $T",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "ec5ced74-69dc-4af6-8514-11bea1384417",
+    "name": "AG-JPN FLAT",
+    "description": "AG-JPN FLAT",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "cc0621c3-cca7-4135-8868-86bc22af5fe0",
+    "name": "MOPAG FP",
+    "description": "MOPAG FP",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "29b079bd-3246-4178-9fbc-4844b2a1ae10",
+    "name": "PLT/ARG",
+    "description": "PLT/ARG",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "0605f829-b7b8-4d5d-b3b0-6c176f55e422",
+    "name": "180 GOFO",
+    "description": "180 GOFO",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "7bd35737-351a-40d0-a5f1-d022055e41ed",
+    "name": "RB/NAP CK",
+    "description": "RB/NAP CK",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "3df90f6f-6028-4537-b1d5-8cd66b98ec23",
+    "name": "RBHO FT",
+    "description": "RBHO FT",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "3032e833-003a-4bed-9497-bf485ddefa96",
+    "name": "3.5% BGS CK",
+    "description": "3.5% BGS CK",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "6a1c8ebd-d2a3-48bb-9131-665c26861880",
+    "name": "PRO NAP %",
+    "description": "PRO NAP %",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "0b0b1f43-446d-4ea8-8f30-aabc3bc0132f",
+    "name": "MOG MED CK",
+    "description": "MOG MED CK",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "bd852792-b157-452d-91da-196df01a780a",
+    "name": "ΔMOG MED CK",
+    "description": "ΔMOG MED CK",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "bbbb9acc-e187-43a3-8eed-7e81a30f60c5",
+    "name": "MOG ARB",
+    "description": "MOG ARB",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "d3e756d9-6fca-4e87-b1f6-1af42d60fe74",
+    "name": "ΔMOG ARB",
+    "description": "ΔMOG ARB",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "2e052120-968e-415f-b4f5-bc9dd1642cc1",
+    "name": "ΔLST / CP",
+    "description": "ΔLST / CP",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "52bd9a73-7f5d-4d47-b7d8-2f465402f8bd",
+    "name": "GC Hi5 BX",
+    "description": "GC Hi5 BX",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "8e0bff1b-6ce4-4553-9fa8-ee264d6e04ef",
+    "name": "HSFO xARB",
+    "description": "HSFO xARB",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "9257633c-3961-4861-b446-c574e8249b6c",
+    "name": "BRT SW TS",
+    "description": "BRT SW TS",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "e3a33abc-ee2e-4834-bab2-bdf9b86d07cd",
+    "name": "1% NYH CK",
+    "description": "1% NYH CK",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "3d6650bd-b805-419d-ad95-6984fdb955a1",
+    "name": "US HiLo BX",
+    "description": "US HiLo BX",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "165974c1-7809-4d71-8396-b9179bdd9426",
+    "name": "SG 10PPM EFS",
+    "description": "SG 10PPM EFS",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "7b9f8899-aa50-4264-8527-e2cbca48d824",
+    "name": "EU Hi5 BX",
+    "description": "EU Hi5 BX",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "c20abc45-a9d3-4f27-9ba9-d78be06644a0",
+    "name": "WTI/BRT FT",
+    "description": "WTI/BRT FT",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "2281de33-a7f3-4c98-a6d3-a527fe453b73",
+    "name": "1% CIF TS",
+    "description": "1% CIF TS",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "900ed48e-5b67-4076-9125-56f3788549b1",
+    "name": "1% FOB TS",
+    "description": "1% FOB TS",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "84354da2-b5ec-4c4e-84dc-f5526623226c",
+    "name": "1% FOB FP",
+    "description": "1% FOB FP",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "4894480a-f4d7-4dcc-a812-6a412eb57f0e",
+    "name": "1% NYH TS",
+    "description": "1% NYH TS",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "25960ba1-a93d-42f7-91c7-ef934ee1c0fe",
+    "name": "EU GOFO",
+    "description": "EU GOFO",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "606b83fb-16de-42ab-b19d-9cfb686ed8e2",
+    "name": "SG KERO TS",
+    "description": "SG KERO TS",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "32a792c0-d638-4911-944b-fce1e5c9b0ba",
+    "name": "10PPM BGS DIFF",
+    "description": "10PPM BGS DIFF",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "68097b74-9b20-418a-bfa9-d02c65394967",
+    "name": "10PPM BGS",
+    "description": "10PPM BGS",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "e33d2934-43bf-4258-a80a-7a28097b0071",
+    "name": "10PPM CIF DIFF",
+    "description": "10PPM CIF DIFF",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "1002cb2a-6d38-409d-a4cb-c9200ae75b56",
+    "name": "JET BGS FP",
+    "description": "JET BGS FP",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "0eea97c7-e36a-4db4-b8b1-0bd8b117208e",
+    "name": "JET CIF NWE DIFF",
+    "description": "JET CIF NWE DIFF",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "ab19b72f-4c67-4135-b25c-3be79b41a21c",
+    "name": "SG 380 AV",
+    "description": "SG 380 AV",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "d2afe720-3103-4795-8bcd-6551eebebacd",
+    "name": "SG 380 FULL & SPD",
+    "description": "SG 380 FULL & SPD",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "cdb357e0-47f8-40a2-b173-ca27ccef43f2",
+    "name": "3.5% FULL & SPD",
+    "description": "3.5% FULL & SPD",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "3af0fe66-0d79-40e1-862b-3502bec5354e",
+    "name": "SG 180 AV",
+    "description": "SG 180 AV",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "fd1143f5-f735-4454-9622-dd89f4756798",
+    "name": "SG 180 FULL & SPD",
+    "description": "SG 180 FULL & SPD",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "44a49f29-943e-47d3-8ad8-1ed1c4848c3e",
+    "name": "3.5% BGS AV",
+    "description": "3.5% BGS AV",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "df67e7d8-c710-46cc-8d81-f491bac21ab0",
+    "name": "ref mgn",
+    "description": "ref mgn",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "f937af17-05e2-4f28-9917-d72cd3dbaf1b",
+    "name": "CSC GNAP 1",
+    "description": "CSC GNAP 1",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "59a7e99f-55a5-42dc-9091-439abb95e6dd",
+    "name": "D6",
+    "description": "D6",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "c86761ac-29ba-4721-8141-80337a10780e",
+    "name": "AUG-ROT FLAT",
+    "description": "AUG-ROT FLAT",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "0c863498-67fd-4e40-ab4c-f0b4ed396e37",
+    "name": "C3 FEI/MOPJ",
+    "description": "C3 FEI/MOPJ",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  },
+  {
+    "id": "ac3e3ae9-b1bc-479b-9fd9-6ed80a58e5d2",
+    "name": "TC5",
+    "description": "TC5",
+    "package": "CSC Commodities",
+    "source": "CSC Commodities"
+  }
+]

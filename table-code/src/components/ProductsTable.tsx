@@ -17,14 +17,6 @@ import {
 import { Product } from "@/lib/products"
 import { AreaChart, Area, ResponsiveContainer } from "recharts"
 
-// Generate fake sparkline data for visualization
-const generateSparklineData = () => {
-  return Array.from({ length: 20 }, (_, i) => ({
-    x: i,
-    y: 50 + Math.random() * 20
-  }))
-}
-
 const GASOIL_NAMES = [
   "M0 SG 10PPM FP",
   "M0 0.1% BGS"
@@ -55,7 +47,7 @@ const columns: ColumnDef<Product>[] = [
     accessorKey: "hfo",
     header: () => <div className="text-center">HFO</div>,
     cell: ({ row }) => {
-      const value = parseFloat(row.getValue("hfo"));
+      const value = Math.floor(parseFloat(row.getValue("hfo")) * 100) / 100;
       const name = row.getValue("name") as string;
       return <div className="text-center font-medium text-foreground">${value.toFixed(2)}{getUnit(name)}</div>;
     }
@@ -64,7 +56,7 @@ const columns: ColumnDef<Product>[] = [
     accessorKey: "vlsfo",
     header: () => <div className="text-center">VLSFO</div>,
     cell: ({ row }) => {
-      const value = parseFloat(row.getValue("vlsfo"));
+      const value = Math.floor(parseFloat(row.getValue("vlsfo")) * 100) / 100;
       const name = row.getValue("name") as string;
       return <div className="text-center font-medium text-foreground">${value.toFixed(2)}{getUnit(name)}</div>;
     }
@@ -73,21 +65,9 @@ const columns: ColumnDef<Product>[] = [
     accessorKey: "mgo",
     header: () => <div className="text-center">MGO</div>,
     cell: ({ row }) => {
-      const value = parseFloat(row.getValue("mgo"));
+      const value = Math.floor(parseFloat(row.getValue("mgo")) * 100) / 100;
       const name = row.getValue("name") as string;
       return <div className="text-center font-medium text-foreground">${value.toFixed(2)}{getUnit(name)}</div>;
-    }
-  },
-  {
-    accessorKey: "change",
-    header: () => <div className="text-center">Change</div>,
-    cell: ({ row }) => {
-      const value = parseFloat(row.getValue("change"))
-      return (
-        <div className={`text-center font-medium ${value >= 0 ? 'text-green-600' : 'text-red-600'}`}>
-          {value >= 0 ? '+' : ''}{value.toFixed(2)}%
-        </div>
-      )
     }
   },
   {
@@ -95,16 +75,12 @@ const columns: ColumnDef<Product>[] = [
     header: () => <div className="text-right">7d Trend</div>,
     cell: ({ row }) => {
       // Get the percentage change value
-      const change = parseFloat(row.getValue("change"));
-      // Set color based on change
-      const color = change >= 0 ? "#10B981" : "#EF4444";
-      // Generate sparkline data that slopes up or down based on change
+      // Removed arrow and percentage logic
       const base = 50;
       const points = 20;
-      const slope = change / 5; // scale the slope for visual effect
       const sparklineData = Array.from({ length: points }, (_, i) => ({
         x: i,
-        y: base + i * slope + (Math.random() - 0.5) * 2 // add slight noise
+        y: base + (Math.random() - 0.5) * 2 // add slight noise
       }));
       return (
         <div className="w-[100px] h-[40px]">
@@ -112,14 +88,14 @@ const columns: ColumnDef<Product>[] = [
             <AreaChart data={sparklineData}>
               <defs>
                 <linearGradient id={`colorUv-${row.id}`} x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="5%" stopColor={color} stopOpacity={0.6}/>
-                  <stop offset="95%" stopColor={color} stopOpacity={0}/>
+                  <stop offset="5%" stopColor="#10B981" stopOpacity={0.6}/>
+                  <stop offset="95%" stopColor="#10B981" stopOpacity={0}/>
                 </linearGradient>
               </defs>
               <Area
                 type="monotone"
                 dataKey="y"
-                stroke={color}
+                stroke="#10B981"
                 fillOpacity={1}
                 fill={`url(#colorUv-${row.id})`}
                 strokeWidth={2}
@@ -127,6 +103,28 @@ const columns: ColumnDef<Product>[] = [
             </AreaChart>
           </ResponsiveContainer>
         </div>
+      );
+    }
+  },
+  {
+    id: "percentChange",
+    header: () => <div className="text-center">% Change</div>,
+    cell: ({ row }) => {
+      const history = row.original.history;
+      let percentChange: number | null = null;
+      let color = "#10B981";
+      if (history && history.length > 1) {
+        const last = history[history.length - 1];
+        const prev = history[history.length - 2];
+        percentChange = prev !== 0 ? ((last - prev) / prev) * 100 : null;
+        color = last >= prev ? "#10B981" : "#EF4444";
+      }
+      return percentChange !== null ? (
+        <div className="text-center font-bold" style={{ color }}>
+          {percentChange >= 0 ? "▲" : "▼"} {Math.abs(percentChange).toFixed(2)}%
+        </div>
+      ) : (
+        <div className="text-center text-muted-foreground">--</div>
       );
     }
   }
