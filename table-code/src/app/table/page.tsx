@@ -58,7 +58,8 @@ export default function TradingPage() {
     const [products, setProducts] = useState<Product[]>([]);
     const [livePrices, setLivePrices] = useState<LivePrice[]>([]);
     // New: series fetched from /api/csc-memory-history (in-memory hourly series)
-    const [cscSeries, setCscSeries] = useState<Record<string, { x: string | number; y: number }>>({});
+    // map: product id -> array of points (oldest -> newest)
+    const [cscSeries, setCscSeries] = useState<Record<string, { x: string | number; y: number }[]>>({} as Record<string, { x: string | number; y: number }[]>);
     const router = useRouter();
     useEffect(() => {
         // Auth check
@@ -204,11 +205,11 @@ export default function TradingPage() {
                             <div>
                               <div>
                                  {/* Table header for CSC commodities */}
-                                <div className="flex items-center font-bold border-b border-[#333] pb-3 text-foreground text-base rounded-t-xl gap-3" style={{letterSpacing: '0.01em'}}>
-                                  <span className="pl-2" style={{width: '38%', paddingRight: 8}}>Name</span>
-                                  <span className="mx-2 text-center" style={{width: '140px', paddingRight: 8}}>Graph</span>
-                                  <span className="text-right pr-2" style={{width: '30%', paddingRight: 8}}>Price</span>
-                                  <span className="text-right pr-2" style={{width: '22%'}}>1hr % Change</span>
+                                <div className="flex items-center font-bold border-b border-[#333] pb-3 text-foreground text-base rounded-t-xl gap-4" style={{letterSpacing: '0.01em'}}>
+                                  <span className="pl-2" style={{width: '36%', paddingRight: 12}}>Name</span>
+                                  <span className="mx-2 text-center" style={{width: '170px', paddingRight: 12}}>Graph</span>
+                                  <span className="text-right pr-2" style={{width: '32%', paddingRight: 12}}>Price</span>
+                                  <span className="text-right pr-2" style={{width: '20%'}}>1hr % Change</span>
                                 </div>
                                 {CSC_COMMODITIES_IDS.map((id, _idx) => {
                                    const name = PRODUCT_ID_MAP[id];
@@ -243,10 +244,10 @@ export default function TradingPage() {
                                       className={`flex items-center border-b border-[#23272f] last:border-b-0 py-3 transition-colors duration-150 hover:bg-muted rounded-xl gap-3`}
                                       style={{marginBottom: 2}}
                                      >
-                                      <span className="font-medium text-foreground text-sm sm:text-base pl-2" style={{color: '#e5e7eb', width: '38%', paddingRight: 8}}>
+                                      <span className="font-medium text-foreground text-sm sm:text-base pl-2" style={{color: '#e5e7eb', width: '36%', paddingRight: 12}}>
                                         {name}
                                       </span>
-                                      <div className="h-[32px] mx-2 flex items-center justify-center" style={{width: 140}}>
+                                      <div className="h-[32px] mx-2 flex items-center justify-center" style={{width: 170}}>
                                          {sparklineData && sparklineData.length > 0 ? (
                                            <ResponsiveContainer width="100%" height="100%">
                                              <AreaChart data={sparklineData}>
@@ -270,7 +271,7 @@ export default function TradingPage() {
                                            <div className="text-xs text-muted">No data</div>
                                          )}
                                        </div>
-                                      <span className="text-sm sm:text-base font-bold text-right pr-2" style={{ color: '#d1d5db', fontVariantNumeric: 'tabular-nums', width: '30%', paddingRight: 8 }}>
+                                      <span className="text-sm sm:text-base font-bold text-right pr-2 px-2" style={{ color: '#d1d5db', fontVariantNumeric: 'tabular-nums', width: '32%', paddingRight: 12 }}>
                                          {priceObj && priceObj.value !== undefined
                                            ? `$${priceObj.value.toLocaleString(undefined, {
                                                minimumFractionDigits: 2,
@@ -278,7 +279,7 @@ export default function TradingPage() {
                                              })}${getUnit(name)}`
                                            : "--"}
                                        </span>
-                                      <span className="text-right pr-2 font-bold" style={{ color: percentColor, fontSize: '0.98em', fontVariantNumeric: 'tabular-nums', width: '22%' }}>
+                                      <span className="text-right pr-2 font-bold px-2" style={{ color: percentColor, fontSize: '0.98em', fontVariantNumeric: 'tabular-nums', width: '20%' }}>
                                         {percentArrow} {percentChange !== null ? `${percentChange.toFixed(2)}%` : "--"}
                                       </span>
                                      </div>
@@ -318,10 +319,10 @@ export default function TradingPage() {
                                        className={`flex items-center border-b border-[#23272f] last:border-b-0 py-3 transition-colors duration-150 hover:bg-muted rounded-xl gap-3`}
                                        style={{marginBottom: 2}}
                                      >
-                                      <span className="font-medium text-foreground text-sm sm:text-base pl-2" style={{color: '#e5e7eb', width: '38%', paddingRight: 8}}>
+                                      <span className="font-medium text-foreground text-sm sm:text-base pl-2" style={{color: '#e5e7eb', width: '36%', paddingRight: 12}}>
                                         {name}
                                       </span>
-                                      <div className="h-[32px] mx-2 flex items-center justify-center" style={{width: 140}}>
+                                      <div className="h-[32px] mx-2 flex items-center justify-center" style={{width: 170}}>
                                          {sparklineData && sparklineData.length > 0 ? (
                                            <ResponsiveContainer width="100%" height="100%">
                                              <AreaChart data={sparklineData}>
@@ -345,7 +346,7 @@ export default function TradingPage() {
                                            <div className="text-xs text-muted">No data</div>
                                          )}
                                        </div>
-                                      <span className="text-xs sm:text-sm font-bold text-right pr-2" style={{ color: '#d1d5db', fontVariantNumeric: 'tabular-nums', width: '30%', paddingRight: 8 }}>
+                                      <span className="text-xs sm:text-sm font-bold text-right pr-2 px-2" style={{ color: '#d1d5db', fontVariantNumeric: 'tabular-nums', width: '32%', paddingRight: 12 }}>
                                         {priceObj && priceObj.value !== undefined
                                            ? `$${priceObj.value.toLocaleString(undefined, {
                                                minimumFractionDigits: 2,
@@ -353,7 +354,7 @@ export default function TradingPage() {
                                              })}${getUnit(name)}`
                                            : "--"}
                                       </span>
-                                      <span className="text-right pr-2 font-bold" style={{ color: percentColor, fontSize: '0.98em', fontVariantNumeric: 'tabular-nums', width: '22%' }}>
+                                      <span className="text-right pr-2 font-bold px-2" style={{ color: percentColor, fontSize: '0.98em', fontVariantNumeric: 'tabular-nums', width: '20%' }}>
                                         {percentArrow} {percentChange !== null ? `${percentChange.toFixed(2)}%` : "--"}
                                       </span>
                                      </div>
