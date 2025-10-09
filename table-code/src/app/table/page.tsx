@@ -285,8 +285,15 @@ export default function TradingPage() {
                                      </div>
                                    );
                                  })}
-                                {/* Gasoils Section (unchanged) */}
+                                {/* Gasoils Section (extended to show 1hr % change like CSC) */}
                                 <h3 className="font-semibold text-base sm:text-lg mt-4 mb-2 pl-2">Gasoil:</h3>
+                                {/* Header for gasoils to align with CSC columns */}
+                                <div className="flex items-center font-bold border-b border-[#333] pb-3 text-foreground text-base rounded-t-xl gap-4" style={{letterSpacing: '0.01em'}}>
+                                  <span className="pl-2" style={{width: '36%', paddingRight: 12}}>Name</span>
+                                  <span className="mx-2 text-center" style={{width: '170px', paddingRight: 12}}>Graph</span>
+                                  <span className="text-right pr-2" style={{width: '32%', paddingRight: 12}}>Price</span>
+                                  <span className="text-right pr-2" style={{width: '20%'}}>1hr % Change</span>
+                                </div>
                                 {GASOIL_IDS.map((id, _idx) => {
                                   const name = PRODUCT_ID_MAP[id];
                                   const priceObj = livePrices.find((p) => p.id === id);
@@ -302,7 +309,7 @@ export default function TradingPage() {
                                      const prev = sparklineData[sparklineData.length - 2].y;
                                      color = last >= prev ? "#10B981" : "#EF4444"; // red if down
                                    }
-                                   // Calculate percent change for gasoils as well
+                                   // Calculate 1hr percent change using oldest -> newest
                                    let percentChange: number | null = null;
                                    if (sparklineData.length > 1) {
                                      const first = sparklineData[0].y;
