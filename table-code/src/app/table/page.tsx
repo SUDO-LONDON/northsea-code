@@ -262,6 +262,17 @@ export default function TradingPage() {
                                      const prev = sparklineData[sparklineData.length - 2].y;
                                      color = last >= prev ? "#10B981" : "#EF4444"; // red if down
                                    }
+                                   // Calculate 1hr percentage change from sparklineData (first -> last)
+                                   let percentChange: number | null = null;
+                                   if (sparklineData.length > 1) {
+                                     const first = sparklineData[0].y;
+                                     const last = sparklineData[sparklineData.length - 1].y;
+                                     if (first !== 0) {
+                                       percentChange = ((last - first) / first) * 100;
+                                     }
+                                   }
+                                   const percentColor = percentChange !== null ? (percentChange >= 0 ? "#10B981" : "#EF4444") : "#aaa";
+                                   const percentArrow = percentChange !== null ? (percentChange > 0 ? "▲" : percentChange < 0 ? "▼" : "") : "";
                                    return (
                                      <div
                                        key={id}
@@ -299,8 +310,9 @@ export default function TradingPage() {
                                              })}${getUnit(name)}`
                                            : "--"}
                                       </span>
-                                      {/* No 1hr % change for Gasoil rows (if desired we can enable), so leave the last column empty for alignment */}
-                                      <span style={{width: '22%'}} className="text-right pr-2 font-bold"> </span>
+                                      <span className="text-right pr-2 font-bold" style={{ color: percentColor, fontSize: '0.98em', fontVariantNumeric: 'tabular-nums', width: '22%' }}>
+                                        {percentArrow} {percentChange !== null ? `${percentChange.toFixed(2)}%` : "--"}
+                                      </span>
                                      </div>
                                    );
                                  })}
