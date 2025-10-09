@@ -61,6 +61,27 @@ export default function TradingPage() {
     // map: product id -> array of points (oldest -> newest)
     const [cscSeries, setCscSeries] = useState<Record<string, { x: string | number; y: number }[]>>({} as Record<string, { x: string | number; y: number }[]>);
     const router = useRouter();
+
+    // Helper: get sparkline data for a given product id (prefers cscSeries, then priceObj.history, then deterministic flat series)
+    const getSparklineForId = (id: string, priceObj?: LivePrice): { x: string | number; y: number }[] => {
+      if (cscSeries && cscSeries[id] && cscSeries[id].length > 0) {
+        return cscSeries[id].map((pt) => ({ x: pt.x, y: pt.y }));
+      }
+      if (priceObj && Array.isArray(priceObj.history) && priceObj.history.length > 0) {
+        return priceObj.history.map((y, x) => ({ x, y }));
+      }
+      return generateSparklineData(priceObj?.value);
+    };
+
+    // Helper: calculate percent change from a sparkline series (oldest -> newest). Returns null if not computable.
+    const calculatePercentFromSeries = (series: { x: string | number; y: number }[]): number | null => {
+      if (!series || series.length < 2) return null;
+      const first = series[0].y;
+      const last = series[series.length - 1].y;
+      if (first === 0) return null;
+      return ((last - first) / first) * 100;
+    };
+
     useEffect(() => {
         // Auth check
         const isAuthenticated = Cookies.get('adminAuth');
@@ -214,28 +235,15 @@ export default function TradingPage() {
                                 {CSC_COMMODITIES_IDS.map((id, _idx) => {
                                    const name = PRODUCT_ID_MAP[id];
                                    const priceObj = livePrices.find((p) => p.id === id);
-                                   // Prefer series from in-memory history (cscSeries), then priceObj.history, then deterministic flat series from current value
-                                   const sparklineData = (cscSeries[id] && cscSeries[id].length > 0)
-                                     ? cscSeries[id].map((pt) => ({ x: pt.x, y: pt.y }))
-                                     : priceObj && Array.isArray(priceObj.history)
-                                       ? priceObj.history.map((y, x) => ({ x, y }))
-                                       : generateSparklineData(priceObj?.value);
-                                   let color = "#10B981"; // green default
-                                   if (sparklineData.length > 1) {
-                                     const last = sparklineData[sparklineData.length - 1].y;
-                                     const prev = sparklineData[sparklineData.length - 2].y;
-                                     color = last >= prev ? "#10B981" : "#EF4444"; // red if down
-                                   }
-                                  // Calculate 1hr percentage change from sparklineData (first -> last)
-                                  // sparklineData is expected to be ordered oldest -> newest
-                                  let percentChange: number | null = null;
+                                  // Use helper to get sparkline and percent change (ordered oldest -> newest)
+                                  const sparklineData = getSparklineForId(id, priceObj);
+                                  let color = "#10B981"; // green default
                                   if (sparklineData.length > 1) {
-                                    const first = sparklineData[0].y;
                                     const last = sparklineData[sparklineData.length - 1].y;
-                                    if (first !== 0) {
-                                      percentChange = ((last - first) / first) * 100;
-                                    }
+                                    const prev = sparklineData[sparklineData.length - 2].y;
+                                    color = last >= prev ? "#10B981" : "#EF4444"; // red if down
                                   }
+                                  const percentChange = calculatePercentFromSeries(sparklineData);
                                    const percentColor = percentChange !== null ? (percentChange >= 0 ? "#10B981" : "#EF4444") : "#aaa";
                                    const percentArrow = percentChange !== null ? (percentChange > 0 ? "▲" : percentChange < 0 ? "▼" : "") : "";
                                    return (
@@ -297,27 +305,15 @@ export default function TradingPage() {
                                 {GASOIL_IDS.map((id, _idx) => {
                                   const name = PRODUCT_ID_MAP[id];
                                   const priceObj = livePrices.find((p) => p.id === id);
-                                  // Prefer cscSeries first, then priceObj.history, then deterministic flat series
-                                  const sparklineData = (cscSeries[id] && cscSeries[id].length > 0)
-                                    ? cscSeries[id].map((pt) => ({ x: pt.x, y: pt.y }))
-                                    : priceObj && Array.isArray(priceObj.history)
-                                      ? priceObj.history.map((y, x) => ({ x, y }))
-                                      : generateSparklineData(priceObj?.value);
+                                  // Use helper (same logic as CSC) to get sparkline and percent change
+                                  const sparklineData = getSparklineForId(id, priceObj);
                                    let color = "#10B981"; // green default
                                    if (sparklineData.length > 1) {
                                      const last = sparklineData[sparklineData.length - 1].y;
                                      const prev = sparklineData[sparklineData.length - 2].y;
                                      color = last >= prev ? "#10B981" : "#EF4444"; // red if down
                                    }
-                                   // Calculate 1hr percent change using oldest -> newest
-                                   let percentChange: number | null = null;
-                                   if (sparklineData.length > 1) {
-                                     const first = sparklineData[0].y;
-                                     const last = sparklineData[sparklineData.length - 1].y;
-                                     if (first !== 0) {
-                                       percentChange = ((last - first) / first) * 100;
-                                     }
-                                   }
+                                   const percentChange = calculatePercentFromSeries(sparklineData);
                                    const percentColor = percentChange !== null ? (percentChange >= 0 ? "#10B981" : "#EF4444") : "#aaa";
                                    const percentArrow = percentChange !== null ? (percentChange > 0 ? "▲" : percentChange < 0 ? "▼" : "") : "";
                                    return (
