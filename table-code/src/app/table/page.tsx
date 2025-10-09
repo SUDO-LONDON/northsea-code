@@ -38,12 +38,11 @@ interface LivePrice {
 }
 
 // Helper for sparkline data
-// Make deterministic: if baseValue provided, create a flat series; otherwise return an empty array (no data)
-const generateSparklineData = (baseValue?: number) => {
-  if (typeof baseValue === 'number') {
-    return Array.from({ length: 20 }, (_, i) => ({ x: i, y: baseValue }));
-  }
-  return [] as { x: number; y: number }[];
+const generateSparklineData = () => {
+  return Array.from({ length: 20 }, (_, i) => ({
+    x: i,
+    y: 50 + Math.random() * 20
+  }))
 };
 
 // Helper to get unit for product name
@@ -57,31 +56,7 @@ const getUnit = (name: string) => {
 export default function TradingPage() {
     const [products, setProducts] = useState<Product[]>([]);
     const [livePrices, setLivePrices] = useState<LivePrice[]>([]);
-    // New: series fetched from /api/csc-memory-history (in-memory hourly series)
-    // map: product id -> array of points (oldest -> newest)
-    const [cscSeries, setCscSeries] = useState<Record<string, { x: string | number; y: number }[]>>({} as Record<string, { x: string | number; y: number }[]>);
     const router = useRouter();
-
-    // Helper: get sparkline data for a given product id (prefers cscSeries, then priceObj.history, then deterministic flat series)
-    const getSparklineForId = (id: string, priceObj?: LivePrice): { x: string | number; y: number }[] => {
-      if (cscSeries && cscSeries[id] && cscSeries[id].length > 0) {
-        return cscSeries[id].map((pt) => ({ x: pt.x, y: pt.y }));
-      }
-      if (priceObj && Array.isArray(priceObj.history) && priceObj.history.length > 0) {
-        return priceObj.history.map((y, x) => ({ x, y }));
-      }
-      return generateSparklineData(priceObj?.value);
-    };
-
-    // Helper: calculate percent change from a sparkline series (oldest -> newest). Returns null if not computable.
-    const calculatePercentFromSeries = (series: { x: string | number; y: number }[]): number | null => {
-      if (!series || series.length < 2) return null;
-      const first = series[0].y;
-      const last = series[series.length - 1].y;
-      if (first === 0) return null;
-      return ((last - first) / first) * 100;
-    };
-
     useEffect(() => {
         // Auth check
         const isAuthenticated = Cookies.get('adminAuth');
@@ -133,34 +108,6 @@ export default function TradingPage() {
         fetchLivePrices();
         const interval = setInterval(fetchLivePrices, 5000);
         return () => clearInterval(interval);
-    }, []);
-
-    // Fetch the in-memory CSC memory history so percent-change uses real historical points
-    useEffect(() => {
-      let mounted = true;
-      const fetchCscMemory = async () => {
-        try {
-          const res = await fetch('/api/csc-memory-history');
-          if (!res.ok) return;
-          const data: { timestamp: string; prices: Record<string, number> }[] = await res.json();
-          // Build series map id -> [{x: timestamp, y: price}, ...] ordered oldest -> newest
-          const out: Record<string, { x: string | number; y: number }[]> = {};
-          PRODUCT_IDS.forEach(id => { out[id] = []; });
-          data.forEach(entry => {
-            PRODUCT_IDS.forEach(id => {
-              if (entry.prices && entry.prices[id] !== undefined) {
-                out[id].push({ x: entry.timestamp, y: entry.prices[id] });
-              }
-            });
-          });
-          if (mounted) setCscSeries(out);
-        } catch (e) {
-          // ignore errors
-        }
-      };
-      fetchCscMemory();
-      const iv = setInterval(fetchCscMemory, 15000);
-      return () => { mounted = false; clearInterval(iv); };
     }, []);
 
     return (
@@ -226,60 +173,67 @@ export default function TradingPage() {
                             <div>
                               <div>
                                  {/* Table header for CSC commodities */}
-                                <div className="flex items-center font-bold border-b border-[#333] pb-3 text-foreground text-base rounded-t-xl gap-4" style={{letterSpacing: '0.01em'}}>
-                                  <span className="pl-2" style={{width: '36%', paddingRight: 12}}>Name</span>
-                                  <span className="mx-2 text-center" style={{width: '170px', paddingRight: 12}}>Graph</span>
-                                  <span className="text-right pr-2" style={{width: '32%', paddingRight: 12}}>Price</span>
-                                  <span className="text-right pr-2" style={{width: '20%'}}>1hr % Change</span>
+                                <div className="flex items-center font-bold border-b border-[#333] pb-3 text-foreground text-base rounded-t-xl" style={{letterSpacing: '0.01em'}}>
+                                  <span className="pl-2" style={{width: '38%'}}>Name</span>
+                                  <span className="mx-2 text-center" style={{width: '140px'}}>Graph</span>
+                                  <span className="text-right pr-2" style={{width: '30%'}}>Price</span>
+                                  <span className="text-right pr-2" style={{width: '22%'}}>1hr % Change</span>
                                 </div>
                                 {CSC_COMMODITIES_IDS.map((id, _idx) => {
                                    const name = PRODUCT_ID_MAP[id];
                                    const priceObj = livePrices.find((p) => p.id === id);
-                                  // Use helper to get sparkline and percent change (ordered oldest -> newest)
-                                  const sparklineData = getSparklineForId(id, priceObj);
-                                  let color = "#10B981"; // green default
+                                   // Use sparklineData for both the graph and percentage change
+                                   const sparklineData = priceObj && Array.isArray(priceObj.history)
+                                     ? priceObj.history.map((y, x) => ({ x, y }))
+                                     : generateSparklineData();
+                                   let color = "#10B981"; // green default
+                                   if (sparklineData.length > 1) {
+                                     const last = sparklineData[sparklineData.length - 1].y;
+                                     const prev = sparklineData[sparklineData.length - 2].y;
+                                     color = last >= prev ? "#10B981" : "#EF4444"; // red if down
+                                   }
+                                  // Calculate 1hr percentage change from sparklineData (first -> last)
+                                  // sparklineData is expected to be ordered oldest -> newest
+                                  let percentChange: number | null = null;
                                   if (sparklineData.length > 1) {
+                                    const first = sparklineData[0].y;
                                     const last = sparklineData[sparklineData.length - 1].y;
-                                    const prev = sparklineData[sparklineData.length - 2].y;
-                                    color = last >= prev ? "#10B981" : "#EF4444"; // red if down
+                                    if (first !== 0) {
+                                      percentChange = ((last - first) / first) * 100;
+                                    }
                                   }
-                                  const percentChange = calculatePercentFromSeries(sparklineData);
                                    const percentColor = percentChange !== null ? (percentChange >= 0 ? "#10B981" : "#EF4444") : "#aaa";
                                    const percentArrow = percentChange !== null ? (percentChange > 0 ? "▲" : percentChange < 0 ? "▼" : "") : "";
                                    return (
                                      <div
                                        key={id}
-                                      className={`flex items-center border-b border-[#23272f] last:border-b-0 py-3 transition-colors duration-150 hover:bg-muted rounded-xl gap-3`}
+                                      className={`flex items-center border-b border-[#23272f] last:border-b-0 py-3 transition-colors duration-150 hover:bg-muted rounded-xl`}
                                       style={{marginBottom: 2}}
                                      >
-                                      <span className="font-medium text-foreground text-sm sm:text-base pl-2" style={{color: '#e5e7eb', width: '36%', paddingRight: 12}}>
+                                      <span className="font-medium text-foreground text-sm sm:text-base pl-2" style={{color: '#e5e7eb', width: '38%'}}>
                                         {name}
                                       </span>
-                                      <div className="h-[32px] mx-2 flex items-center justify-center" style={{width: 170}}>
-                                         {sparklineData && sparklineData.length > 0 ? (
-                                           <ResponsiveContainer width="100%" height="100%">
-                                             <AreaChart data={sparklineData}>
-                                               <defs>
-                                                 <linearGradient id={`colorUv-${id}`} x1="0" y1="0" x2="0" y2="1">
-                                                   <stop offset="5%" stopColor={color} stopOpacity={0.6}/>
-                                                   <stop offset="95%" stopColor={color} stopOpacity={0}/>
-                                                 </linearGradient>
-                                               </defs>
-                                               <Area
-                                                 type="monotone"
-                                                 dataKey="y"
-                                                 stroke={color}
-                                                 fillOpacity={1}
-                                                 fill={`url(#colorUv-${id})`}
-                                                 strokeWidth={2}
-                                               />
-                                             </AreaChart>
-                                           </ResponsiveContainer>
-                                         ) : (
-                                           <div className="text-xs text-muted">No data</div>
-                                         )}
+                                      <div className="h-[32px] mx-2 flex items-center justify-center" style={{width: 140}}>
+                                         <ResponsiveContainer width="100%" height="100%">
+                                           <AreaChart data={sparklineData}>
+                                             <defs>
+                                               <linearGradient id={`colorUv-${id}`} x1="0" y1="0" x2="0" y2="1">
+                                                 <stop offset="5%" stopColor={color} stopOpacity={0.6}/>
+                                                 <stop offset="95%" stopColor={color} stopOpacity={0}/>
+                                               </linearGradient>
+                                             </defs>
+                                             <Area
+                                               type="monotone"
+                                               dataKey="y"
+                                               stroke={color}
+                                               fillOpacity={1}
+                                               fill={`url(#colorUv-${id})`}
+                                               strokeWidth={2}
+                                             />
+                                           </AreaChart>
+                                         </ResponsiveContainer>
                                        </div>
-                                      <span className="text-sm sm:text-base font-bold text-right pr-2 px-2" style={{ color: '#d1d5db', fontVariantNumeric: 'tabular-nums', width: '32%', paddingRight: 12 }}>
+                                      <span className="text-sm sm:text-base font-bold text-right pr-2" style={{ color: '#d1d5db', fontVariantNumeric: 'tabular-nums', width: '30%' }}>
                                          {priceObj && priceObj.value !== undefined
                                            ? `$${priceObj.value.toLocaleString(undefined, {
                                                minimumFractionDigits: 2,
@@ -287,69 +241,57 @@ export default function TradingPage() {
                                              })}${getUnit(name)}`
                                            : "--"}
                                        </span>
-                                      <span className="text-right pr-2 font-bold px-2" style={{ color: percentColor, fontSize: '0.98em', fontVariantNumeric: 'tabular-nums', width: '20%' }}>
+                                      <span className="text-right pr-2 font-bold" style={{ color: percentColor, fontSize: '0.98em', fontVariantNumeric: 'tabular-nums', width: '22%' }}>
                                         {percentArrow} {percentChange !== null ? `${percentChange.toFixed(2)}%` : "--"}
                                       </span>
                                      </div>
                                    );
                                  })}
-                                {/* Gasoils Section (extended to show 1hr % change like CSC) */}
+                                {/* Gasoils Section (unchanged) */}
                                 <h3 className="font-semibold text-base sm:text-lg mt-4 mb-2 pl-2">Gasoil:</h3>
-                                {/* Header for gasoils to align with CSC columns */}
-                                <div className="flex items-center font-bold border-b border-[#333] pb-3 text-foreground text-base rounded-t-xl gap-4" style={{letterSpacing: '0.01em'}}>
-                                  <span className="pl-2" style={{width: '36%', paddingRight: 12}}>Name</span>
-                                  <span className="mx-2 text-center" style={{width: '170px', paddingRight: 12}}>Graph</span>
-                                  <span className="text-right pr-2" style={{width: '32%', paddingRight: 12}}>Price</span>
-                                  <span className="text-right pr-2" style={{width: '20%'}}>1hr % Change</span>
-                                </div>
                                 {GASOIL_IDS.map((id, _idx) => {
                                   const name = PRODUCT_ID_MAP[id];
                                   const priceObj = livePrices.find((p) => p.id === id);
-                                  // Use helper (same logic as CSC) to get sparkline and percent change
-                                  const sparklineData = getSparklineForId(id, priceObj);
+                                  // Assume priceObj.history is an array of price values for the sparkline
+                                  const sparklineData = priceObj && Array.isArray(priceObj.history)
+                                     ? priceObj.history.map((y, x) => ({ x, y }))
+                                     : generateSparklineData();
                                    let color = "#10B981"; // green default
                                    if (sparklineData.length > 1) {
                                      const last = sparklineData[sparklineData.length - 1].y;
                                      const prev = sparklineData[sparklineData.length - 2].y;
                                      color = last >= prev ? "#10B981" : "#EF4444"; // red if down
                                    }
-                                   const percentChange = calculatePercentFromSeries(sparklineData);
-                                   const percentColor = percentChange !== null ? (percentChange >= 0 ? "#10B981" : "#EF4444") : "#aaa";
-                                   const percentArrow = percentChange !== null ? (percentChange > 0 ? "▲" : percentChange < 0 ? "▼" : "") : "";
                                    return (
                                      <div
                                        key={id}
-                                       className={`flex items-center border-b border-[#23272f] last:border-b-0 py-3 transition-colors duration-150 hover:bg-muted rounded-xl gap-3`}
+                                       className={`flex items-center border-b border-[#23272f] last:border-b-0 py-3 transition-colors duration-150 hover:bg-muted rounded-xl`}
                                        style={{marginBottom: 2}}
                                      >
-                                      <span className="font-medium text-foreground text-sm sm:text-base pl-2" style={{color: '#e5e7eb', width: '36%', paddingRight: 12}}>
+                                      <span className="font-medium text-foreground text-sm sm:text-base pl-2" style={{color: '#e5e7eb', width: '38%'}}>
                                         {name}
                                       </span>
-                                      <div className="h-[32px] mx-2 flex items-center justify-center" style={{width: 170}}>
-                                         {sparklineData && sparklineData.length > 0 ? (
-                                           <ResponsiveContainer width="100%" height="100%">
-                                             <AreaChart data={sparklineData}>
-                                               <defs>
-                                                 <linearGradient id={`colorUv-${id}`} x1="0" y1="0" x2="0" y2="1">
-                                                   <stop offset="5%" stopColor={color} stopOpacity={0.6}/>
-                                                   <stop offset="95%" stopColor={color} stopOpacity={0}/>
-                                                 </linearGradient>
-                                               </defs>
-                                               <Area
-                                                 type="monotone"
-                                                 dataKey="y"
-                                                 stroke={color}
-                                                 fillOpacity={1}
-                                                 fill={`url(#colorUv-${id})`}
-                                                 strokeWidth={2}
-                                               />
-                                             </AreaChart>
-                                           </ResponsiveContainer>
-                                         ) : (
-                                           <div className="text-xs text-muted">No data</div>
-                                         )}
+                                      <div className="h-[32px] mx-2 flex items-center justify-center" style={{width: 140}}>
+                                         <ResponsiveContainer width="100%" height="100%">
+                                           <AreaChart data={sparklineData}>
+                                             <defs>
+                                               <linearGradient id={`colorUv-${id}`} x1="0" y1="0" x2="0" y2="1">
+                                                 <stop offset="5%" stopColor={color} stopOpacity={0.6}/>
+                                                 <stop offset="95%" stopColor={color} stopOpacity={0}/>
+                                               </linearGradient>
+                                             </defs>
+                                             <Area
+                                               type="monotone"
+                                               dataKey="y"
+                                               stroke={color}
+                                               fillOpacity={1}
+                                               fill={`url(#colorUv-${id})`}
+                                               strokeWidth={2}
+                                             />
+                                           </AreaChart>
+                                         </ResponsiveContainer>
                                        </div>
-                                      <span className="text-xs sm:text-sm font-bold text-right pr-2 px-2" style={{ color: '#d1d5db', fontVariantNumeric: 'tabular-nums', width: '32%', paddingRight: 12 }}>
+                                      <span className="text-xs sm:text-sm font-bold text-right pr-2" style={{ color: '#d1d5db', fontVariantNumeric: 'tabular-nums', width: '30%' }}>
                                         {priceObj && priceObj.value !== undefined
                                            ? `$${priceObj.value.toLocaleString(undefined, {
                                                minimumFractionDigits: 2,
@@ -357,9 +299,8 @@ export default function TradingPage() {
                                              })}${getUnit(name)}`
                                            : "--"}
                                       </span>
-                                      <span className="text-right pr-2 font-bold px-2" style={{ color: percentColor, fontSize: '0.98em', fontVariantNumeric: 'tabular-nums', width: '20%' }}>
-                                        {percentArrow} {percentChange !== null ? `${percentChange.toFixed(2)}%` : "--"}
-                                      </span>
+                                      {/* No 1hr % change for Gasoil rows (if desired we can enable), so leave the last column empty for alignment */}
+                                      <span style={{width: '22%'}} className="text-right pr-2 font-bold"> </span>
                                      </div>
                                    );
                                  })}
