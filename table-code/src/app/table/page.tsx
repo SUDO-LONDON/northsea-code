@@ -169,8 +169,8 @@ export default function TradingPage() {
                                 style={{ filter: 'invert(1)' }}
                               />
                             </div>
-                            <div className="overflow-x-auto">
-                              <div className="min-w-[520px]">
+                            <div className="w-full">
+                              <div className="w-full min-w-0">
                                 {/* Table header for CSC commodities */}
                                 <div className="flex items-center font-bold border-b border-[#333] pb-3 text-foreground text-base rounded-t-xl" style={{letterSpacing: '0.01em'}}>
                                   <span className="w-1/3 pl-2">Name</span>
