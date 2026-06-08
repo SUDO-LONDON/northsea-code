@@ -33,17 +33,10 @@ const GASOIL_IDS = PRODUCT_IDS.slice(-2);
 
 interface LivePrice {
     id: string;
-    value: number;
+    value: number | null;
+    change?: number | null;
     history?: number[];
 }
-
-// Helper for sparkline data
-const generateSparklineData = () => {
-  return Array.from({ length: 20 }, (_, i) => ({
-    x: i,
-    y: 50 + Math.random() * 20
-  }))
-};
 
 // Helper to get unit for product name
 const BBLS_PRODUCTS = ["USGC 3%", "USGC 0.5%", "Singapore 10ppm"];
@@ -181,25 +174,18 @@ export default function TradingPage() {
                                 {CSC_COMMODITIES_IDS.map((id, idx) => {
                                   const name = PRODUCT_ID_MAP[id];
                                   const priceObj = livePrices.find((p) => p.id === id);
-                                  // Use sparklineData for both the graph and percentage change
+                                  // Real snapshot history from the API; no fabricated fallback data
                                   const sparklineData = priceObj && Array.isArray(priceObj.history)
                                     ? priceObj.history.map((y, x) => ({ x, y }))
-                                    : generateSparklineData();
+                                    : [];
                                   let color = "#10B981"; // green default
                                   if (sparklineData.length > 1) {
                                     const last = sparklineData[sparklineData.length - 1].y;
                                     const prev = sparklineData[sparklineData.length - 2].y;
                                     color = last >= prev ? "#10B981" : "#EF4444"; // red if down
                                   }
-                                  // Calculate daily percentage change from sparklineData
-                                  let percentChange: number | null = null;
-                                  if (sparklineData.length > 1) {
-                                    const first = sparklineData[0].y;
-                                    const last = sparklineData[sparklineData.length - 1].y;
-                                    if (first !== 0) {
-                                      percentChange = ((last - first) / first) * 100;
-                                    }
-                                  }
+                                  // Daily % change computed server-side from today's first snapshot
+                                  const percentChange = typeof priceObj?.change === "number" ? priceObj.change : null;
                                   const percentColor = percentChange !== null ? (percentChange >= 0 ? "#10B981" : "#EF4444") : "#aaa";
                                   const percentArrow = percentChange !== null ? (percentChange > 0 ? "▲" : percentChange < 0 ? "▼" : "") : "";
                                   return (
@@ -234,7 +220,7 @@ export default function TradingPage() {
                                         </ResponsiveContainer>
                                       </div>
                                       <span className="text-sm sm:text-base font-bold w-1/3 text-right pr-2" style={{ color: '#d1d5db', fontVariantNumeric: 'tabular-nums' }}>
-                                        {priceObj && priceObj.value !== undefined
+                                        {typeof priceObj?.value === "number"
                                           ? `$${priceObj.value.toLocaleString(undefined, {
                                               minimumFractionDigits: 2,
                                               maximumFractionDigits: 2,
@@ -252,24 +238,18 @@ export default function TradingPage() {
                                 {GASOIL_IDS.map((id, idx) => {
                                   const name = PRODUCT_ID_MAP[id];
                                   const priceObj = livePrices.find((p) => p.id === id);
-                                  // Assume priceObj.history is an array of price values for the sparkline
+                                  // Real snapshot history from the API; no fabricated fallback data
                                   const sparklineData = priceObj && Array.isArray(priceObj.history)
                                     ? priceObj.history.map((y, x) => ({ x, y }))
-                                    : generateSparklineData();
+                                    : [];
                                   let color = "#10B981"; // green default
                                   if (sparklineData.length > 1) {
                                     const last = sparklineData[sparklineData.length - 1].y;
                                     const prev = sparklineData[sparklineData.length - 2].y;
                                     color = last >= prev ? "#10B981" : "#EF4444"; // red if down
                                   }
-                                  let percentChange: number | null = null;
-                                  if (sparklineData.length > 1) {
-                                    const first = sparklineData[0].y;
-                                    const last = sparklineData[sparklineData.length - 1].y;
-                                    if (first !== 0) {
-                                      percentChange = ((last - first) / first) * 100;
-                                    }
-                                  }
+                                  // Daily % change computed server-side from today's first snapshot
+                                  const percentChange = typeof priceObj?.change === "number" ? priceObj.change : null;
                                   const percentColor = percentChange !== null ? (percentChange >= 0 ? "#10B981" : "#EF4444") : "#aaa";
                                   const percentArrow = percentChange !== null ? (percentChange > 0 ? "▲" : percentChange < 0 ? "▼" : "") : "";
                                   return (
@@ -302,7 +282,7 @@ export default function TradingPage() {
                                         </ResponsiveContainer>
                                       </div>
                                       <span className="text-xs sm:text-sm font-bold w-1/3 text-right pr-2" style={{ color: '#d1d5db', fontVariantNumeric: 'tabular-nums' }}>
-                                        {priceObj && priceObj.value !== undefined
+                                        {typeof priceObj?.value === "number"
                                           ? `$${priceObj.value.toLocaleString(undefined, {
                                               minimumFractionDigits: 2,
                                               maximumFractionDigits: 2,

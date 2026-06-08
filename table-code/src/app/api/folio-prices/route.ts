@@ -1,6 +1,13 @@
 import { NextResponse } from 'next/server';
+import { createClient } from '@supabase/supabase-js';
 import { getToken } from '@/lib/folioToken';
 import { supabase } from '@/lib/supabaseClient';
+
+// Server-only client for the RLS-protected snapshots table; falls back to the
+// anon client if the service role key is not configured.
+const serviceSupabase = process.env.SUPABASE_SERVICE_ROLE_KEY
+    ? createClient(process.env.NEXT_PUBLIC_SUPABASE_URL!, process.env.SUPABASE_SERVICE_ROLE_KEY)
+    : supabase;
 
 const FOLIO_PRICES_URL = 'https://folio-api.artis.works/prices/v2/liveprices';
 
@@ -15,6 +22,11 @@ const IDS = [
     '9c68de75-aed7-417b-abab-eaf576d0d6fe',
     '6ccbf93e-d43d-46ab-ba50-c26659add883',
 ];
+
+// Number of snapshot points returned for each product's sparkline
+const SPARKLINE_POINTS = 50;
+// Clients poll every 5s; only persist a snapshot once per minute
+const SNAPSHOT_MIN_INTERVAL_MS = 60 * 1000;
 
 interface PayloadEntry {
     data?: Record<string, { value?: number }>;
@@ -48,58 +60,124 @@ export async function POST() {
         // Log the full payload for debugging
         console.log('Folio API payload:', JSON.stringify(data.payload, null, 2));
 
-        // Dynamically pick the first available Q key for each ID
-        const prices: { id: string; value: number }[] = Object.entries(data.payload || {}).map(([id, entry]) => {
-            let value = 0;
+        const payload = data.payload || {};
+
+        // One entry per tracked ID; value is null when the upstream payload omits the product
+        const prices: { id: string; value: number | null }[] = IDS.map((id) => {
+            const entry = payload[id];
+            let value: number | null = null;
 
             if (entry?.data) {
                 const keys = Object.keys(entry.data);
                 if (keys.length > 0) {
                     const firstKey = keys[0];
-                    value = entry.data[firstKey]?.value ?? 0;
+                    value = entry.data[firstKey]?.value ?? null;
                 }
             }
 
             return { id, value };
         });
 
-        // Fetch previous prices from Supabase
-        const { data: previousProducts, error: fetchError } = await supabase
-            .from('products')
-            .select('id, hfo')
-            .in('id', prices.map(p => p.id));
-        if (fetchError) {
-            console.error('Error fetching previous prices:', fetchError);
+        const missingIds = prices.filter((p) => p.value === null).map((p) => p.id);
+        if (missingIds.length > 0) {
+            console.warn('Folio API payload missing values for product IDs:', missingIds);
         }
 
-        // Calculate percentage change and update Supabase
-        for (const priceObj of prices) {
-            // previousProducts is typed as { id: string; hfo: number }[]
-            const prev = previousProducts?.find(p => p.id === priceObj.id);
-            const oldPrice = prev?.hfo ?? 0;
-            const newPrice = priceObj.value;
-            const change = oldPrice !== 0 ? ((newPrice - oldPrice) / oldPrice) * 100 : 0;
-            await supabase
+        const pricedEntries = prices.filter(
+            (p): p is { id: string; value: number } => typeof p.value === 'number'
+        );
+
+        // Insert price snapshots for historical tracking (throttled — clients poll every 5s)
+        if (pricedEntries.length > 0) {
+            const { data: lastSnap, error: lastSnapError } = await serviceSupabase
+                .from('product_price_snapshots')
+                .select('recorded_at')
+                .order('recorded_at', { ascending: false })
+                .limit(1);
+            if (lastSnapError) {
+                console.error('Error fetching last snapshot time:', lastSnapError);
+            }
+            const lastSnapAt = lastSnap?.[0]?.recorded_at
+                ? new Date(lastSnap[0].recorded_at).getTime()
+                : 0;
+
+            if (Date.now() - lastSnapAt >= SNAPSHOT_MIN_INTERVAL_MS) {
+                const now = new Date().toISOString();
+                const snapshotRows = pricedEntries.map((p) => ({
+                    product_id: p.id,
+                    value: p.value,
+                    recorded_at: now,
+                }));
+                const { error: snapshotError } = await serviceSupabase
+                    .from('product_price_snapshots')
+                    .insert(snapshotRows);
+                if (snapshotError) {
+                    console.error('Error inserting price snapshots:', snapshotError);
+                }
+            }
+        }
+
+        // Daily open (first snapshot today, UTC) and recent history per product
+        const startOfDay = new Date();
+        startOfDay.setUTCHours(0, 0, 0, 0);
+        const startOfDayISO = startOfDay.toISOString();
+
+        const [opens, histories] = await Promise.all([
+            Promise.all(
+                IDS.map(async (id) => {
+                    const { data: rows, error } = await serviceSupabase
+                        .from('product_price_snapshots')
+                        .select('value')
+                        .eq('product_id', id)
+                        .gte('recorded_at', startOfDayISO)
+                        .order('recorded_at', { ascending: true })
+                        .limit(1);
+                    if (error) {
+                        console.error(`Error fetching daily open for ${id}:`, error);
+                    }
+                    return { id, open: rows?.[0]?.value ?? null };
+                })
+            ),
+            Promise.all(
+                IDS.map(async (id) => {
+                    const { data: rows, error } = await serviceSupabase
+                        .from('product_price_snapshots')
+                        .select('value')
+                        .eq('product_id', id)
+                        .order('recorded_at', { ascending: false })
+                        .limit(SPARKLINE_POINTS);
+                    if (error) {
+                        console.error(`Error fetching history for ${id}:`, error);
+                    }
+                    return { id, history: (rows ?? []).map((r) => r.value).reverse() };
+                })
+            ),
+        ]);
+
+        // Attach daily % change and snapshot history to each price
+        const enriched = prices.map((p) => {
+            const open = opens.find((o) => o.id === p.id)?.open ?? null;
+            const history = histories.find((h) => h.id === p.id)?.history ?? [];
+            const change =
+                typeof p.value === 'number' && typeof open === 'number' && open !== 0
+                    ? ((p.value - open) / open) * 100
+                    : null;
+            return { ...p, change, history };
+        });
+
+        // Persist latest price and daily change on the products table
+        for (const priceObj of enriched) {
+            if (typeof priceObj.value !== 'number') continue;
+            const { error: updateError } = await supabase
                 .from('products')
-                .update({ hfo: newPrice, change })
+                .update({ hfo: priceObj.value, change: priceObj.change ?? 0 })
                 .eq('id', priceObj.id);
+            if (updateError) {
+                console.error(`Error updating product ${priceObj.id}:`, updateError);
+            }
         }
 
-        // Insert price snapshots for historical tracking
-        const now = new Date().toISOString();
-        const snapshotRows = prices.map((p) => ({
-            product_id: p.id,
-            value: p.value,
-            recorded_at: now,
-        }));
-        const { error: snapshotError } = await supabase
-            .from('product_price_snapshots')
-            .insert(snapshotRows);
-        if (snapshotError) {
-            console.error('Error inserting price snapshots:', snapshotError);
-        }
-
-        return NextResponse.json(prices);
+        return NextResponse.json(enriched);
     } catch (error: unknown) {
         const errorMessage = error instanceof Error ? error.message : 'Unknown error';
         return NextResponse.json({ error: errorMessage }, { status: 500 });
